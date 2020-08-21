@@ -106,6 +106,7 @@ public class TerminalStatusReceiver {
 
     /**
      * 处理实时位置
+     *
      * @param terminalStatusProto
      */
     private void handleLocation(TerminalStatusProto terminalStatusProto) {
@@ -141,6 +142,7 @@ public class TerminalStatusReceiver {
 
     /**
      * 获取JT808和JT1078的报警类型
+     *
      * @param jt808AlarmBits
      * @param jt1078AlarmBits
      * @return
@@ -150,7 +152,7 @@ public class TerminalStatusReceiver {
                 .map(alarmBit -> {
                     AlarmTypeEnum alarmType = null;
                     try {
-                        alarmType  = AlarmTypeEnum.valueOf("ALARM_" + alarmBit);
+                        alarmType = AlarmTypeEnum.valueOf("ALARM_" + alarmBit);
                     } catch (Exception e) {
                         alarmType = AlarmTypeEnum.UNKNOWN;
                     }
@@ -162,7 +164,7 @@ public class TerminalStatusReceiver {
                 .map(alarmBit -> {
                     AlarmTypeEnum alarmType = null;
                     try {
-                        alarmType  = AlarmTypeEnum.valueOf("JT1078_ALARM_" + alarmBit);
+                        alarmType = AlarmTypeEnum.valueOf("JT1078_ALARM_" + alarmBit);
                     } catch (Exception e) {
                         alarmType = AlarmTypeEnum.UNKNOWN;
                     }

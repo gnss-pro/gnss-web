@@ -88,7 +88,7 @@ public class TerminalStatusService {
             terminalStatusProto.setVehicleStatus(VehicleStatusEnum.OFFLINE);
             return terminalStatusProto;
         });
-        log.info("更新终端状态为离线,终端信息:{}", terminalProto);
+        log.info("更新终端状态为离线,终端信息:{},在线数量:{}", terminalProto, getTerminalOnlineCount());
     }
 
     /**
