@@ -81,10 +81,9 @@ public class Jt808MediaCommandController {
 
     @ApiOperation("音视频实时传输控制")
     @PostMapping("/sendCommand9102")
-    public ApiResultDTO<MediaCommandResultDTO> sendCommand9102(@ApiParam("指令信息") @Valid @RequestBody CommandRequestDTO<Command9102Param> commandRequestDTO) {
+    public ApiResultDTO<CommandResultDTO> sendCommand9102(@ApiParam("指令信息") @Valid @RequestBody CommandRequestDTO<Command9102Param> commandRequestDTO) {
         CommandResultDTO resultDTO = commandOperationService.sendCommandEntity(commandRequestDTO);
-        MediaCommandResultDTO mediaCommandResultDTO = buildMediaCommandResult(resultDTO, commandRequestDTO.getParamsEntity());
-        return ApiResultDTO.success(mediaCommandResultDTO);
+        return ApiResultDTO.success(resultDTO);
     }
 
     @ApiOperation("平台下发远程录像回放请求")

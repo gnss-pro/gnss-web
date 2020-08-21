@@ -2,6 +2,11 @@ appName = "/gnss-web";
 mediaIp = "127.0.0.1";
 
 $(document).ready(function () {
+    var layer;
+    layui.use(['layer'], function () {
+        layer = layui.layer;
+    });
+
     // login();
     window.index = 0;
     $("#winNum").val(4);
@@ -175,7 +180,8 @@ $(document).ready(function () {
             var channelId = i + 1;
             var params = {
                 "terminalId": terminalInfo.id,
-                "requestType": "ASYNC",
+                "requestType": "SYNC",
+                "responseTimeout": 5000,
                 "paramsEntity": {
                     "channelId": channelId,
                     "ctrlCmd": "CLOSE_AV",
@@ -254,12 +260,12 @@ $(document).ready(function () {
 function requestVideo() {
     var simcard = $("#simcard").val();
     if (!simcard) {
-        alert("请输入终端手机号");
+        layer.msg("请输入终端手机号", {icon: 5});
         return;
     }
     var terminalInfo = queryTerminalInfo(simcard);
     if (!terminalInfo) {
-        alert("找不到终端手机号:" + simcard + "的信息");
+        layer.msg("找不到终端手机号:" + simcard + "的信息", {icon: 5});
         return;
     }
 
@@ -290,7 +296,7 @@ function requestVideo() {
                 if (ret.code == 0) {
                     if (ret.data.sendResult != 'SUCCESS') {
                         var errorMsg = ret.data.sendResult == 'TIMEOUT' ? "应答超时" : ret.data.resultDesc;
-                        alert("通道" + params.paramsEntity.channelId + "请求失败,错误码:" + ret.data.sendResult + ",原因:" + errorMsg);
+                        layer.msg("通道" + params.paramsEntity.channelId + "请求失败,错误码:" + ret.data.sendResult + ",原因:" + errorMsg, {icon: 5});
                         return;
                     }
                     var streamUrl = ret.data.streamUrl;

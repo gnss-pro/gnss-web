@@ -1,6 +1,7 @@
 package com.gnss.web.terminal.service;
 
 import com.gnss.core.proto.AttachmentInfoProto;
+import com.gnss.core.proto.TerminalProto;
 import com.gnss.web.common.service.BaseService;
 import com.gnss.web.info.domain.Terminal;
 import com.gnss.web.terminal.dao.AttachmentRepository;
@@ -23,8 +24,8 @@ import java.util.List;
  * @version 1.0.1
  * @date 2018-12-28
  */
-@Service
 @Slf4j
+@Service
 public class AttachmentService extends BaseService<AttachmentInfo> {
 
     @Autowired
@@ -41,13 +42,12 @@ public class AttachmentService extends BaseService<AttachmentInfo> {
      * @throws Exception
      */
     public AttachmentInfo save(AttachmentInfoProto attachmentInfoProto) throws Exception {
-        Terminal terminal = new Terminal();
-        terminal.setId(attachmentInfoProto.getTerminalInfo().getTerminalId());
+        TerminalProto terminalInfo = attachmentInfoProto.getTerminalInfo();
         Long activeSafetyAlarmId = Long.valueOf(attachmentInfoProto.getSafetyAlarmNum());
         ActiveSafetyAlarm activeSafetyAlarm = new ActiveSafetyAlarm();
         activeSafetyAlarm.setId(activeSafetyAlarmId);
         AttachmentInfo attachmentInfo = AttachmentMapper.fromAttachmentProto(attachmentInfoProto);
-        attachmentInfo.setTerminal(terminal);
+        attachmentInfo.setTerminal(new Terminal(terminalInfo.getTerminalId()));
         attachmentInfo.setActiveSafetyAlarm(activeSafetyAlarm);
         //文件路径采用base64加密
         String base64FilePath = Base64.getEncoder().encodeToString(attachmentInfoProto.getFilePath().getBytes("utf-8"));
@@ -55,6 +55,7 @@ public class AttachmentService extends BaseService<AttachmentInfo> {
         attachmentInfo = super.save(attachmentInfo);
         //更新主动安全报警表的已完成上传附件数量
         activeSafetyAlarmService.updateCompletedCount(activeSafetyAlarmId);
+        log.info("保存附件信息,终端号:{},终端手机号:{},路径:{}", terminalInfo.getTerminalNum(), terminalInfo.getTerminalSimCode(), attachmentInfoProto.getFilePath());
         return attachmentInfo;
     }
 
