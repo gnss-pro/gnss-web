@@ -1,0 +1,67 @@
+<script src="layui/xm-select.js"></script>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="queryProperty">查询终端属性</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        //查询参数设置
+        form.on('submit(queryProperty)', function (data) {
+            var url = "/api/v1/commands/jt808/basic/sendCommand8107";
+            sendJt808Command(url, {}, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        layer.msg("查询成功", {icon: 1});
+                        var jsonObj = eval('(' + ret.data.responseParams + ')');
+                        var content = '<div style="padding: 20px 40px;">'
+                        if (jsonObj.terminalType) {
+                            content += "终端类型:" + jsonObj.terminalType + "<br/>";
+                        }
+                        if (jsonObj.producerId) {
+                            content += "制造商ID:" + jsonObj.producerId + "<br/>";
+                        }
+                        if (jsonObj.terminalModelType) {
+                            content += "终端型号:" + jsonObj.terminalModelType + "<br/>";
+                        }
+                        if (jsonObj.terminalCode) {
+                            content += "终端ID:" + jsonObj.terminalCode + "<br/>";
+                        }
+                        if (jsonObj.iccid) {
+                            content += "终端SIM卡ICCID:" + jsonObj.iccid + "<br/>";
+                        }
+                        if (jsonObj.hardwareVersion) {
+                            content += "终端硬件版本号:" + jsonObj.hardwareVersion + "<br/>";
+                        }
+                        if (jsonObj.firmwareVersion) {
+                            content += "终端固件版本号:" + jsonObj.firmwareVersion + "<br/>";
+                        }
+                        if (jsonObj.gnssModelProperty) {
+                            content += "GNSS模块属性:" + jsonObj.gnssModelProperty + "<br/>";
+                        }
+                        if (jsonObj.commModelProperty) {
+                            content += "通信模块属性:" + jsonObj.commModelProperty + "<br/>";
+                        }
+                        content += "</div>";
+                        layer.open({
+                            type: 1
+                            , title: '查询终端属性应答'
+                            , area: ['40%', '70%']
+                            , content: content
+                            , shade: 0
+                        });
+                    } else {
+                        layer.msg("查询失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("查询失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>

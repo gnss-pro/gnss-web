@@ -1,0 +1,75 @@
+
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">TCP消息应答超时时间(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0002" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">终端心跳发送间隔(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0001" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">TCP消息重传次数</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0003" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">SMS消息应答超时间(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0006" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">UDP消息应答超时时间(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0004" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">SMS消息重传次数</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0007" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">UDP消息重传次数</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0005" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        layui.use('form', function(){
+            var form = layui.form;
+            var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+            form.on('submit(paramForm)', function(data){
+                var paramsEntity = {
+                    items: data.field
+                };
+                sendJt808Command(url, paramsEntity, 5000);
+                return false;
+            });
+        });
+    </script>

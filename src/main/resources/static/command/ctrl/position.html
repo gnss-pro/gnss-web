@@ -1,0 +1,58 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'util'], function () {
+        var form = layui.form;
+        var util = layui.util;
+        var url = "/api/v1/commands/jt808/basic/sendCommand8201";
+        var paramEntity = {};
+        form.on('submit(paramForm)', function (data) {
+            sendJt808Command(url, paramEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        layer.msg("发送成功", {icon: 1});
+                        var jsonObj = eval('(' + ret.data.responseParams + ')');
+                        var location = jsonObj.location;
+                        //报警标志格式化十六进制(4字节)
+                        var alarmFlagHex = location.alarmFlag.toString(16).toUpperCase();
+                        while (alarmFlagHex.length < 8) {
+                            alarmFlagHex = "0" + alarmFlagHex;
+                        }
+                        //状态格式化十六进制(4字节)
+                        var statusHex = location.status.toString(16).toUpperCase();
+                        while (statusHex.length < 8) {
+                            statusHex = "0" + statusHex;
+                        }
+                        var content = '<div style="padding: 20px 40px;">'
+                        content += "报警标志:0x" + alarmFlagHex + "<br/>";
+                        content += "状态:0x" + statusHex + "<br/>";
+                        content += "纬度:" + location.lat + "<br/>";
+                        content += "经度:" + location.lon + "<br/>";
+                        content += "高程:" + location.altitude + "<br/>";
+                        content += "速度:" + location.speed + "<br/>";
+                        content += "方向:" + location.direction + "<br/>";
+                        content += "时间:" + util.toDateString(location.time, 'yyyy-MM-dd HH:mm:ss') + "<br/>";
+                        content += "</div>";
+                        layer.open({
+                            type: 1
+                            , title: '位置详情'
+                            , area: ['40%', '65%']
+                            , content: content
+                            , shade: 0
+                        });
+                    } else {
+                        layer.msg("发送失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("发送失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>

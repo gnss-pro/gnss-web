@@ -1,0 +1,148 @@
+<div class="site-text" style="margin: 5%; display: none" id="window" target="menuConfig">
+    <form class="layui-form" id="configInfo" method="post" lay-filter="configInfo">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">信息类型</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="infoType" id="infoType" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">信息名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="infoContent" id="infoContent" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn layui-btn-normal" id="add">新增</button>
+    <button class="layui-btn layui-btn-normal" id="send">发送指令</button>
+</div>
+<div class="layui-inline">
+    <label class="layui-form-label">设置类型</label>
+    <div class="layui-input-inline">
+        <select name="configType" id="configType">
+            <option value="0">删除终端全部信息项</option>
+            <option value="1">更新菜单</option>
+            <option value="2">追加菜单</option>
+            <option value="3">修改菜单</option>
+        </select>
+    </div>
+</div>
+<table class="layui-hide" id="menuConfig" lay-filter="menuConfig"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+</body>
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        form.render();
+        table.render({
+            id: 'menuConfig'
+            , elem: '#menuConfig'
+            , height: 500
+            , title: '信息点播菜单设置'
+            , cols: [[
+                {field: 'infoType', title: '信息类型', width: 200}
+                , {field: 'infoContent', title: '信息名称', width: 200}
+                , {field: 'operation', title: '操作', width: 200, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //获取按钮
+        table.on('tool(menuConfig)', function (obj) {
+            //删除
+            if (obj.event === 'del') {
+                var infoType = obj.data.infoType;
+                var tableData = table.cache["menuConfig"];
+                //从表格数组中删除
+                tableData.forEach(item => {
+                    if (item.infoType == infoType) {
+                        var i = tableData.indexOf(item);
+                        tableData.splice(i, 1);
+                        table.reload("menuConfig", {
+                            data: tableData
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#add").click(function () {
+            layer.open({
+                type: 1,
+                title: "新增",
+                area: ['60%', '50%'],
+                btn: ['确定', '取消'],
+                content: $("#window"),
+                success: function (layero, index) {
+                    //重置form
+                    $("#configInfo")[0].reset();
+                }
+                , yes: function (index, layero) {
+                    var infoType = $('#infoType').val();
+                    if (!infoType) {
+                        layer.msg("请输入信息类型", {icon: 5});
+                        return false;
+                    }
+                    var infoContent = $('#infoContent').val();
+                    if (!infoContent) {
+                        layer.msg("请输入信息名称", {icon: 5});
+                        return false;
+                    }
+
+                    var tableData = table.cache["menuConfig"];
+                    //检查表格是否存在此信息类型
+                    let isFind = tableData.some(config => config.infoType == infoType);
+                    if (isFind) {
+                        layer.msg("信息类型已存在,请重新输入信息类型", {icon: 5});
+                        return false;
+                    }
+
+                    //添加一行
+                    var formData = {
+                        infoType: infoType
+                        , infoContent: infoContent
+                    };
+                    tableData.push(formData);
+                    //重新刷新表格
+                    table.reload("menuConfig", {
+                        data: tableData
+                    });
+                    //关闭弹出层
+                    layer.close(index);
+                }
+            });
+        });
+
+        $("#send").click(function () {
+            var tableData = table.cache["menuConfig"];
+            var configType = $("#configType").val();
+            var url = "/api/v1/commands/jt808/basic/sendCommand8303";
+            //删除终端所有事件,不带后续字节
+            if (configType == 0) {
+                sendJt808Command(url, {configType: configType}, 5000);
+                return false;
+            }
+
+            if (tableData.length > 0) {
+                var paramsEntity = {
+                    configType: configType,
+                    itemList: tableData
+                };
+                //发送JT808指令
+                sendJt808Command(url, paramsEntity, 5000);
+            } else {
+                layer.msg("请新增信息项", {icon: 5});
+            }
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,110 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <select id="paramAlarmType">
+                <option value="0050">报警屏蔽字</option>
+                <option value="0051">报警发送文本SMS开关</option>
+                <option value="0052">报警拍摄开关</option>
+                <option value="0053">报警拍摄存储标志</option>
+                <option value="0054">关键标志</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="紧急报警" lay-skin="primary" value="0">
+            <input type="checkbox" name="alarmBit" title="超速报警" lay-skin="primary" value="1">
+            <input type="checkbox" name="alarmBit" title="疲劳驾驶" lay-skin="primary" value="2">
+            <input type="checkbox" name="alarmBit" title="危险驾驶行为" lay-skin="primary" value="3">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="GNSS模块发生故障" lay-skin="primary" value="4">
+            <input type="checkbox" name="alarmBit" title="GNSS天线未接或被剪断" lay-skin="primary" value="5">
+            <input type="checkbox" name="alarmBit" title="GNSS天线短路" lay-skin="primary" value="6">
+            <input type="checkbox" name="alarmBit" title="终端主电源欠压" lay-skin="primary" value="7">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="终端主电源掉电" lay-skin="primary" value="8">
+            <input type="checkbox" name="alarmBit" title="终端LCD或显示器故障" lay-skin="primary" value="9">
+            <input type="checkbox" name="alarmBit" title="TTS模块故障" lay-skin="primary" value="10">
+            <input type="checkbox" name="alarmBit" title="摄像头故障" lay-skin="primary" value="11">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="道路运输证IC卡模块故障" lay-skin="primary" value="12">
+            <input type="checkbox" name="alarmBit" title="超速预警" lay-skin="primary" value="13">
+            <input type="checkbox" name="alarmBit" title="疲劳驾驶预警" lay-skin="primary" value="14">
+            <input type="checkbox" name="alarmBit" title="违规行驶报警" lay-skin="primary" value="15">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="胎压预警" lay-skin="primary" value="16">
+            <input type="checkbox" name="alarmBit" title="右转盲区异常" lay-skin="primary" value="17">
+            <input type="checkbox" name="alarmBit" title="当天累计驾驶超时" lay-skin="primary" value="18">
+            <input type="checkbox" name="alarmBit" title="超时停车" lay-skin="primary" value="19">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="进出区域" lay-skin="primary" value="20">
+            <input type="checkbox" name="alarmBit" title="进出路线" lay-skin="primary" value="21">
+            <input type="checkbox" name="alarmBit" title="路段行驶时间不足/过长" lay-skin="primary" value="22">
+            <input type="checkbox" name="alarmBit" title="路线偏离报警" lay-skin="primary" value="23">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="车辆VSS故障" lay-skin="primary" value="24">
+            <input type="checkbox" name="alarmBit" title="车辆油量异常" lay-skin="primary" value="25">
+            <input type="checkbox" name="alarmBit" title="车辆被盗(通过车辆防盗器)" lay-skin="primary" value="26">
+            <input type="checkbox" name="alarmBit" title="车辆非法点火" lay-skin="primary" value="27">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="车辆非法位移" lay-skin="primary" value="28">
+            <input type="checkbox" name="alarmBit" title="碰撞侧翻报警" lay-skin="primary" value="29">
+            <input type="checkbox" name="alarmBit" title="侧翻预警" lay-skin="primary" value="30">
+            <input type="checkbox" name="alarmBit" title="非法开门报警" lay-skin="primary" value="31">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = {
+            };
+
+            //报警开关
+            var chkArr = [];
+            $('input[name="alarmBit"]:checked').each(function () {
+                chkArr.push($(this).val());
+            });
+            if (chkArr.length > 0) {
+                var paramAlarmType = $("#paramAlarmType").val();
+                var alarmSelector = {};
+                alarmSelector[paramAlarmType] = chkArr;
+                paramsEntity.alarmSelector = alarmSelector;
+            }
+
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

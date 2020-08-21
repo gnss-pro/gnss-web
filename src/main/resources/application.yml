@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: web-server
+  profiles:
+    active: dev
+
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+  #全局缓存
+  cache:
+    cache-names: global_config
+    type: caffeine
+    caffeine:
+      spec: initialCapacity=50,maximumSize=100000
+
+server:
+  servlet:
+    context-path: /gnss-web
+
+gnss:
+  #指令下发API包
+  downCommand:
+    scanPrefix: com.gnss.web.command.api
+  #多媒体文件存储目录
+  media:
+    path: data/media_file
+
+swagger:
+  enabled: true
+  title: 北斗/GPS物联网监控平台
+  description: GNSS Web
+  version: 1.0.5.RELEASE
+  contact:
+    name: 星智云
+    url: http://www.gps-pro.cn
+    wechat: 17158638841
+  docket:
+    command:
+      title: 指令操作
+      basePackage: com.gnss.web.command
+    info:
+      title: 资料维护
+      basePackage: com.gnss.web.info
+    global:
+      title: 全局接口
+      basePackage: com.gnss.web.global
+    terminal:
+      title: 终端上传数据
+      basePackage: com.gnss.web.terminal
+    log:
+      title: JT808日志
+      basePackage: com.gnss.web.log

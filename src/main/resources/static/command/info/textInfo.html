@@ -1,0 +1,45 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="flags" title="紧急" lay-skin="primary" value="0">
+            <input type="checkbox" name="flags" title="终端显示器显示" lay-skin="primary" value="2">
+            <input type="checkbox" name="flags" title="终端TTS播读" lay-skin="primary" value="3">
+            <input type="checkbox" name="flags" title="广告屏显示" lay-skin="primary" value="4">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">文本信息</label>
+            <div class="layui-input-inline">
+                <input type="text" name="textMsg" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8300";
+        form.on('submit(paramForm)', function (data) {
+            //已勾选的标志
+            var flagArr = [];
+            $('input[name="flags"]:checked').each(function () {
+                flagArr.push($(this).val());
+            });
+            var paramsEntity = {
+                flags: flagArr,
+                textMsg: data.field["textMsg"]
+            }
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

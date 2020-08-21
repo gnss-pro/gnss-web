@@ -1,0 +1,156 @@
+
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">主服务器APN</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0010" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">备份服务器APN</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0014" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">主服务器无线通信拨号用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0011" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">备份服务器无线通信拨号用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0015" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">主服务器无线通信拨号密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0012" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">备份服务器无线通信拨号密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0016" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">主服务器地址,IP或域名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0013" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">备份服务器地址,IP或域名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0017" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">服务器TCP端口</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0018" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">服务器UDP端口</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0019" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">道路运输证IC卡认证主服务器IP地址或域名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="001A" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">道路运输证IC卡认证备份服务器IP地址或域名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="001D" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">道路运输证IC卡认证主服务器TCP端口</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="001B" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">道路运输证IC卡认证主服务器UDP端口</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="001C" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">从服务器APN</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0023" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">从服务器无线通信拨号用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0024" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">从服务器无线通信拨号密码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0025" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">从服务器备份地址,IP或域名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0026" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        layui.use('form', function(){
+            var form = layui.form;
+            var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+            form.on('submit(paramForm)', function(data){
+                var paramsEntity = {
+                    items: data.field
+                };
+                sendJt808Command(url, paramsEntity, 5000);
+                return false;
+            });
+        });
+    </script>

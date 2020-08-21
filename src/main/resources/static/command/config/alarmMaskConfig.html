@@ -1,0 +1,44 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="视频信号丢失报警" lay-skin="primary" value="0">
+            <input type="checkbox" name="alarmBit" title="视频信号遮挡报警" lay-skin="primary" value="1">
+            <input type="checkbox" name="alarmBit" title="存储单元故障报警" lay-skin="primary" value="2">
+            <input type="checkbox" name="alarmBit" title="其他视频设备故障报警" lay-skin="primary" value="3">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="alarmBit" title="客车超员报警" lay-skin="primary" value="4">
+            <input type="checkbox" name="alarmBit" title="异常驾驶行为报警" lay-skin="primary" value="5">
+            <input type="checkbox" name="alarmBit" title="殊报警录像达到存储阈值报警" lay-skin="primary" value="6">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+
+        var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+        form.on('submit(paramForm)', function (data) {
+            //已勾选的报警屏蔽位
+            var chkArr = [];
+            $('input[name="alarmBit"]:checked').each(function () {
+                chkArr.push($(this).val());
+            });
+
+            var paramsEntity = {
+                param007A: chkArr,
+            };
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

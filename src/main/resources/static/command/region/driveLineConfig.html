@@ -1,0 +1,303 @@
+<div class="site-text" style="margin: 5%; display: none" id="window" target="pointConfig">
+    <form class="layui-form" id="pointInfo" method="post" lay-filter="pointInfo">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">拐点纬度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="lat" id="lat" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">拐点经度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="lng" id="lng" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">路段宽度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="width" id="width" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-form-mid">
+                <input type="checkbox" name="roadSectionPropBits" title="行驶时间" lay-skin="primary" value="0">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">路段行驶过长阈值</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="driveMaxThreshold" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">路段行驶不足阈值</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="driveMinThreshold" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-form-mid">
+                <input type="checkbox" name="roadSectionPropBits" title="限速" lay-skin="primary" value="1">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">路段最高速度</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="maxSpeed" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">路段超速持续时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="overspeedDuration" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">路段夜间最高速度(km/h)</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="maxSpeedNight" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<form class="layui-form" id="configInfo" method="post" lay-filter="configInfo">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">路线ID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="driveLineId" id="driveLineId" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">路线名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="driveLineName" id="driveLineName" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-form-mid">
+            <input type="checkbox" name="linePropBits" title="时间" lay-skin="primary" value="0">
+        </div>
+        <div class="layui-input-inline" style="width: 150px;">
+            <input type="text" id="startTime" placeholder="开始时间" class="layui-input">
+        </div>
+        <div class="layui-form-mid">-</div>
+        <div class="layui-input-inline" style="width: 150px;">
+            <input type="text" id="endTime" placeholder="结束时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="linePropBits" title="进路线报警给驾驶员" lay-skin="primary" value="2">
+            <input type="checkbox" name="linePropBits" title="进路线报警给平台" lay-skin="primary" value="3">
+            <input type="checkbox" name="linePropBits" title="出路线报警给驾驶员" lay-skin="primary" value="4">
+            <input type="checkbox" name="linePropBits" title="出路线报警给平台" lay-skin="primary" value="5">
+        </div>
+    </div>
+</form>
+
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn layui-btn-normal" id="add">新增拐点项</button>
+    <button class="layui-btn layui-btn-normal" id="send">发送设置指令</button>
+    <button class="layui-btn layui-btn-normal" id="delete">删除路线</button>
+</div>
+
+<table class="layui-hide" id="driveLineConfig" lay-filter="driveLineConfig"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+</body>
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#startTime'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+    });
+
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        form.render();
+        table.render({
+            id: 'driveLineConfig'
+            , elem: '#driveLineConfig'
+            , height: 500
+            , title: '设置路线'
+            , cols: [[
+                {field: 'roadSectionPropBits', title: '路段属性位', hide: true}
+                , {field: 'lat', title: '拐点纬度', width: 120}
+                , {field: 'lng', title: '拐点经度', width: 120}
+                , {field: 'width', title: '路段宽度', width: 120}
+                , {field: 'driveMaxThreshold', title: '路段行驶过长阈值', width: 150}
+                , {field: 'driveMinThreshold', title: '路段行驶不足阈值', width: 150}
+                , {field: 'maxSpeed', title: '路段最高速度', width: 150}
+                , {field: 'overspeedDuration', title: '路段超速持续时间', width: 150}
+                , {field: 'maxSpeedNight', title: '路段夜间最高速度', width: 150}
+                , {field: 'operation', title: '操作', width: 200, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //获取按钮
+        table.on('tool(driveLineConfig)', function (obj) {
+            //删除
+            if (obj.event === 'del') {
+                var contact = obj.data.contact;
+                var tableData = table.cache["driveLineConfig"];
+                //从表格数组中删除
+                tableData.forEach(item => {
+                    if (item.contact == contact) {
+                        var i = tableData.indexOf(item);
+                        tableData.splice(i, 1);
+                        table.reload("driveLineConfig", {
+                            data: tableData
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#add").click(function () {
+            layer.open({
+                type: 1,
+                title: "新增路线拐点",
+                area: ['70%', '50%'],
+                btn: ['确定', '取消'],
+                content: $("#window"),
+                success: function (layero, index) {
+                    //重置form
+                    $("#pointInfo")[0].reset();
+                }
+                , yes: function (index, layero) {
+                    var lat = $('#lat').val();
+                    if (!lat) {
+                        layer.msg("请输入拐点纬度", {icon: 5});
+                        return false;
+                    }
+
+                    var lng = $('#lng').val();
+                    if (!lng) {
+                        layer.msg("请输入拐点经度", {icon: 5});
+                        return false;
+                    }
+
+                    var width = $('#width').val();
+                    if (!width) {
+                        layer.msg("请输入路段宽度", {icon: 5});
+                        return false;
+                    }
+
+                    //已勾选的路段属性
+                    var chkArr = [];
+                    $('input[name="roadSectionPropBits"]:checked').each(function () {
+                        chkArr.push($(this).val());
+                    });
+
+                    //添加一行
+                    var formData = {
+                        roadSectionPropBits: chkArr
+                        , lat: lat
+                        , lng: lng
+                        , width: width
+                        , driveMaxThreshold: $('#driveMaxThreshold').val()
+                        , driveMinThreshold: $('#driveMinThreshold').val()
+                        , maxSpeed: $('#maxSpeed').val()
+                        , overspeedDuration: $('#overspeedDuration').val()
+                        , maxSpeedNight: $('#maxSpeedNight').val()
+                    };
+                    var tableData = table.cache["driveLineConfig"];
+                    tableData.push(formData);
+                    //重新刷新表格
+                    table.reload("driveLineConfig", {
+                        data: tableData
+                    });
+                    //关闭弹出层
+                    layer.close(index);
+                }
+            });
+        });
+
+        $("#send").click(function () {
+            var driveLineId = $("#driveLineId").val();
+            if (!driveLineId) {
+                layer.msg("请输入路线ID", {icon: 5});
+                return;
+            }
+
+            //已勾选的路线属性
+            var chkArr = [];
+            $('input[name="linePropBits"]:checked').each(function () {
+                chkArr.push($(this).val());
+            });
+
+            //开始时间和结束时间
+            var startTime = $('#startTime').val();
+            var startTimeItems;
+            if (startTime) {
+                var timeArr = startTime.split(" ");
+                startTimeItems = timeArr[0].split("-").concat(timeArr[1].split(":"));
+                startTimeItems[0] = startTimeItems[0].substr(2);
+            }
+            var endTime = $('#endTime').val();
+            var endTimeItems;
+            if (endTime) {
+                var timeArr = endTime.split(" ");
+                endTimeItems = timeArr[0].split("-").concat(timeArr[1].split(":"));
+                endTimeItems[0] = endTimeItems[0].substr(2);
+            }
+
+            var tableData = table.cache["driveLineConfig"];
+            var url = "/api/v1/commands/jt808/basic/sendCommand8606";
+            if (tableData.length > 0) {
+                var paramsEntity = {
+                    driveLineId: driveLineId
+                    , driveLineName: $('#driveLineName').val()
+                    , linePropBits: chkArr
+                    , startTimeItems: startTimeItems
+                    , endTimeItems: endTimeItems
+                    , points: tableData
+                };
+                //发送JT808指令
+                sendJt808Command(url, paramsEntity, 5000);
+            } else {
+                layer.msg("请新增拐点项", {icon: 5});
+            }
+        });
+
+        $("#delete").click(function () {
+            var driveLineId = $("#driveLineId").val();
+            if (!driveLineId) {
+                layer.msg("请输入路线ID", {icon: 5});
+                return;
+            }
+            var url = "/api/v1/commands/jt808/basic/sendCommand8607";
+            var paramsEntity = {
+                lineIdList: [driveLineId]
+            };
+            //发送JT808指令
+            sendJt808Command(url, paramsEntity, 5000);
+        });
+    });
+</script>
+</html>

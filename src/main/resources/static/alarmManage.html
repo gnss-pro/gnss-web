@@ -1,0 +1,194 @@
+<link rel="stylesheet" href="layui/css/layui.css" media="all">
+<script src="jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <input type="text" name="nameLike" id="nameLike" placeholder="请输入车牌号/SIM卡号" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <input class="layui-input" placeholder="开始时间" id="startTime">
+        </div>
+        <div class="layui-input-inline">
+            <input class="layui-input" placeholder="结束时间" id="endTime">
+        </div>
+        <button class="layui-btn layui-btn-normal" id="query" lay-submit lay-filter="query">查询</button>
+        <button class="layui-btn layui-btn-danger" id="batchDelete" lay-submit lay-filter="batchDelete">批量删除</button>
+    </div>
+</form>
+
+<table class="layui-hide" id="alarmData" lay-filter="alarmData"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+
+<script>
+    var appName = "/gnss-web";
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#startTime'
+            , lang: 'cn'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime'
+            , lang: 'cn'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , max: 1
+            , theme: '#1E9FFF'
+        });
+    });
+
+    layui.use(['table', 'form', 'util'], function () {
+        var form = layui.form;
+        form.render();
+
+        var table = layui.table;
+        //展示已知数据
+        table.render({
+            id: 'alarmData'
+            , elem: '#alarmData'
+            , method: 'get'
+            , url: appName + "/api/v1/terminal/alarms"
+            , page: {
+                curr: '0',
+                limit: 10
+            }
+            , request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                , limitName: 'size' //每页数据量的参数名，默认：limit
+            }
+            , startByZero: true
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.data.totalElements, //解析数据长度
+                    "data": res.data.content //解析数据列表
+                };
+            }
+            , cols: [[ //标题栏
+                {field: 'alarmId', hide: true}
+                , {type: 'checkbox', width: 50}
+                , {field: 'vehicleNum', title: '车牌号', width: 130}
+                , {field: 'plateColor', title: '车牌颜色', width: 100}
+                , {field: 'simNum', title: '终端手机号', width: 120}
+                , {field: 'alarmSource', title: '报警来源', width: 100}
+                , {field: 'alarmType', title: '报警类型', width: 150}
+                , {field: 'alarmDuration', title: '报警时长', width: 120}
+                , {field: 'startTime', title: '开始时间', width: 180}
+                , {field: 'endTime', title: '结束时间', width: 180}
+                , {field: 'startLocation', title: '开始位置', width: 150}
+                , {field: 'endLocation', title: '结束位置', width: 150}
+                , {field: 'isHandle', title: '处理情况', width: 100}
+                , {field: 'handleUserName', title: '处理用户', width: 100}
+                , {field: 'operation', title: '操作', width: 200, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //表格按钮点击事件
+        table.on('tool(alarmData)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('确定删除吗？', {title: '删除'}, function (index) {
+                    batchDelete([data.alarmId]);
+                });
+            }
+        });
+
+        form.on('submit(query)', function (data) {
+            var timeObj = getQueryTime();
+            if (!timeObj) {
+                return false;
+            }
+            table.reload("alarmData", {
+                method: 'get'
+                , where: {
+                    nameLike: data.field['nameLike']
+                    , startTime: timeObj.startTime
+                    , endTime: timeObj.endTime
+                }
+                , page: {
+                    curr: '0' // 重载后从第一页开始
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(batchDelete)', function (data) {
+            var checkStatus = layui.table.checkStatus('alarmData').data;
+            if (!checkStatus.length) {
+                layer.msg("请勾选需要删除的报警", {icon: 5});
+                return false;
+            }
+
+            layer.confirm('确定删除吗？', {title: '删除'}, function (index) {
+                var alarmIdArr = checkStatus.map(item => {
+                    return item.alarmId;
+                });
+                batchDelete(alarmIdArr);
+            });
+            return false;
+        });
+
+        function getQueryTime() {
+            var startTimeStr = $("#startTime").val();
+            var endTimeStr = $("#endTime").val();
+            var startTime = null;
+            var endTime = null;
+            if (startTimeStr) {
+                startTime = new Date(startTimeStr).getTime();
+            }
+            if (endTimeStr) {
+                endTime = new Date(endTimeStr).getTime();
+            }
+            if (startTime && endTime && startTime > endTime) {
+                layer.msg("开始时间不能大于结束时间", {icon: 5});
+                return null;
+            }
+            return {startTime: startTime, endTime: endTime};
+        }
+
+        function batchDelete(alarmIdList) {
+            var timeObj = getQueryTime();
+            if (!timeObj) {
+                return false;
+            }
+            $.ajax({
+                type: "DELETE",
+                dataType: 'json',
+                contentType: "application/json;charset=UTF-8",
+                url: appName + "/api/v1/terminal/alarms",
+                data: JSON.stringify(alarmIdList),
+                success: function (ret) {
+                    if (ret.code == 0) {
+                        layer.msg("删除报警成功", {icon: 1});
+                        table.reload("alarmData", {
+                            method: 'get'
+                            , where: {
+                                //添加查询的参数
+                                nameLike: $("#nameLike").val()
+                                , startTime: timeObj.startTime
+                                , endTime: timeObj.endTime
+                            }
+                            , page: {
+                                //重载后从第一页开始
+                                curr: '0'
+                            }
+                        });
+                    } else {
+                        layer.msg("删除报警失败:" + ret.msg, {icon: 5});
+                    }
+                }
+            });
+        }
+    });
+</script>

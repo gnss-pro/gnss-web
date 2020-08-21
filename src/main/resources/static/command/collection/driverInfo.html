@@ -1,0 +1,63 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">上报驾驶员身份信息请求</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'util'], function () {
+        var form = layui.form;
+        var util = layui.util;
+        var url = "/api/v1/commands/jt808/basic/sendCommand8702";
+        var paramEntity = {};
+        form.on('submit(paramForm)', function (data) {
+            sendJt808Command(url, paramEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        layer.msg("发送成功", {icon: 1});
+                        var jsonObj = eval('(' + ret.data.responseParams + ')');
+                        var content = '<div style="padding: 20px 40px;">'
+                        if (jsonObj.status) {
+                            content += "状态:" + jsonObj.status + "<br/>";
+                        }
+                        if (jsonObj.time) {
+                            content += "时间:" + util.toDateString(jsonObj.time, 'yyyy-MM-dd HH:mm:ss') + "<br/>";
+                        }
+                        if (jsonObj.cardReadResult) {
+                            content += "IC卡读取结果:" + jsonObj.cardReadResult + "<br/>";
+                        }
+                        if (jsonObj.driverName) {
+                            content += "驾驶员姓名:" + jsonObj.driverName + "<br/>";
+                        }
+                        if (jsonObj.licence) {
+                            content += "从业资格证编码:" + jsonObj.licence + "<br/>";
+                        }
+                        if (jsonObj.orgName) {
+                            content += "发证机构名称:" + jsonObj.orgName + "<br/>";
+                        }
+                        if (jsonObj.validDate) {
+                            content += "证件有效期:" + jsonObj.validDate + "<br/>";
+                        }
+                        if (jsonObj.driverId) {
+                            content += "驾驶员身份证号:" + jsonObj.driverId + "<br/>";
+                        }
+                        content += "</div>";
+                        layer.open({
+                            type: 1
+                            , title: '驾驶员信息'
+                            , area: ['30%', '50%']
+                            , content: content
+                            , shade: 0
+                        });
+                    } else {
+                        layer.msg("发送失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("发送失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>

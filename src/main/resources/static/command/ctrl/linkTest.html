@@ -1,0 +1,19 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">链路检测</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8204";
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = {};
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

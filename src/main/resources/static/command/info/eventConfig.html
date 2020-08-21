@@ -1,0 +1,156 @@
+<div class="site-text" style="margin: 5%; display: none" id="window" target="eventConfig">
+    <form class="layui-form" id="configInfo" method="post" lay-filter="configInfo">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">事件ID</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="eventId" id="eventId" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">事件内容</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="eventContent" id="eventContent" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn layui-btn-normal" id="add">新增</button>
+    <button class="layui-btn layui-btn-normal" id="send">发送指令</button>
+</div>
+<div class="layui-inline">
+    <label class="layui-form-label">设置类型</label>
+    <div class="layui-input-inline">
+        <select name="configType" id="configType">
+            <option value="0">删除终端所有事件</option>
+            <option value="1">先删除再更新事件</option>
+            <option value="2">追加事件</option>
+            <option value="3">修改事件</option>
+            <option value="4">删除指定事件</option>
+        </select>
+    </div>
+</div>
+<table class="layui-hide" id="eventConfig" lay-filter="eventConfig"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+</body>
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        form.render();
+        table.render({
+            id: 'eventConfig'
+            , elem: '#eventConfig'
+            , height: 500
+            , title: '事件设置'
+            , cols: [[
+                {field: 'eventId', title: '事件ID', width: 200}
+                , {field: 'eventContent', title: '事件内容', width: 200}
+                , {field: 'operation', title: '操作', width: 200, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //获取按钮
+        table.on('tool(eventConfig)', function (obj) {
+            //删除
+            if (obj.event === 'del') {
+                var eventId = obj.data.eventId;
+                var tableData = table.cache["eventConfig"];
+                //从表格数组中删除
+                tableData.forEach(item => {
+                    if (item.eventId == eventId) {
+                        var i = tableData.indexOf(item);
+                        tableData.splice(i, 1);
+                        table.reload("eventConfig", {
+                            data: tableData
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#add").click(function () {
+            layer.open({
+                type: 1,
+                title: "新增",
+                area: ['60%', '50%'],
+                btn: ['确定', '取消'],
+                content: $("#window"),
+                success: function (layero, index) {
+                    //重置form
+                    $("#configInfo")[0].reset();
+                }
+                , yes: function (index, layero) {
+                    var eventId = $('#eventId').val();
+                    if (!eventId) {
+                        layer.msg("请输入事件ID", {icon: 5});
+                        return false;
+                    }
+                    var eventContent = $('#eventContent').val();
+                    if (!eventContent) {
+                        layer.msg("请输入事件内容", {icon: 5});
+                        return false;
+                    }
+
+                    var tableData = table.cache["eventConfig"];
+                    //检查表格是否存在此事件ID
+                    let isFind = tableData.some(config => config.eventId == eventId);
+                    if (isFind) {
+                        layer.msg("事件ID已存在,请重新输入事件ID", {icon: 5});
+                        return false;
+                    }
+
+                    //添加一行
+                    var formData = {
+                        eventId: eventId
+                        , eventContent: eventContent
+                    };
+                    tableData.push(formData);
+                    //重新刷新表格
+                    table.reload("eventConfig", {
+                        data: tableData
+                    });
+                    //关闭弹出层
+                    layer.close(index);
+                }
+            });
+        });
+
+        $("#send").click(function () {
+            var tableData = table.cache["eventConfig"];
+            var configType = $("#configType").val();
+            var url = "/api/v1/commands/jt808/basic/sendCommand8301";
+            //删除终端所有事件,不带后续字节
+            if (configType == 0) {
+                sendJt808Command(url, {configType: configType}, 5000);
+                return false;
+            }
+
+            if (tableData.length > 0) {
+                var paramsEntity = {
+                    configType: configType,
+                    itemList: tableData
+                };
+                //删除指定的事件,事件项无需带事件内容
+                if (configType == 4) {
+                    var itemList = tableData.map(item => {
+                        return {eventId: item.eventId};
+                    });
+                    paramsEntity.itemList = itemList;
+                }
+                //发送JT808指令
+                sendJt808Command(url, paramsEntity, 5000);
+            } else {
+                layer.msg("请新增事件", {icon: 5});
+            }
+        });
+    });
+</script>
+</html>

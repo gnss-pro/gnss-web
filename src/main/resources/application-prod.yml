@@ -1,0 +1,85 @@
+server:
+  port: 9999
+
+gnss:
+  #中间件地址(Redis,RabbitMQ所在服务器IP)
+  middleware-ip: 127.0.0.1
+  #公网IP
+  public-ip: 106.53.28.63
+  #go流媒体服务器配置
+  goMediaServer:
+    server-name: GO流媒体服务器
+    wanIp: 106.53.28.63
+    lanIp: 127.0.0.1
+    wsFlvPort: 8000
+    httpFlvPort: 8000
+    rtmpPort: 1935
+    servers:
+      MAIN_VIDEO_AUDIO:
+        tcpPort: 6680
+      VIDEO_AUDIO:
+        tcpPort: 6681
+      VIDEO:
+        tcpPort: 6681
+      TALK:
+        tcpPort: 6682
+      LISTEN:
+        tcpPort: 6683
+      CENTER_BROADCAST:
+        tcpPort: 6684
+      TRANSFER:
+        tcpPort: 6685
+      PLAYBACK:
+        tcpPort: 6686
+  #线程池大小
+  threadPool:
+    size: 10
+  #RabbitMQ消息序列化(proto和json)
+  message:
+    converter: proto
+  #下行指令过期时间(秒)
+  downCommand:
+    expireTime: 300
+  test:
+    #压力测试车辆数
+    vehicleCount: 20000
+    #压力测试终端手机号开始号码，按照车辆数递增
+    phoneNumberStart: 13100000000
+    #车牌号，1:蓝色，2:黄色
+    vehiclePlateColor: 2
+
+spring:
+  redis:
+    host: ${gnss.middleware-ip}
+    port: 6380
+    password: gps-pro@cn
+
+  rabbitmq:
+    host: ${gnss.middleware-ip}
+    port: 5673
+    username: guest
+    password: guest
+    publisher-returns: true
+
+  datasource:
+    url: jdbc:h2:file:./gnss_web;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    platform: h2
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql_comments: true
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /console
+      settings:
+        trace: false
+        web-allow-others: false

@@ -1,0 +1,88 @@
+/***************************************************************************************************************************************************************
+								"GLASSY BLUE" dhtmlxGrid Skin
+***************************************************************************************************************************************************************/
+
+/*glassy_blue*/
+div.gridbox_dhx_black {
+  border:1px solid  #929AA0;
+  color:black;
+}
+div.gridbox_dhx_black .xhdr{
+	background-image:url(../imgs/dhxgrid_dhx_black/hdr.png);
+}
+div.gridbox_dhx_black table.hdr tr{
+	background-image:url(../imgs/dhxgrid_dhx_black/hdr.png);
+}
+
+div.gridbox_dhx_black table.hdr td {
+	border-left:0px;
+	border-top:0px;
+	border-right:1px solid #545454;
+	border-bottom:1px solid #545454;
+	background-color:transparent;
+	font-family:Arial;
+	font-size:12px;
+	color:white;
+	vertical-align:top;
+	text-align:left;
+}
+div.gridbox_dhx_black table.hdr td div.hdrcell{
+	xwidth:auto;
+	padding-left:4px;
+}
+div.gridbox_dhx_black table.hdr .filter{
+	padding-left:0px !important;
+	text-align:center;
+	-moz-user-select:text;
+}
+div.gridbox_dhx_black table.obj td {
+	border-width: 0px 1px 0px 0px;
+	border-right: 1px solid #545454;
+	font-family:Arial;
+	font-size:11px;
+	padding-right:6px;
+	padding-left:6px;
+}
+div.gridbox_dhx_black table.obj{
+	border-bottom: 1px solid #D6D6D6;
+}
+div.gridbox_dhx_black table.row20px tr td {
+	padding-right:4px;
+	padding-left:4px;
+}
+div.gridbox_dhx_black .dhx_combo_edit{
+  	font-family:Arial;
+	font-size:11px;
+}
+div.gridbox_dhx_black table.obj tr.rowselected td{
+	background-color:#CCCCCC;
+	color:black;
+	}
+div.gridbox_dhx_black table.obj tr.rowselected td.cellselected, div.gridbox_dhx_black table.obj td.cellselected {
+	background-color:#CCCCCC;
+	}
+div.gridbox_dhx_black .odd_dhx_black{
+	background-color:#e8e8e8;
+}
+div.gridbox_dhx_black div.ftr{
+	bottom:0px;
+	background-color:#F5FAFF;
+	border-top:1px solid #5F9BCA;
+}
+div.gridbox_dhx_black div.ftr td {
+	empty-cells:show;
+	background-image:url(../imgs/dhxgrid_dhx_black/ftr.png);
+	font-size:12px;
+	padding:5px 0px;
+	font-family:Arial;
+	font-style:normal;
+	border-right:1px solid #C6DBEC;
+	border-top:0px;
+	border-bottom:1px solid #C6DBEC;
+}
+div.gridbox_dhx_black .ftr td div.hdrcell{
+	xwidth:auto;
+	padding-left:4px;
+	font-weight:bold;
+}
+

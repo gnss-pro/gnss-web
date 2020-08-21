@@ -1,0 +1,209 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">唤醒条件</label>
+        <div class="layui-inline">
+            <input type="checkbox" name="conditionType" title="紧急报警" lay-skin="primary" value="0">
+            <input type="checkbox" name="conditionType" title="碰撞侧翻报警" lay-skin="primary" value="1">
+            <input type="checkbox" name="conditionType" title="车辆开门" lay-skin="primary" value="2">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">定时唤醒</label>
+        <div class="layui-inline">
+            <input type="checkbox" name="wakeUpDate" title="周一" lay-skin="primary" value="0">
+            <input type="checkbox" name="wakeUpDate" title="周二" lay-skin="primary" value="1">
+            <input type="checkbox" name="wakeUpDate" title="周三" lay-skin="primary" value="2">
+            <input type="checkbox" name="wakeUpDate" title="周四" lay-skin="primary" value="3">
+            <input type="checkbox" name="wakeUpDate" title="周五" lay-skin="primary" value="4">
+            <input type="checkbox" name="wakeUpDate" title="周六" lay-skin="primary" value="5">
+            <input type="checkbox" name="wakeUpDate" title="周日" lay-skin="primary" value="6">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-form-mid">
+            <input type="checkbox" name="timePeriod" title="时间段1唤醒时间启用" lay-skin="primary" value="0">
+        </div>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input type="text" id="startTime1" placeholder="开始时间" class="layui-input">
+        </div>
+        <div class="layui-form-mid">-</div>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input type="text" id="endTime1" placeholder="结束时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-form-mid">
+            <input type="checkbox" name="timePeriod" title="时间段2唤醒时间启用" lay-skin="primary" value="1">
+        </div>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input type="text" id="startTime2" placeholder="开始时间" class="layui-input">
+        </div>
+        <div class="layui-form-mid">-</div>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input type="text" id="endTime2" placeholder="结束时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-form-mid">
+            <input type="checkbox" name="timePeriod" title="时间段3唤醒时间启用" lay-skin="primary" value="2">
+        </div>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input type="text" id="startTime3" placeholder="开始时间" class="layui-input">
+        </div>
+        <div class="layui-form-mid">-</div>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input type="text" id="endTime3" placeholder="结束时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-form-mid">
+            <input type="checkbox" name="timePeriod" title="时间段4唤醒时间启用" lay-skin="primary" value="3">
+        </div>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input type="text" id="startTime4" placeholder="开始时间" class="layui-input">
+        </div>
+        <div class="layui-form-mid">-</div>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input type="text" id="endTime4" placeholder="结束时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-form-mid">
+            <input type="checkbox" name="wakeUpMode" title="手动唤醒" lay-skin="primary" value="2">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+        form.on('submit(paramForm)', function (data) {
+            //已勾选的休眠唤醒模式
+            var wakeUpModeArr = [];
+            $('input[name="wakeUpMode"]:checked').each(function () {
+                wakeUpModeArr.push($(this).val());
+            });
+
+            //已勾选的唤醒条件
+            var conditionTypeArr = [];
+            $('input[name="conditionType"]:checked').each(function () {
+                conditionTypeArr.push($(this).val());
+            });
+
+            //已勾选的定时唤醒日设置
+            var wakeUpDateArr = [];
+            $('input[name="wakeUpDate"]:checked').each(function () {
+                wakeUpDateArr.push($(this).val());
+            });
+
+            //已勾选的定时唤醒启用标志
+            var timePeriodArr = [];
+            $('input[name="timePeriod"]:checked').each(function () {
+                timePeriodArr.push($(this).val());
+            });
+
+            //时间段1-4唤醒时间
+            var wakeUpTimeArr = [];
+            for (let i = 1; i <= 4; i++) {
+                var startTime = $("#startTime" + i).val();
+                var endTime = $("#endTime" + i).val();
+                var startTimeArr = startTime.split(":");
+                var endTimeArr = endTime.split(":");
+                wakeUpTimeArr.push(startTimeArr[0], startTimeArr[1], endTimeArr[0], endTimeArr[1]);
+            }
+
+            var paramsEntity = {
+                param007C: {
+                    wakeUpModeBits: wakeUpModeArr,
+                    conditionTypeBits: conditionTypeArr,
+                    wakeUpDateBits: wakeUpDateArr,
+                    timePeriodBits: timePeriodArr,
+                    wakeUpTimeList: wakeUpTimeArr
+                }
+            };
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#startTime1'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,value: '00:00'
+            ,theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime1'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,value: '23:59'
+            ,theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#startTime2'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,value: '00:00'
+            ,theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime2'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,value: '23:59'
+            ,theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#startTime3'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,value: '00:00'
+            ,theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime3'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,value: '23:59'
+            ,theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#startTime4'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,value: '00:00'
+            ,theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime4'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,value: '23:59'
+            ,theme: '#1E9FFF'
+        });
+    });
+</script>

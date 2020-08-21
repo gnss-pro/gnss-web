@@ -1,0 +1,36 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">控制类型</label>
+            <div class="layui-input-inline">
+                <select name="ctrlType">
+                    <option value="3">终端关机</option>
+                    <option value="4">终端复位</option>
+                    <option value="5">终端恢复出厂设置</option>
+                    <option value="6">关闭数据通信</option>
+                    <option value="7">关闭所有无线通信</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8105";
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = {
+                command: data.field["ctrlType"]
+            };
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

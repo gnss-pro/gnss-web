@@ -1,0 +1,161 @@
+<div class="site-text" style="margin: 5%; display: none" id="window" target="phoneBookConfig">
+    <form class="layui-form" id="configInfo" method="post" lay-filter="configInfo">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">标志</label>
+                <div class="layui-input-inline">
+                    <select name="flag" id="flag">
+                        <option value="1">呼入</option>
+                        <option value="2">呼出</option>
+                        <option value="3" selected>呼入/呼出</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">电话号码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="telephoneNo" id="telephoneNo" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">联系人</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="contact" id="contact" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn layui-btn-normal" id="add">新增</button>
+    <button class="layui-btn layui-btn-normal" id="send">发送指令</button>
+</div>
+<div class="layui-inline">
+    <label class="layui-form-label">设置类型</label>
+    <div class="layui-input-inline">
+        <select name="configType" id="configType">
+            <option value="0">删除终端所有联系人</option>
+            <option value="1">更新电话本</option>
+            <option value="2">追加电话本</option>
+            <option value="3">修改电话本</option>
+        </select>
+    </div>
+</div>
+<table class="layui-hide" id="phoneBookConfig" lay-filter="phoneBookConfig"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+</body>
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        form.render();
+        table.render({
+            id: 'phoneBookConfig'
+            , elem: '#phoneBookConfig'
+            , height: 500
+            , title: '设置电话本'
+            , cols: [[
+                {field: 'flag', title: '标志', width: 200}
+                , {field: 'phoneNum', title: '电话号码', width: 200}
+                , {field: 'contact', title: '联系人', width: 200}
+                , {field: 'operation', title: '操作', width: 200, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //获取按钮
+        table.on('tool(phoneBookConfig)', function (obj) {
+            //删除
+            if (obj.event === 'del') {
+                var contact = obj.data.contact;
+                var tableData = table.cache["phoneBookConfig"];
+                //从表格数组中删除
+                tableData.forEach(item => {
+                    if (item.contact == contact) {
+                        var i = tableData.indexOf(item);
+                        tableData.splice(i, 1);
+                        table.reload("phoneBookConfig", {
+                            data: tableData
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#add").click(function () {
+            layer.open({
+                type: 1,
+                title: "新增",
+                area: ['60%', '50%'],
+                btn: ['确定', '取消'],
+                content: $("#window"),
+                success: function (layero, index) {
+                    //重置form
+                    $("#configInfo")[0].reset();
+                }
+                , yes: function (index, layero) {
+                    var phoneNum = $('#telephoneNo').val();
+                    if (!phoneNum) {
+                        layer.msg("请输入电话号码", {icon: 5});
+                        return false;
+                    }
+
+                    var contact = $('#contact').val();
+                    if (!contact) {
+                        layer.msg("请输入联系人", {icon: 5});
+                        return false;
+                    }
+
+                    var tableData = table.cache["phoneBookConfig"];
+                    //检查表格是否存在此联系人
+                    let isFind = tableData.some(config => config.contact == contact);
+                    if (isFind) {
+                        layer.msg("联系人已存在,请重新输入联系人", {icon: 5});
+                        return false;
+                    }
+
+                    //添加一行
+                    var formData = {
+                        flag: $('#flag').val()
+                        , contact: contact
+                        , phoneNum: phoneNum
+                    };
+                    tableData.push(formData);
+                    //重新刷新表格
+                    table.reload("phoneBookConfig", {
+                        data: tableData
+                    });
+                    //关闭弹出层
+                    layer.close(index);
+                }
+            });
+        });
+
+        $("#send").click(function () {
+            var tableData = table.cache["phoneBookConfig"];
+            var configType = $("#configType").val();
+            var url = "/api/v1/commands/jt808/basic/sendCommand8401";
+            //删除终端所有联系人,不带后续字节
+            if (configType == 0) {
+                sendJt808Command(url, {configType: configType}, 5000);
+                return false;
+            }
+
+            if (tableData.length > 0) {
+                var paramsEntity = {
+                    configType: configType,
+                    itemList: tableData
+                };
+                //发送JT808指令
+                sendJt808Command(url, paramsEntity, 5000);
+            } else {
+                layer.msg("请新增联系人", {icon: 5});
+            }
+        });
+    });
+</script>
+</html>

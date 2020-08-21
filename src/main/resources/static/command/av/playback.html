@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>录像回放</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+    <link href="../../css/style.css" rel="stylesheet"/>
+    <link href="../../css/font-awesome.min.css" rel="stylesheet"/>
+    <script src="../../layui/layui.js"></script>
+    <script src="../../jquery.min.js" type="text/javascript"></script>
+    <script src="../../flvplayer.js"></script>
+</head>
+<body>
+<!--定义一个需要打开的视频-->
+<div id="playerDiv">
+    <div id="main" style="width: 100%;height: 90%;overflow:hidden;"></div>
+</div>
+
+<script>
+    appName = "/gnss-web";
+    var globalTerminalId;
+    var globalSimNum;
+    var windowIndex;
+    var rowData;
+
+    /**
+     * 接收父页面传递的参数
+     * @param data
+     * @param index
+     */
+    function child(terminalId, simNum, data, index) {
+        globalTerminalId = terminalId;
+        globalSimNum = formatSimNum(simNum);
+        windowIndex = index;
+        rowData = data;
+
+        var url = "/api/v1/commands/jt808/media/sendCommand9201";
+        var params = {
+            "terminalId": globalTerminalId,
+            "requestType": "SYNC",
+            "responseTimeout": 6000,
+            "paramsEntity": {
+                "channelId": data.channelId,
+                "avItemType": data.avItemType,
+                "streamType": data.streamType,
+                "memoryType": data.memoryType,
+                "actionType": "ACTION_0",
+                "fastTime": "FAST_TIME_0",
+                "startTime": data.startTime,
+                "endTime": data.endTime
+            }
+        };
+        //发送录像回放请求
+        sendCommand(url, params, function (ret) {
+            if (ret.code === 0) {
+                if (ret.data.sendResult !== 'SUCCESS') {
+                    var errorMsg = ret.data.sendResult === 'TIMEOUT' ? "应答超时" : ret.data.sendResult;
+                    layer.msg("通道" + params.paramsEntity.channelId + "请求失败,错误码:" + errorMsg, {icon: 5});
+                    return;
+                }
+                var streamUrl = ret.data.streamUrl;
+                //第二个参数表示有没有音频数据
+                var idx = player.play(-1, streamUrl, false);
+                console.log("wsUrl = " + streamUrl);
+            }
+        });
+    }
+
+    function sendCommand9202(ctrlType, fastTime) {
+        var url = "/api/v1/commands/jt808/media/sendCommand9202";
+        var params = {
+            "terminalId": globalTerminalId,
+            "requestType": "SYNC",
+            "responseTimeout": 5000,
+            "paramsEntity": {
+                "channelId": rowData.channelId,
+                "ctrlType": ctrlType,
+                "fastTime": fastTime
+            }
+        };
+        //发送录像回放请求
+        sendCommand(url, params, function (ret) {
+
+        });
+    }
+
+    /**
+     * sim卡号为12位，不足前面补0
+     */
+    function formatSimNum(simcard) {
+        var fullSimCard = simcard;
+        if (simcard.length < 12) {
+            var padSize = 12 - simcard.length;
+            for (let i = 0; i < padSize; i++) {
+                fullSimCard = "0" + fullSimCard;
+            }
+        }
+        return fullSimCard;
+    }
+
+    /**
+     * 发指令
+     * @param params
+     * @param callback
+     */
+    function sendCommand(url, params, callback) {
+        $.ajax({
+            url: appName + url,
+            type: 'post',
+            dataType: 'json',
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(params),
+            success: function (ret) {
+                if (typeof callback == "function") {
+                    callback(ret);
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        initPlayer();
+
+        /**
+         * 初始化播放器
+         */
+        function initPlayer() {
+            window.index = 0;
+            window.player = new SBHPlayer({
+                domid: 'main',//加载窗口的元素id
+                winNums: 1,//窗口个数
+                select: function (index) {
+                    console.log("view " + index + " selected");
+                },
+                winContextMenu: [{
+                    text: '',
+                    handler: function (win) {
+                        console.log(win.index);
+                    }
+                }, {
+                    text: '其他',
+                    handler: function (winIndex) {
+
+                    }
+                }],
+                play: {
+                    text: "播放/暂停",
+                    handler: function (index, status) {
+                        console.log("play button click:" + status);
+                        if (status === 'pause') {
+                            sendCommand9202("CTRL_TYPE_1", "FAST_TIME_0");
+                        } else if (status === 'play') {
+                            sendCommand9202("CTRL_TYPE_0", "FAST_TIME_0");
+                        }
+                    }
+                },
+                stop: {
+                    text: "停止",
+                    handler: function (index) {
+                        sendCommand9202("CTRL_TYPE_2", "FAST_TIME_0");
+                        console.log("stop button click");
+                    }
+                },
+                volume: {
+                    text: "音量",
+                    value: 70,//0～100
+                    handler: function (index, value) {
+                        console.log("window[" + index + "] volume:" + value);
+                    }
+                },
+                //视频自动关闭时间，毫秒，0不关闭
+                videoLimit: 0,
+                /**
+                 * 视频自动关闭时的回调
+                 * @param winIndex 窗口序号
+                 */
+                videoLimitHandler: function (winIndex) {
+
+                },
+                //音频（对讲/监听）自动关闭时间，毫秒，0不关闭
+                audioLimit: 0,
+                /**
+                 * 音频关闭时回调
+                 * @param type 0 监听 1 对讲
+                 */
+                audioLimitHandler: function (type) {
+
+                },
+                /**
+                 * 音频开始播放
+                 */
+                onAudioPlay: function () {
+
+                },
+                download: {
+                    enable: true,
+                    text: "下载",
+                    handler: function (index) {
+                    }
+                },
+                captrue: {
+                    enable: true,
+                    text: "抓拍",
+                    handler: function (index, url) {
+                        console.log(url);
+                    }
+                },
+                fullscreenText: "全屏",
+                /**
+                 * 链接异常断开时回调
+                 * @param type
+                 * @param index
+                 */
+                onDisconnect: function (type, index) {//ws连接断开时触发
+                    switch (type) {
+                        case SBHPlayer.REQUEST_TYPE.VIDEOAUDIO:
+                            console.log("video&audio disconnect,window num=" + index);
+                            break;
+                        case SBHPlayer.REQUEST_TYPE.VIDEO:
+                            console.log("video disconnect,window num=" + index);
+                            break;
+                        case SBHPlayer.REQUEST_TYPE.TALK:
+                            console.log("talkback disconnect");
+                            break;
+                        case SBHPlayer.REQUEST_TYPE.BROADCAST:
+                            console.log("broadcast disconnect");
+                            break;
+                        case SBHPlayer.REQUEST_TYPE.LISTEN:
+                            console.log("listen disconnect");
+                            break;
+                        case SBHPlayer.REQUEST_TYPE.PLAYBACK:
+                            console.log("playback disconnect");
+                            break;
+                        default:
+                            break;
+                    }
+                },
+
+                playback: {//回放配置
+                    enable: true,//开启回放
+                    multiple: [1, 2, 4, 8, 16],//快进快退倍数选择，数组
+                    forward: {
+                        enable: true,
+                        text: '快进',
+                        handler: function (index, multi) {
+                            sendCommand9202("CTRL_TYPE_3", "FAST_TIME_" + multi);
+                        }
+                    },
+                    backward: {
+                        enable: true,
+                        text: '关键帧快退',
+                        handler: function (index, multi) {
+                            sendCommand9202("CTRL_TYPE_4", "FAST_TIME_" + multi);
+                        }
+                    },
+                    kFrame: {
+                        enable: true,
+                        text: '关键帧播放',
+                        handle: function (index) {
+                            sendCommand9202("CTRL_TYPE_6", "FAST_TIME_0");
+                        }
+                    },
+                    //拖动
+                    seek: function (position) {
+                        console.log("拖动:" + position);
+                    }
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

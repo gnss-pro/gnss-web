@@ -1,0 +1,429 @@
+<script src="layui/xm-select.js"></script>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">报警判断速度阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p1" value="30" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">报警提示音量</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p2" value="6" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">主动拍照策略</label>
+            <div class="layui-input-inline">
+                <select name="p3">
+                    <option value="0" selected>不开启</option>
+                    <option value="1">定时拍照</option>
+                    <option value="2">定距拍照</option>
+                    <option value="3">保留</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">主动定时拍照时间间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p4" value="60" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">主动定距拍照距离间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p5" value="200" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">单次主动拍照张数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p6" value="3" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">单次主动拍照时间间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p7" value="2" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">拍照分辨率</label>
+            <div class="layui-input-inline">
+                <select name="p8">
+                    <option value="1" selected>352×288</option>
+                    <option value="2">704×288</option>
+                    <option value="3">704×576</option>
+                    <option value="4">640×480</option>
+                    <option value="5">1280×720</option>
+                    <option value="6">1920×1080</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">视频录制分辨率</label>
+            <div class="layui-input-inline">
+                <select name="p9">
+                    <option value="1" selected>CIF</option>
+                    <option value="2">HD1</option>
+                    <option value="3">D1</option>
+                    <option value="4">WD1</option>
+                    <option value="5">VGA</option>
+                    <option value="6">720P</option>
+                    <option value="7">1080P</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">报警使能</label>
+            <div class="layui-input-inline">
+                <div id="p10"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">事件使能</label>
+            <div class="layui-input-inline">
+                <div id="p11"></div>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">障碍物报警距离阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p12" value="30" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">障碍物报警分级速度阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p13" value="50" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">障碍物报警前后视频录制时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p14" value="5" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">障碍物报警拍照张数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p15" value="3" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">障碍物报警拍照间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p16" value="2" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">频繁变道报警判断时间段</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p17" value="60" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">频繁变道报警判断次数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p18" value="5" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">频繁变道报警分级速度阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p19" value="50" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">频繁变道报警前后视频录制时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p20" value="5" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">频繁变道报警拍照张数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p21" value="3" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">频繁变道报警拍照间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p22" value="2" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">车道偏离报警分级速度阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p23" value="50" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">车道偏离报警前后视频录制时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p24" value="5" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">车道偏离报警拍照张数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p25" value="3" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">车道偏离报警拍照间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p26" value="2" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">前向碰撞报警时间阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p27" value="27" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">前向碰撞报警分级速度阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p28" value="50" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">前向碰撞报警前后视频录制时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p29" value="5" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">前向碰撞报警拍照张数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p30" value="3" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">前向碰撞报警拍照间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p31" value="2" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">行人碰撞报警时间阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p32" value="30" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">行人碰撞报警使能速度阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p33" value="50" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">行人碰撞报警前后视频录制时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p34" value="5" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">行人碰撞报警拍照张数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p35" value="3" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">行人碰撞报警拍照间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p36" value="2" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">车距监控报警距离阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p37" value="10" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">车距监控报警分级速度阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p38" value="50" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">车距过近报警前后视频录制时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p39" value="5" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">车距过近报警拍照张数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p40" value="3" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">车距过近报警拍照间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p41" value="2" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">道路标志识别拍照张数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p42" value="3" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">道路标志识别拍照间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p43" value="2" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="query">查询参数</button>
+        </div>
+    </div>
+</form>
+<script>
+    var p10Selector = xmSelect.render({
+        el: '#p10',
+        toolbar: {
+            show: true,
+        },
+        theme: {
+            color: '#0081ff',
+        },
+        data: [
+            {name: '障碍检测一级报警', value: 0}
+            , {name: '障碍检测二级报警', value: 1}
+            , {name: '频繁变道一级报警', value: 2}
+            , {name: '频繁变道二级报警', value: 3}
+            , {name: '车道偏离一级报警', value: 4}
+            , {name: '车道偏离二级报警', value: 5}
+            , {name: '前向碰撞一级报警', value: 6}
+            , {name: '前向碰撞二级报警', value: 7}
+            , {name: '行人碰撞一级报警', value: 8}
+            , {name: '行人碰撞二级报警', value: 9}
+            , {name: '车距过近一级报警', value: 10}
+            , {name: '车距过近二级报警', value: 11}
+            , {name: '道路标识超限报警', value: 16}
+        ]
+    });
+
+    var p11Selector = xmSelect.render({
+        el: '#p11',
+        toolbar: {
+            show: true,
+        },
+        theme: {
+            color: '#0081ff',
+        },
+        data: [
+            {name: '道路标识识别', value: 0}
+            , {name: '主动拍照', value: 1}
+        ]
+    });
+
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        form.on('submit(paramForm)', function (data) {
+            var p10Bits = p10Selector.getValue('value');
+            var p11Bits = p11Selector.getValue('value');
+            var adasConfigParams = data.field;
+            adasConfigParams["p10Bits"] = p10Bits;
+            adasConfigParams["p11Bits"] = p11Bits;
+            var url = "/api/v1/commands/jt808/safety/sendCommand8103";
+            var paramsEntity = {
+                activeSafetyType: "ADAS",
+                adasConfig: adasConfigParams
+            };
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+
+        form.on('submit(query)', function (data) {
+            var paramsEntity = {paramIdList: [0xF364]};
+            var url = "/api/v1/commands/jt808/basic/sendCommand8106";
+            sendJt808Command(url, paramsEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS' && ret.data.responseParams) {
+                        layer.msg("查询成功:" + ret.data.responseParams, {icon: 1});
+                    } else {
+                        layer.msg("查询失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("查询失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>

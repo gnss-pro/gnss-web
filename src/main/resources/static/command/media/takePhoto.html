@@ -1,0 +1,145 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">摄像头</label>
+            <div class="layui-input-inline">
+                <select name="channelId">
+                    <option value="1" selected>通道1</option>
+                    <option value="2">通道2</option>
+                    <option value="3">通道3</option>
+                    <option value="4">通道4</option>
+                    <option value="5">通道5</option>
+                    <option value="6">通道6</option>
+                    <option value="7">通道7</option>
+                    <option value="8">通道8</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">拍摄命令</label>
+            <div class="layui-input-inline">
+                <select name="photoCommand">
+                    <option value="1" selected>拍摄一张</option>
+                    <option value="0">停止拍摄</option>
+                    <option value="FFFF">录像</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">时间间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="timeInterval" class="layui-input" value="0">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">保存标志</label>
+            <div class="layui-input-inline">
+                <select name="saveFlag">
+                    <option value="0" selected>实时上传</option>
+                    <option value="1">保存</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">分辨率</label>
+            <div class="layui-input-inline">
+                <select name="photoSize">
+                    <option value="0">最低分辨率</option>
+                    <option value="1" selected>320x240</option>
+                    <option value="2">640x480</option>
+                    <option value="3">800x600</option>
+                    <option value="4">1024x768</option>
+                    <option value="5">176x144[QCIF]</option>
+                    <option value="6">352x288[CIF]</option>
+                    <option value="7">704x288[HALF D1]</option>
+                    <option value="8">704x576[D1]</option>
+                    <option value="255">最高分辨率</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">图像/视频质量</label>
+            <div class="layui-input-inline">
+                <select name="quality">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">亮度</label>
+            <div class="layui-input-inline">
+                <input type="text" name="brightness" class="layui-input" value="100">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">对比度</label>
+            <div class="layui-input-inline">
+                <input type="text" name="contrast" class="layui-input" value="100">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">饱和度</label>
+            <div class="layui-input-inline">
+                <input type="text" name="saturation" class="layui-input" value="100">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">色度</label>
+            <div class="layui-input-inline">
+                <input type="text" name="chroma" class="layui-input" value="100">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="queryFile">查询多媒体文件</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8801";
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = data.field;
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+
+        form.on('submit(queryFile)', function (data) {
+            layer.open({
+                type: 2,
+                title: '多媒体文件管理',
+                shadeClose: true,
+                offset: '10%',
+                area: ['90%', '80%'],
+                content: 'command/media/jt808MediaFileManage.html'
+            });
+            return false;
+        });
+    });
+</script>

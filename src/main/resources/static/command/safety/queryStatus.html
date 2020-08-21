@@ -1,0 +1,165 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">查询类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="msgType" value="247" title="状态查询" checked>
+            <input type="radio" name="msgType" value="248" title="信息查询">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">外设类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="activeSafetyType" value="ADAS" title="高级驾驶辅助系统" checked>
+            <input type="radio" name="activeSafetyType" value="DSM" title="驾驶员状态监测系统">
+            <input type="radio" name="activeSafetyType" value="TPMS" title="胎压监测系统">
+            <input type="radio" name="activeSafetyType" value="BSD" title="盲区监测系统">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'util'], function () {
+        var form = layui.form;
+        var util = layui.util;
+        form.render();
+
+        form.on('submit(paramForm)', function (data) {
+            var url = "/api/v1/commands/jt808/safety/sendCommand8900";
+            var activeSafetyTypeList = [];
+            activeSafetyTypeList.push(data.field["activeSafetyType"]);
+            var paramEntity = {
+                msgType: data.field["msgType"],
+                activeSafetyTypeList: activeSafetyTypeList
+            };
+            sendJt808Command(url, paramEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        layer.msg("发送成功", {icon: 1});
+                        if (!ret.data.responseParams) {
+                            return false;
+                        }
+                        var jsonObj = eval('(' + ret.data.responseParams + ')');
+                        if (jsonObj.msgType === 0xF7) {
+                            handleDeviceStatusInfoList(jsonObj.deviceStatusInfoList);
+                        } else if (jsonObj.msgType === 0xF8) {
+                            handleDeviceSystemInfoList(jsonObj.deviceSystemInfoList);
+                        }
+                    } else {
+                        layer.msg("发送失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("发送失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+
+    function getActiveSafetyTypeDesc(activeSafetyType) {
+        var map = {"ADAS": "高级驾驶辅助系统", "DSM": "驾驶员状态监控系统", "TPMS": "轮胎气压监测系统", "BSD": "盲点监测系统"};
+        return map[activeSafetyType];
+    }
+
+    function getWorkingStatusDesc(workingStatus) {
+        var map = {"STATUS_1": "正常工作", "STATUS_2": "待机状态", "STATUS_3": "升级维护", "STATUS_4": "设备异常", "STATUS_10": "断开连接"};
+        return map[workingStatus];
+    }
+
+    /**
+     * 格式化报警状态
+     * @param alarmStatus
+     */
+    function formatAlarmStatus(alarmStatus) {
+        var alarmStatusHex = alarmStatus.toString(16).toUpperCase();
+        while (alarmStatusHex.length < 8) {
+            alarmStatusHex = "0" + alarmStatusHex;
+        }
+        return alarmStatusHex;
+    }
+
+    function getAlarmStatusDesc(alarmStatusBits) {
+        if (!alarmStatusBits || alarmStatusBits.length == 0) {
+            return "";
+        }
+        var map = {"0": "摄像头异常", "1": "主存储器异常", "2": "辅存储器异常", "3": "红外补光异常", "4": "扬声器异常", "5": "电池异常", "10": "通讯模块异常", "11": "定位模块异常"};
+        var descArr = [];
+        for (let i = 0; i < alarmStatusBits.length; i++) {
+            var desc = map[alarmStatusBits[i]];
+            if (desc) {
+                descArr.push(desc);
+            }
+        }
+        if (descArr.length == 0) {
+            return "";
+        }
+        return "(" + descArr.join(",") + ")";
+    }
+
+    /**
+     * 处理状态查询0xF7应答消息
+     * @param deviceStatusInfoList
+     */
+    function handleDeviceStatusInfoList(deviceStatusInfoList) {
+        if (deviceStatusInfoList.length == 0) {
+            layer.msg("状态查询响应成功,无数据", {icon: 1});
+            return;
+        }
+        var content = '<div style="padding: 20px 40px;">';
+        for (let i = 0; i < deviceStatusInfoList.length; i++) {
+            var deviceStatusInfo = deviceStatusInfoList[i];
+            var activeSafetyTypeDesc = getActiveSafetyTypeDesc(deviceStatusInfo.activeSafetyType);
+            var workingStatusDesc = getWorkingStatusDesc(deviceStatusInfo.workingStatus);
+            var alarmStatusHex = "0x" + formatAlarmStatus(deviceStatusInfo.alarmStatus);
+            var alarmStatusDesc = getAlarmStatusDesc(deviceStatusInfo.alarmStatusBits);
+            content += "外设名称:" + activeSafetyTypeDesc + "(" + deviceStatusInfo.activeSafetyType + ")<br/>";
+            content += "工作状态:" + workingStatusDesc + "<br/>";
+            content += "报警状态:" + alarmStatusHex + alarmStatusDesc + "<br/>";
+        }
+        content += "</div>";
+        layer.open({
+            type: 1
+            , title: '状态查询应答'
+            , area: ['40%', '65%']
+            , content: content
+            , shade: 0
+            , shadeClose: true
+        });
+    }
+
+    /**
+     * 处理信息查询0xF8应答消息
+     * @param deviceSystemInfoList
+     */
+    function handleDeviceSystemInfoList(deviceSystemInfoList) {
+        if (deviceSystemInfoList.length == 0) {
+            layer.msg("信息查询响应成功,无数据", {icon: 1});
+            return;
+        }
+        var content = '<div style="padding: 20px 40px;">';
+        for (let i = 0; i < deviceSystemInfoList.length; i++) {
+            var deviceSystemInfo = deviceSystemInfoList[i];
+            var activeSafetyTypeDesc = getActiveSafetyTypeDesc(deviceSystemInfo.activeSafetyType);
+            content += "外设名称:" + activeSafetyTypeDesc + "(" + deviceSystemInfo.activeSafetyType + ")<br/>";
+            content += "公司名称:" + deviceSystemInfo.companyName + "<br/>";
+            content += "产品型号:" + deviceSystemInfo.productModel + "<br/>";
+            content += "硬件版本号:" + deviceSystemInfo.hardwareVersion + "<br/>";
+            content += "软件版本号:" + deviceSystemInfo.softwareVersion + "<br/>";
+            content += "设备ID:" + deviceSystemInfo.deviceId + "<br/>";
+            content += "客户代码:" + deviceSystemInfo.customerCode + "<br/>";
+        }
+        content += "</div>";
+        layer.open({
+            type: 1
+            , title: '信息查询应答'
+            , area: ['40%', '65%']
+            , content: content
+            , shade: 0
+            , shadeClose: true
+        });
+    }
+</script>

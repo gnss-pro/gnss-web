@@ -1,0 +1,338 @@
+<link rel="stylesheet" href="layui/css/layui.css" media="all">
+<script src="jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+<style>
+    .layui-body {
+        overflow-y: scroll;
+    }
+</style>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <input type="text" name="nameLike" id="nameLike" placeholder="请输入车牌号/SIM卡号" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <input class="layui-input" placeholder="开始时间" id="startTime">
+        </div>
+        <div class="layui-input-inline">
+            <input class="layui-input" placeholder="结束时间" id="endTime">
+        </div>
+        <button class="layui-btn layui-btn-normal" id="query" lay-submit lay-filter="query">查询</button>
+        <button class="layui-btn layui-btn-danger" id="batchDelete" lay-submit lay-filter="batchDelete">批量删除</button>
+    </div>
+</form>
+
+<table class="layui-hide" id="safetyAlarmData" lay-filter="safetyAlarmData"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-normal layui-btn-mini" lay-event="queryAttachment">附件</a>
+    <a class="layui-btn layui-btn-normal layui-btn-mini" lay-event="detail">详情</a>
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+
+<script>
+    var appName = "/gnss-web";
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#startTime'
+            , lang: 'cn'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime'
+            , lang: 'cn'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , max: 1
+            , theme: '#1E9FFF'
+        });
+    });
+
+    layui.use(['table', 'form', 'util'], function () {
+        var form = layui.form;
+        form.render();
+
+        var table = layui.table;
+        //展示已知数据
+        table.render({
+            id: 'safetyAlarmData'
+            , elem: '#safetyAlarmData'
+            , method: 'get'
+            , url: appName + "/api/v1/terminal/safetyAlarms"
+            , page: {
+                curr: '0',
+                limit: 10
+            }
+            , request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                , limitName: 'size' //每页数据量的参数名，默认：limit
+            }
+            , startByZero: true
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.data.totalElements, //解析数据长度
+                    "data": res.data.content //解析数据列表
+                };
+            }
+            , cols: [[ //标题栏
+                {field: 'alarmId', hide: true}
+                , {type: 'checkbox', width: 50}
+                , {field: 'vehicleNum', title: '车牌号', width: 130}
+                , {field: 'plateColor', title: '车牌颜色', width: 100}
+                , {field: 'simNum', title: '终端手机号', width: 120}
+                , {field: 'alarmType', title: '报警类型', width: 150}
+                , {
+                    field: 'alarmLevel', title: '报警级别', width: 100, templet: function (d) {
+                        if (d.alarmLevel) {
+                            return d.alarmLevel === 0x01 ? "一级报警" : "二级报警";
+                        }
+                        return "";
+                    }
+                }
+                , {field: 'time', title: '时间', width: 180}
+                , {field: 'speed', title: '速度', width: 90}
+                , {field: 'altitude', title: '高程', width: 90}
+                , {
+                    field: 'vehicleStatusBits', title: '车辆状态', minWidth: 220, templet: function (d) {
+                        if (!d.vehicleStatusBits) {
+                            return "";
+                        }
+                        var vehicleStatusBits = eval('(' + d.vehicleStatusBits + ')');
+                        return getVehicleStatusDesc(vehicleStatusBits);
+                    }
+                }
+                , {
+                    field: 'attachmentCount', title: '附件数量', width: 130, templet: function (d) {
+                        return "已上传:" + d.completedCount + ",总共:" + d.attachmentCount;
+                    }
+                }
+                , {
+                    field: 'locationDesc', title: '位置', width: 200, templet: function (d) {
+                        return d.lon + " | " + d.lat;
+                    }
+                }
+                , {field: 'operation', title: '操作', minWidth: 250, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //表格按钮点击事件
+        table.on('tool(safetyAlarmData)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('确定批量删除报警和关联的附件吗？', {title: '删除'}, function (index) {
+                    batchDelete([data.alarmId]);
+                });
+            } else if (obj.event === 'queryAttachment') {
+                layer.open({
+                    type: 2,
+                    title: "附件浏览",
+                    area: ['50%', '85%'],
+                    shadeClose: true,
+                    content: "attachmentView.html",
+                    success: function (layero, index) {
+                        //获取子页面的iframe
+                        var iframe = window['layui-layer-iframe' + index];
+                        iframe.child(data, index);
+                    }
+                });
+            } else if (obj.event === 'detail') {
+                var content = getDetailDesc(data);
+                layer.open({
+                    type: 1,
+                    title: "主动安全报警详情",
+                    offset: '10%',
+                    area: ['50%', '70%'],
+                    shadeClose: true,
+                    content: content,
+                });
+            }
+        });
+
+        form.on('submit(query)', function (data) {
+            var timeObj = getQueryTime();
+            if (!timeObj) {
+                return false;
+            }
+            table.reload("safetyAlarmData", {
+                method: 'get'
+                , where: {
+                    nameLike: data.field['nameLike']
+                    , startTime: timeObj.startTime
+                    , endTime: timeObj.endTime
+                }
+                , page: {
+                    curr: '0' // 重载后从第一页开始
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(batchDelete)', function (data) {
+            var checkStatus = layui.table.checkStatus('safetyAlarmData').data;
+            if (!checkStatus.length) {
+                layer.msg("请勾选需要删除的报警", {icon: 5});
+                return false;
+            }
+
+            layer.confirm('确定删除报警和关联的附件吗？', {title: '删除'}, function (index) {
+                var alarmIdArr = checkStatus.map(item => {
+                    return item.alarmId;
+                });
+                batchDelete(alarmIdArr);
+            });
+            return false;
+        });
+
+        function getQueryTime() {
+            var startTimeStr = $("#startTime").val();
+            var endTimeStr = $("#endTime").val();
+            var startTime = null;
+            var endTime = null;
+            if (startTimeStr) {
+                startTime = new Date(startTimeStr).getTime();
+            }
+            if (endTimeStr) {
+                endTime = new Date(endTimeStr).getTime();
+            }
+            if (startTime && endTime && startTime > endTime) {
+                layer.msg("开始时间不能大于结束时间", {icon: 5});
+                return null;
+            }
+            return {startTime: startTime, endTime: endTime};
+        }
+
+        /**
+         * 批量删除报警
+         */
+        function batchDelete(alarmIdList) {
+            var timeObj = getQueryTime();
+            if (!timeObj) {
+                return false;
+            }
+            $.ajax({
+                type: "DELETE",
+                dataType: 'json',
+                contentType: "application/json;charset=UTF-8",
+                url: appName + "/api/v1/terminal/safetyAlarms",
+                data: JSON.stringify(alarmIdList),
+                success: function (ret) {
+                    if (ret.code == 0) {
+                        layer.msg("删除报警成功", {icon: 1});
+                        table.reload("safetyAlarmData", {
+                            method: 'get'
+                            , where: {
+                                //添加查询的参数
+                                nameLike: $("#nameLike").val()
+                                , startTime: timeObj.startTime
+                                , endTime: timeObj.endTime
+                            }
+                            , page: {
+                                //重载后从第一页开始
+                                curr: '0'
+                            }
+                        });
+                    } else {
+                        layer.msg("删除报警失败:" + ret.msg, {icon: 5});
+                    }
+                }
+            });
+        }
+
+        /**
+         * 获取车辆状态描述
+         * @param vehicleStatusBits
+         * @returns {string}
+         */
+        function getVehicleStatusDesc(vehicleStatusBits) {
+            var map = {"b0": "ACC开", "b1": "左转向", "b2": "右转向", "b3": "雨刮器开", "b4": "制动", "b5": "已插卡", "b10": "已定位"}
+            var descArr = [];
+            for (let i = 0; i < vehicleStatusBits.length; i++) {
+                var desc = map["b" + vehicleStatusBits[i]];
+                if (desc) {
+                    descArr.push(desc);
+                }
+            }
+            //未定位的要显示出来
+            if (!vehicleStatusBits.includes(10)) {
+                descArr.push("未定位");
+            }
+            if (descArr.length === 0) {
+                return "";
+            }
+            return descArr.join(",");
+        }
+
+        /**
+         * 获取报警详情描述
+         * @param data
+         * @returns {string}
+         */
+        function getDetailDesc(data) {
+            var content = '<div style="padding:10px 50px;">';
+            content += "车牌号:" + data.vehicleNum + "<br/>";
+            content += "车牌颜色:" + data.plateColor + "<br/>";
+            content += "终端手机号:" + data.simNum + "<br/>";
+            content += "主动安全类型:" + data.activeSafetyTypeDesc + "(" + data.activeSafetyType + ")<br/>";
+            content += "报警类型:" + data.alarmType + "<br/>";
+            var alarmLevelDesc = "";
+            if (data.alarmLevel) {
+                alarmLevelDesc = data.alarmLevel === 0x01 ? "一级报警" : "二级报警";
+            }
+            content += "报警级别:" + alarmLevelDesc + "<br/>";
+            content += "时间:" + data.time + "<br/>";
+            content += "速度:" + data.speed + "<br/>";
+            content += "高程:" + data.altitude + "<br/>";
+            var vehicleStatusDesc = "";
+            if (data.vehicleStatusBits) {
+                var vehicleStatusBits = eval('(' + data.vehicleStatusBits + ')');
+                vehicleStatusDesc = getVehicleStatusDesc(vehicleStatusBits);
+            }
+            //报警标志格式化十六进制(4字节)
+            var vehicleStatusHex = data.vehicleStatus.toString(16).toUpperCase();
+            while (vehicleStatusHex.length < 4) {
+                vehicleStatusHex = "0" + vehicleStatusHex;
+            }
+            content += "车辆状态:0x" + vehicleStatusHex + "(" + vehicleStatusDesc + ")<br/>";
+            var attachmentDesc = "已上传:" + data.completedCount + ",总共:" + data.attachmentCount
+            content += "附件数量:" + attachmentDesc + "<br/>";
+            content += "位置:" + data.lon + " | " + data.lat + "<br/>";
+            var extraData = eval('(' + data.extraData + ')');
+            if (data.activeSafetyType === 'ADAS') {
+                content += "前车车速:" + extraData.frontCarSpeed + "<br/>";
+                content += "前车/行人距离:" + extraData.frontDistance + "<br/>";
+                content += "偏离类型:" + extraData.offsetType + "<br/>";
+                content += "道路标志识别类型:" + extraData.roadFlagType + "<br/>";
+                content += "道路标志识别数据:" + extraData.roadFlagData + "<br/>";
+            } else if (data.activeSafetyType === 'DSM') {
+                content += "疲劳程度:" + extraData.fatigueDegree + "<br/>";
+            } else if (data.activeSafetyType === 'TPMS') {
+                content += "报警/事件列表总数:" + extraData.eventCount + "<br/>";
+                if (extraData.eventList && extraData.eventList.length > 0) {
+                    var arr = [];
+                    for (let i = 0; i < extraData.eventList.length; i++) {
+                        var eventInfo = extraData.eventList[i];
+                        var eventDesc = "(" + (i + 1) + ")胎压报警位置:" + eventInfo.tireNum + ";";
+                        eventDesc += "报警/事件类型:" + eventInfo.eventType + ";";
+                        eventDesc += "胎压:" + eventInfo.tirePressure + ";";
+                        eventDesc += "胎温:" + eventInfo.tireTemperature + ";";
+                        eventDesc += "电池电量:" + eventInfo.batteryPower + ";";
+                        arr.push(eventDesc);
+                    }
+                    content += "报警/事件列表:" + arr.join("<br/>");
+                }
+            } else if (data.activeSafetyType === 'BSD') {
+
+            }
+            content += '</div>'
+            return content;
+        }
+    });
+</script>

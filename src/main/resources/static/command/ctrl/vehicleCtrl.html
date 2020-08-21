@@ -1,0 +1,30 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="radio" name="doorCtrl" value="0" title="车门解锁" checked>
+            <input type="radio" name="doorCtrl" value="1" title="车门加锁">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8500";
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = {
+                items: {
+                    "0001": data.field["doorCtrl"]
+                }
+            };
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

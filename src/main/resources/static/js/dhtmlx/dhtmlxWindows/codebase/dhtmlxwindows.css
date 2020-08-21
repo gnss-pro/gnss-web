@@ -1,0 +1,123 @@
+/* dhtmlxWindows */
+
+/* viewport */
+div.dhtmlx_winviewport {
+	position: absolute;
+	/* border: #909090 1px dashed; */
+	overflow: hidden;
+}
+/* main container */
+div.dhtmlx_window_active {
+	position: absolute;
+	overflow: hidden;
+}
+div.dhtmlx_window_inactive {
+	position: absolute;
+	overflow: hidden;
+}
+/* content cover */
+div.dhx_content_cover_blocker {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	/*
+	filter: alpha(opacity=50);
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+	background-color: #909090;
+	*/
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	background: #FFFFFF;
+}
+/* cover for modal windows */
+iframe.dhx_modal_cover_ifr {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	background-color: #FFFFFF;
+}
+div.dhx_modal_cover_dv {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	border: none;
+	filter: alpha(opacity=50);
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+	background-color: #EEEEEE; /*#D3E7FF;*/
+}
+iframe.dhx_ie6_wincover_forsel {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	overflow: hidden;
+	filter: alpha(opacity=0);
+	background-color: #FFFFFF;
+	z-index: -1;
+}
+/* content cover */
+div.dhx_carcass_resmove {
+	position: absolute;
+	filter: alpha(opacity=50);
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+	background-color: #E0E0E0;
+	border: #909090 1px solid;
+}
+/* cover for vp for move/resize */
+div.dhx_content_vp_cover {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	background-color: #FFFFFF;
+}
+
+/* 2.1 EDITION UPDATES */
+/* ie6 iframe to fix select overlaping */
+iframe.dhtmlx_wins_ie6_cover_fix {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	overflow: hidden;
+	filter: alpha(opacity=0);
+	background-color: #FFFFFF;
+}
+
+
+div.dhxcont_content_blocker {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 101%;
+	height: 101%;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	background: #FFFFFF;
+	z-index: 1;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}

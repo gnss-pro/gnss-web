@@ -1,0 +1,262 @@
+<div class="site-text" style="margin: 5%; display: none" id="window" target="pointConfig">
+    <form class="layui-form" id="pointInfo" method="post" lay-filter="pointInfo">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">顶点纬度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="lat" id="lat" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">顶点经度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="lng" id="lng" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<form class="layui-form" id="configInfo" method="post" lay-filter="configInfo">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">区域ID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="regionId" id="regionId" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">区域名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="regionName" id="regionName" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-form-mid">
+            <input type="checkbox" name="regionPropBits" title="时间" lay-skin="primary" value="0">
+        </div>
+        <div class="layui-input-inline" style="width: 150px;">
+            <input type="text" id="startTime" placeholder="开始时间" class="layui-input">
+        </div>
+        <div class="layui-form-mid">-</div>
+        <div class="layui-input-inline" style="width: 150px;">
+            <input type="text" id="endTime" placeholder="结束时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-form-mid">
+            <input type="checkbox" name="regionPropBits" title="限速" lay-skin="primary" value="1">
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">最高速度(km/h)</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" id="maxSpeed" placeholder="最高速度" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">超速持续时间(秒)</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" id="overspeedDuration" placeholder="超速持续时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">夜间最高速度(km/h)</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" id="maxSpeedNight" placeholder="夜间最高速度" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="regionPropBits" title="进区域报警给驾驶员" lay-skin="primary" value="2">
+            <input type="checkbox" name="regionPropBits" title="进区域报警给平台" lay-skin="primary" value="3">
+            <input type="checkbox" name="regionPropBits" title="出区域报警给驾驶员" lay-skin="primary" value="4">
+            <input type="checkbox" name="regionPropBits" title="出区域报警给平台" lay-skin="primary" value="5">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="regionPropBits" title="禁止开门" lay-skin="primary" value="8">
+            <input type="checkbox" name="regionPropBits" title="进区域关闭通信模块" lay-skin="primary" value="14">
+            <input type="checkbox" name="regionPropBits" title="进区域采集GNSS详细定位数据" lay-skin="primary" value="15">
+        </div>
+    </div>
+</form>
+
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn layui-btn-normal" id="add">新增顶点项</button>
+    <button class="layui-btn layui-btn-normal" id="send">发送设置指令</button>
+    <button class="layui-btn layui-btn-normal" id="delete">删除区域</button>
+</div>
+
+<table class="layui-hide" id="polygonRegionConfig" lay-filter="polygonRegionConfig"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+</body>
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#startTime'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+    });
+
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        form.render();
+        table.render({
+            id: 'polygonRegionConfig'
+            , elem: '#polygonRegionConfig'
+            , height: 500
+            , title: '设置多边形区域'
+            , cols: [[
+                {field: 'lat', title: '顶点纬度', width: 150}
+                , {field: 'lng', title: '顶点经度', width: 150}
+                , {field: 'operation', title: '操作', width: 200, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //获取按钮
+        table.on('tool(polygonRegionConfig)', function (obj) {
+            //删除
+            if (obj.event === 'del') {
+                var contact = obj.data.contact;
+                var tableData = table.cache["polygonRegionConfig"];
+                //从表格数组中删除
+                tableData.forEach(item => {
+                    if (item.contact == contact) {
+                        var i = tableData.indexOf(item);
+                        tableData.splice(i, 1);
+                        table.reload("polygonRegionConfig", {
+                            data: tableData
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#add").click(function () {
+            layer.open({
+                type: 1,
+                title: "新增多边形顶点",
+                area: ['50%', '40%'],
+                btn: ['确定', '取消'],
+                content: $("#window"),
+                success: function (layero, index) {
+                    //重置form
+                    $("#pointInfo")[0].reset();
+                }
+                , yes: function (index, layero) {
+                    var lat = $('#lat').val();
+                    if (!lat) {
+                        layer.msg("请输入顶点纬度", {icon: 5});
+                        return false;
+                    }
+
+                    var lng = $('#lng').val();
+                    if (!lng) {
+                        layer.msg("请输入顶点经度", {icon: 5});
+                        return false;
+                    }
+
+                    //添加一行
+                    var formData = {
+                        lat: lat
+                        , lng: lng
+                    };
+                    var tableData = table.cache["polygonRegionConfig"];
+                    tableData.push(formData);
+                    //重新刷新表格
+                    table.reload("polygonRegionConfig", {
+                        data: tableData
+                    });
+                    //关闭弹出层
+                    layer.close(index);
+                }
+            });
+        });
+
+        $("#send").click(function () {
+            var regionId = $("#regionId").val();
+            if (!regionId) {
+                layer.msg("请输入区域ID", {icon: 5});
+                return;
+            }
+
+            //已勾选的区域属性
+            var chkArr = [];
+            $('input[name="regionPropBits"]:checked').each(function () {
+                chkArr.push($(this).val());
+            });
+
+            //开始时间和结束时间
+            var startTime = $('#startTime').val();
+            var startTimeItems;
+            if (startTime) {
+                var timeArr = startTime.split(" ");
+                startTimeItems = timeArr[0].split("-").concat(timeArr[1].split(":"));
+                startTimeItems[0] = startTimeItems[0].substr(2);
+            }
+            var endTime = $('#endTime').val();
+            var endTimeItems;
+            if (endTime) {
+                var timeArr = endTime.split(" ");
+                endTimeItems = timeArr[0].split("-").concat(timeArr[1].split(":"));
+                endTimeItems[0] = endTimeItems[0].substr(2);
+            }
+
+            var tableData = table.cache["polygonRegionConfig"];
+            var url = "/api/v1/commands/jt808/basic/sendCommand8604";
+            if (tableData.length > 0) {
+                var paramsEntity = {
+                    regionId: regionId
+                    , regionName: $('#regionName').val()
+                    , regionPropBits: chkArr
+                    , startTimeItems: startTimeItems
+                    , endTimeItems: endTimeItems
+                    , maxSpeed: $('#maxSpeed').val()
+                    , overspeedDuration: $('#overspeedDuration').val()
+                    , points: tableData
+                    , maxSpeedNight: $('#maxSpeedNight').val()
+                };
+                //发送JT808指令
+                sendJt808Command(url, paramsEntity, 5000);
+            } else {
+                layer.msg("请新增多边形顶点项", {icon: 5});
+            }
+        });
+
+        $("#delete").click(function () {
+            var regionId = $("#regionId").val();
+            if (!regionId) {
+                layer.msg("请输入区域ID", {icon: 5});
+                return;
+            }
+            var url = "/api/v1/commands/jt808/basic/sendCommand8601";
+            var paramsEntity = {
+                regionIdList: [regionId]
+            };
+            //发送JT808指令
+            sendJt808Command(url, paramsEntity, 5000);
+        });
+    });
+</script>
+</html>

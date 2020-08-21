@@ -1,0 +1,108 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">CAN通道1采集间隔(毫秒)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0100" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">CAN通道1上传间隔(秒)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0101" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">CAN通道2采集间隔(毫秒)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0102" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">CAN通道2上传间隔(秒)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0103" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">CAN总线ID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="param0110.busId" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">CAN通道号</label>
+            <div class="layui-input-inline">
+                <select name="param0110.channel">
+                    <option value="0" selected>CAN1</option>
+                    <option value="1">CAN2</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">采集时间间隔(ms)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="param0110.collectInterval" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">帧类型</label>
+            <div class="layui-input-inline">
+                <select name="param0110.frameType">
+                    <option value="0" selected>标准帧</option>
+                    <option value="1">扩展帧</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">数据采集方式</label>
+            <div class="layui-input-inline">
+                <select name="param0110.collectMethod">
+                    <option value="0" selected>原始数据</option>
+                    <option value="1">采集区间的计算值</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+        form.on('submit(paramForm)', function (data) {
+            var param0110 = {
+                busId: data.field["param0110.busId"],
+                channel: data.field["param0110.channel"],
+                collectInterval: data.field["param0110.collectInterval"],
+                collectMethod: data.field["param0110.collectMethod"],
+                frameType: data.field["param0110.frameType"]
+            };
+            delete data.field["param0110.busId"];
+            delete data.field["param0110.channel"];
+            delete data.field["param0110.collectInterval"];
+            delete data.field["param0110.collectMethod"];
+            delete data.field["param0110.frameType"];
+            var paramsEntity = {
+                items: data.field,
+                param0110: param0110
+            };
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

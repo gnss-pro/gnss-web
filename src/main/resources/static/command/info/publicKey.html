@@ -1,0 +1,36 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">RSA公钥{e,n}的e</label>
+            <div class="layui-input-inline">
+                <input type="text" name="keyE" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">RSA公钥{e,n}的n(16进制字符串)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="keyN" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8A00";
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = data.field;
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

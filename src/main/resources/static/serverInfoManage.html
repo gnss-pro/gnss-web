@@ -1,0 +1,243 @@
+<link rel="stylesheet" href="layui/css/layui.css" media="all">
+<script src="jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+<style type="text/css">
+    html {
+        font-family: sans-serif;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        margin: 10px;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    td, th {
+        padding: 0;
+    }
+
+    .pure-table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: show;
+        border: 1px solid #cbcbcb;
+    }
+
+    .pure-table caption {
+        color: #000;
+        font: italic 85%/1 arial, sans-serif;
+        padding: 1em 0;
+        text-align: center;
+    }
+
+    .pure-table td, .pure-table th {
+        border: 1px solid #cbcbcb;
+        /*border-width: 1px;*/
+        font-size: inherit;
+        margin: 0;
+        overflow: visible;
+        padding: .5em 1em;
+    }
+
+    .pure-table thead {
+        background-color: #e0e0e0;
+        color: #000;
+        text-align: left;
+        vertical-align: bottom;
+    }
+
+    .pure-table td {
+        background-color: transparent;
+    }
+</style>
+
+
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title" id="categorys">
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;" id="contents">
+    </div>
+</div>
+
+<script>
+    var appName = "/gnss-web";
+    layui.use('element', function () {
+        //动态菜单
+        layui.jquery.ajax({
+            url: appName + "/api/v1/global/allServerInfo",
+            method: 'GET',
+            success: function (ret) {
+                var configObj = ret.data || {};
+                var categorysHtml = "";
+                var contentHtml = "";
+                var idx = 0;
+                for (const nodeName in configObj) {
+                    var serverInfoObj = eval('(' + configObj[nodeName] + ')');
+                    if (idx == 0) {
+                        categorysHtml += '<li class="layui-this">' + serverInfoObj.serverName + '</li>';
+                        contentHtml += '<div class="layui-tab-item layui-show">';
+                    } else {
+                        categorysHtml += '<li>' + serverInfoObj.serverName + '</li>';
+                        contentHtml += '<div class="layui-tab-item">';
+                    }
+                    contentHtml += '<b>节点名称：</b>' + serverInfoObj.nodeName + '<br/>';
+                    //Web服务器的公网IP为浏览器地址的IP
+                    var wanIp = serverInfoObj.nodeName.endsWith("web-server") ? location.hostname : serverInfoObj.wanIp;
+                    contentHtml += '<b>公网IP：</b>' + wanIp + '<br/>';
+                    contentHtml += '<b>内网IP：</b>' + serverInfoObj.lanIp + '<br/>';
+                    contentHtml += '<b>运行状态：</b>' + (serverInfoObj.isRunning === true ? '<span style="color: green">运行中</span>' : '<span style="color: red">已停止</span>') + '<br/>';
+                    if (nodeName.startsWith('jt808-server')) {
+                        contentHtml += buildJt808ServerInfo(serverInfoObj);
+                    } else if (nodeName.startsWith('file-server')) {
+                        contentHtml += buildFileServerInfo(serverInfoObj);
+                    } else if (nodeName.endsWith("media-server")) {
+                        contentHtml += buildMediaServerInfo(serverInfoObj);
+                    } else if (nodeName.endsWith("web-server")) {
+                        contentHtml += buildWebServerInfo(serverInfoObj);
+                    }
+                    contentHtml += '</div>';
+                    idx++;
+                }
+                layui.jquery("#categorys").html(categorysHtml);
+                layui.jquery("#contents").html(contentHtml);
+                layui.element.init();
+            }
+        });
+
+        /**
+         * 构造JT808服务器其他信息
+         * @param serverInfoObj
+         * @returns {string}
+         */
+        function buildJt808ServerInfo(serverInfoObj) {
+            var contentHtml = '<b>是否严格模式：</b>' + (serverInfoObj.strictMode === true ? "是" : "否") +
+                '<span style="color: red;">（严格模式采用过检的要求校验终端注册信息）</span><br/>';
+            contentHtml += '<b>是否上传JT808日志：</b>' + (serverInfoObj.uploadLog === true ? "是" : "否") +
+                '<span style="color: red;">（压力测试不建议上传日志，将影响服务器和数据库性能）</span><br/>';
+            contentHtml += '<b>协议和端口说明：</b><br/>';
+            contentHtml += '<table class="pure-table"><thead><tr><th>协议</th><th>TCP端口</th><th>是否启用</th></tr></thead><tbody>';
+            var serverMap = serverInfoObj.servers;
+            for (const protocol in serverMap) {
+                var info = serverMap[protocol];
+                var protocolDesc = protocol;
+                if (protocol === 'JT808_2011') {
+                    protocolDesc = "JT808-2011、JT808-2019、JT1078、主动安全报警";
+                } else if (protocol === 'JT808_2013') {
+                    protocolDesc = 'JT808-2013<span style="color: red;">（默认按JT808-2011处理）</span>';
+                }
+                var isEnable = info.enable ? "开启" : "未开启";
+                contentHtml += '<tr><td>' + protocolDesc + '</td><td>' + info.tcpPort + '</td><td>' + isEnable + '</td></tr>';
+            }
+            contentHtml += '</tbody></table><br/>';
+            contentHtml += '<b>已支持解析的终端上行消息：</b><br/>';
+            contentHtml += '<table class="pure-table"><thead><tr><th>消息ID</th><th>消息描述</th></tr></thead><tbody>';
+            var supportedMsgMap = serverInfoObj.supportedMessage;
+            for (const msgId in supportedMsgMap) {
+                contentHtml += '<tr><td>' + msgId + '</td><td>' + supportedMsgMap[msgId] + '</td></tr>'
+            }
+            contentHtml += '</tbody></table><br/>';
+            return contentHtml;
+        }
+
+        /**
+         * 构造文件服务器其他信息
+         * @param serverInfoObj
+         */
+        function buildFileServerInfo(serverInfoObj) {
+            var contentHtml = '<b>协议和端口说明：</b><br/>'
+            contentHtml += '<span style="color: red">文件服务器提供的功能：JT1078协议的FTP文件上传、主动安全报警附件上传、上传文件的显示播放和下载http接口</span><br/>';
+            contentHtml += '<table class="pure-table"><thead><tr><th>协议</th><th>TCP端口</th><th>存储目录</th><th>其他信息</th></tr></thead><tbody>';
+            contentHtml += '<tr><td>HTTP</td><td>' + serverInfoObj.httpPort + '</td><td>URL主路径：' + serverInfoObj.httpContextPath + '</td><td>'
+                + '<a href="http://' + serverInfoObj.wanIp + ':' + serverInfoObj.httpPort
+                + serverInfoObj.httpContextPath + '/swagger-ui.html" target="_blank"><span style="color: blue;">接口文档</span></a>'
+                + '</td></tr>';
+            contentHtml += '<tr><td>主动安全报警附件上传</td><td>' + serverInfoObj.attachmentPort + '</td><td>' + serverInfoObj.attachmentPath + '</td><td></td></tr>';
+            contentHtml += '<tr><td>FTP端口</td><td>' + serverInfoObj.ftpPort + '<br/>'
+                + '被动模式端口范围:' + serverInfoObj.ftpPassivePorts
+                + '</td><td>' + serverInfoObj.ftpPath + '</td><td>'
+                + 'FTP用户名：' + serverInfoObj.ftpUsername + '<br/>'
+                + 'FTP密码：' + serverInfoObj.ftpPassword + '</td></tr>';
+            contentHtml += '</tbody></table><br/>';
+            contentHtml += '<b>已支持解析的终端上行消息：</b><br/>';
+            contentHtml += '<table class="pure-table"><thead><tr><th>消息ID</th><th>消息描述</th></tr></thead><tbody>';
+            var supportedMsgMap = serverInfoObj.supportedMessage;
+            for (const msgId in supportedMsgMap) {
+                contentHtml += '<tr><td>' + msgId + '</td><td>' + supportedMsgMap[msgId] + '</td></tr>'
+            }
+            contentHtml += '</tbody></table><br/>';
+            return contentHtml;
+        }
+
+        /**
+         * 构造流媒体服务器其他信息
+         * @param serverInfoObj
+         * @returns {string}
+         */
+        function buildMediaServerInfo(serverInfoObj) {
+            var contentHtml = '<b>协议和端口说明：</b><br/>';
+            contentHtml += '<table class="pure-table"><thead><tr><th>协议</th><th>TCP端口</th><th>是否启用</th></tr></thead><tbody>';
+            var serverMap = serverInfoObj.servers;
+            for (const protocol in serverMap) {
+                var info = serverMap[protocol];
+                var protocolDesc = protocol;
+                if (protocol === 'MAIN_VIDEO_AUDIO') {
+                    protocolDesc = "主码流音视频";
+                } else if (protocol === 'VIDEO_AUDIO') {
+                    protocolDesc = '音视频<span style="color: red;">(默认)</span>';
+                } else if (protocol === 'VIDEO') {
+                    protocolDesc = '视频';
+                } else if (protocol === 'TALK') {
+                    protocolDesc = '双向对讲';
+                } else if (protocol === 'LISTEN') {
+                    protocolDesc = '监听';
+                } else if (protocol === 'CENTER_BROADCAST') {
+                    protocolDesc = '中心广播';
+                } else if (protocol === 'TRANSFER') {
+                    protocolDesc = '透传';
+                } else if (protocol === 'PLAYBACK') {
+                    protocolDesc = '录像回放';
+                }
+                var isEnable = info.enable ? "开启" : "未开启";
+                contentHtml += '<tr><td>' + protocolDesc + '</td><td>' + info.tcpPort + '</td><td>' + isEnable + '</td></tr>';
+            }
+            contentHtml += '</tbody></table><br/>';
+            return contentHtml;
+        }
+
+        /**
+         * 构造Web服务器其他信息
+         * @param serverInfoObj
+         * @returns {string}
+         */
+        function buildWebServerInfo(serverInfoObj) {
+            var contentHtml = '<b>已支持的下行指令：</b><br/>';
+            contentHtml += '<table class="pure-table"><thead><tr><th>消息ID</th><th>消息描述</th><th>参数类名</th><th>应答消息ID</th></tr></thead><tbody>';
+            var supportedDownCommands = serverInfoObj.supportedDownCommands;
+            for (let i = 0; i < supportedDownCommands.length; i++) {
+                var downCommandInfo = supportedDownCommands[i];
+                var downCommandId = downCommandInfo.downCommandId;
+                //类名包含safety的为主动安全下行指令,包含media的为JT1078下行指令
+                if (downCommandInfo.commandParamClass.indexOf("safety") >= 0) {
+                    downCommandId += '<span style="color: red">（主动安全）</span>';
+                } else if (downCommandInfo.commandParamClass.indexOf("media") >= 0) {
+                    downCommandId += '<span style="color: blue">（JT1078）</span>';
+                }
+                contentHtml += '<tr><td>0x' + downCommandId + '</td>'
+                    + '<td>' + downCommandInfo.desc + '</td>'
+                    + '<td>' + downCommandInfo.commandParamClass + '</td>';
+                if(downCommandInfo.respCommandId) {
+                    contentHtml += '<td>0x' + downCommandInfo.respCommandId + '</td></tr>';
+                } else {
+                    contentHtml += '<td></td></tr>';
+                }
+            }
+            contentHtml += '</tbody></table><br/>';
+            return contentHtml;
+        }
+    });
+</script>

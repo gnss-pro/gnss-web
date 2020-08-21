@@ -1,0 +1,125 @@
+<script src="city-picker/city-picker.data.js"></script>
+<link href="city-picker/city-picker.css" rel="stylesheet"/>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">定时拍照开关(勾选为允许)</label>
+        <div class="layui-inline">
+            <input type="checkbox" name="timingFlagBit" title="摄像头1" lay-skin="primary" value="0">
+            <input type="checkbox" name="timingFlagBit" title="摄像头2" lay-skin="primary" value="1">
+            <input type="checkbox" name="timingFlagBit" title="摄像头3" lay-skin="primary" value="2">
+            <input type="checkbox" name="timingFlagBit" title="摄像头4" lay-skin="primary" value="3">
+            <input type="checkbox" name="timingFlagBit" title="摄像头5" lay-skin="primary" value="4">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">定时拍照存储(勾选为上传)</label>
+        <div class="layui-inline">
+            <input type="checkbox" name="timingFlagBit" title="摄像头1" lay-skin="primary" value="8">
+            <input type="checkbox" name="timingFlagBit" title="摄像头2" lay-skin="primary" value="9">
+            <input type="checkbox" name="timingFlagBit" title="摄像头3" lay-skin="primary" value="10">
+            <input type="checkbox" name="timingFlagBit" title="摄像头4" lay-skin="primary" value="11">
+            <input type="checkbox" name="timingFlagBit" title="摄像头5" lay-skin="primary" value="12">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">定时时间单位</label>
+            <div class="layui-input-inline">
+                <select name="timingUnit">
+                    <option value="0" selected>秒</option>
+                    <option value="1">分</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">定时时间间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="timingInterval" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">定距拍照开关(勾选为允许)</label>
+        <div class="layui-inline">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头1" lay-skin="primary" value="0">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头2" lay-skin="primary" value="1">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头3" lay-skin="primary" value="2">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头4" lay-skin="primary" value="3">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头5" lay-skin="primary" value="4">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">定距拍照存储(勾选为上传)</label>
+        <div class="layui-inline">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头1" lay-skin="primary" value="8">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头2" lay-skin="primary" value="9">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头3" lay-skin="primary" value="10">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头4" lay-skin="primary" value="11">
+            <input type="checkbox" name="distanceFlagBit" title="摄像头5" lay-skin="primary" value="12">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">定距距离单位</label>
+            <div class="layui-input-inline">
+                <select name="distanceUnit">
+                    <option value="0" selected>米</option>
+                    <option value="1">千米</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">定距距离间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="distanceInterval" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+        form.on('submit(paramForm)', function (data) {
+            var params = data.field;
+
+            //定时拍照已勾选的开关和存储标志
+            var timingFlagArr = [];
+            $('input[name="timingFlagBit"]:checked').each(function () {
+                timingFlagArr.push($(this).val());
+            });
+
+            //定距拍照已勾选的开关和存储标志
+            var distanceFlagArr = [];
+            $('input[name="distanceFlagBit"]:checked').each(function () {
+                distanceFlagArr.push($(this).val());
+            });
+
+            var paramsEntity = {
+                param0064: {
+                    flagBits: timingFlagArr,
+                    unit: params.timingUnit,
+                    interval: params.timingInterval
+                },
+                param0065: {
+                    flagBits: distanceFlagArr,
+                    unit: params.distanceUnit,
+                    interval: params.distanceInterval
+                }
+            };
+
+            //发送JT808指令
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

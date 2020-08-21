@@ -1,0 +1,472 @@
+/* DHX ENGINE */
+/* DHX2008 BLACK THEME */
+
+/* active window */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_body_outer {
+	position: absolute;
+	overflow: hidden;
+	left: 0px;
+	top: 0px;
+	background-image: url("../imgs/dhxwins_dhx_black/active/header_bg.gif");
+	background-repeat: repeat-x;
+	background-position: top;
+	border: #545454 1px solid;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_body_outer div.dhtmlx_wins_body_inner {
+	position: absolute;
+	overflow: hidden;
+	border: #000000 1px solid;
+	background-color: #FFFFFF;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active .dhtmlx_wins_no_header { /* will added to div.dhtmlx_wins_body_inner in case of no header */
+	border-top: #B5CDE4 6px solid;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_title {
+	position: absolute;
+	top: 4px;
+	left: 22px;
+	color: #999999;
+	font-family: Tahoma;
+	font-size: 11px;
+	font-weight: bold;
+	cursor: default;
+	white-space: nowrap;
+	overflow: hidden;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+/* active progress */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_progress {
+	background-image: url("../imgs/dhxwins_dhx_black/active/progress.gif");
+}
+
+
+/* active buttons */
+/* close */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_close_default {
+	background-position: -96px 0px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_close_disabled {
+	background-position: -96px -45px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_close_over_default {
+	background-position: -96px -15px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_close_over_pressed {
+	background-position: -96px -30px;
+}
+/* minmax1 */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_minmax1_default {
+	background-position: -64px 0px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_minmax1_disabled {
+	background-position: -64px -45px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_minmax1_over_default {
+	background-position: -64px -15px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_minmax1_over_pressed {
+	background-position: -64px -30px;
+}
+/* minmax2 */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_minmax2_default {
+	background-position: -80px 0px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_minmax2_disabled {
+	background-position: -80px -45px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_minmax2_over_default {
+	background-position: -80px -15px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_minmax2_over_pressed {
+	background-position: -80px -30px;
+}
+/* park */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_park_default {
+	background-position: -48px 0px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_park_disabled {
+	background-position: -48px -45px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_park_over_default {
+	background-position: -48px -15px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_park_over_pressed {
+	background-position: -48px -30px;
+}
+/* stick */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_stick_default {
+	background-position: 0px 0px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_stick_disabled {
+	background-position: 0px -45px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_stick_over_default {
+	background-position: 0px -15px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_stick_over_pressed {
+	background-position: 0px -30px;
+}
+/* sticked */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_sticked_default {
+	background-position: -16px 0px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_sticked_disabled {
+	background-position: -16px -45px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_sticked_over_default {
+	background-position: -16px -15px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_sticked_over_pressed {
+	background-position: -16px -30px;
+}
+/* help */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_help_default {
+	background-position: -32px 0px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_help_disabled {
+	background-position: -32px -45px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_help_over_default {
+	background-position: -32px -15px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_help_over_pressed {
+	background-position: -32px -30px;
+}
+/* dock */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_dock_default {
+	background-position: -112px 0px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_dock_disabled {
+	background-position: -112px -45px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_dock_over_default {
+	background-position: -112px -15px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_active div.dhtmlx_wins_btns .dhtmlx_button_dock_over_pressed {
+	background-position: -112px -30px;
+}
+
+
+/* inactive window */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_body_outer {
+	position: absolute;
+	overflow: hidden;
+	left: 0px;
+	top: 0px;
+	background-image: url("../imgs/dhxwins_dhx_black/inactive/header_bg.gif");
+	background-repeat: repeat-x;
+	background-position: top;
+	border: #545454 1px solid;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_body_outer div.dhtmlx_wins_body_inner {
+	position: absolute;
+	overflow: hidden;
+	border: #000000 1px solid;
+	background-color: #FFFFFF;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive .dhtmlx_wins_no_header { /* will added to div.dhtmlx_wins_body_inner in case of no header */
+	border-top: #D6E2ED 6px solid;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_title {
+	position: absolute;
+	top: 4px;
+	left: 22px;
+	color: #555555;
+	font-family: Tahoma;
+	font-size: 11px;
+	font-weight: bold;
+	cursor: default;
+	white-space: nowrap;
+	overflow: hidden;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+/* inactive progress */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_progress {
+	background-image: url("../imgs/dhxwins_dhx_black/inactive/progress.gif");
+}
+
+/* inactive butons */
+/* close */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_close_default {
+	background-position: -96px -60px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_close_disabled {
+	background-position: -96px -105px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_close_over_default {
+	background-position: -96px -75px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_close_over_pressed {
+	background-position: -96px -90px;
+}
+/* minmax1 */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_minmax1_default {
+	background-position: -64px -60px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_minmax1_disabled {
+	background-position: -64px -105px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_minmax1_over_default {
+	background-position: -64px -75px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_minmax1_over_pressed {
+	background-position: -64px -90px;
+}
+/* minmax2 */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_minmax2_default {
+	background-position: -80px -60px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_minmax2_disabled {
+	background-position: -80px -105px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_minmax2_over_default {
+	background-position: -80px -75px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_minmax2_over_pressed {
+	background-position: -80px -90px;
+}
+/* park */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_park_default {
+	background-position: -48px -60px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_park_disabled {
+	background-position: -48px -105px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_park_over_default {
+	background-position: -48px -75px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_park_over_pressed {
+	background-position: -48px -90px;
+}
+/* stick */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_stick_default {
+	background-position: 0px -60px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_stick_disabled {
+	background-position: 0px -105px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_stick_over_default {
+	background-position: 0px -75px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_stick_over_pressed {
+	background-position: 0px -90px;
+}
+/* sticked */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_sticked_default {
+	background-position: -16px -60px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_sticked_disabled {
+	background-position: -16px -105px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_sticked_over_default {
+	background-position: -16px -75px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_sticked_over_pressed {
+	background-position: -16px -90px;
+}
+/* help */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_help_default {
+	background-position: -32px -60px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_help_disabled {
+	background-position: -32px -105px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_help_over_default {
+	background-position: -32px -75px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_help_over_pressed {
+	background-position: -32px -90px;
+}
+/* dock */
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_dock_default {
+	background-position: -112px -60px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_dock_disabled {
+	background-position: -112px -105px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_dock_over_default {
+	background-position: -112px -75px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_window_inactive div.dhtmlx_wins_btns .dhtmlx_button_dock_over_pressed {
+	background-position: -112px -90px;
+}
+
+/* common */
+/* content blocker */
+/*
+.dhtmlx_skin_dhx_black div.dhtmlx_window_main_content_blocker {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 101%;
+	height: 101%;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	background: #FFFFFF;
+	z-index: 1;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+*/
+/* window icon */
+.dhtmlx_skin_dhx_black div.dhtmlx_wins_icon {
+	position: absolute;
+	top: 7px;
+	left: 8px;
+	width: 9px;
+	height: 9px;
+	border: none;
+	z-index: 1;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	background-repeat: no-repeat;
+	font-size: 1px;
+}
+/* buttons */
+.dhtmlx_skin_dhx_black div.dhtmlx_wins_btns {
+	position: absolute;
+	right: 6px;
+	top: 3px;
+	font-size: 1px;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_wins_btns div.dhtmlx_wins_btns_button {
+	position: relative;
+	float: left;
+	width: 16px;
+	height: 16px;
+	background-image: url("../imgs/dhxwins_dhx_black/buttons.gif");
+}
+/*
+.dhtmlx_skin_dhx_black div.dhtmlx_window_main_content {
+	position: relative;
+	left: 0px;
+	top: 0px;
+	overflow: hidden;
+}
+*/
+/* resizers */
+.dhtmlx_skin_dhx_black div.dhtmlx_wins_resizer_t {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 5px; /* should be generated by script */
+	font-size: 1px;
+	background: #FFFFFF;
+	z-index: 1;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_wins_resizer_l {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 5px; /* should be generated by script */
+	height: 100%;
+	font-size: 1px;
+	background: #FFFFFF;
+	z-index: 1;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_wins_resizer_r {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	width: 5px; /* should be generated by script */
+	height: 100%;
+	font-size: 1px;
+	background: #FFFFFF;
+	z-index: 1;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.dhtmlx_skin_dhx_black div.dhtmlx_wins_resizer_b {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	width: 100%;
+	height: 5px; /* should be generated by script */
+	font-size: 1px;
+	background: #FFFFFF;
+	z-index: 1;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+/* progress */
+.dhtmlx_skin_dhx_black div.dhtmlx_wins_progress {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 16px;
+	height: 16px;
+	background-repeat: no-repeat;
+}
+/* statusbar */
+.dhtmlx_skin_dhx_black div.dhxcont_sb_container {
+	position: relative;
+	height: 17px;
+}
+
+.dhtmlx_skin_dhx_black div.dhxcont_statusbar {
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+	_bottom: -1px;
+	border-top: #545454 1px solid;
+	background-color: #6e6e6e;
+	width: 100%;
+	overflow: hidden;
+	font-family: Tahoma;
+	font-size: 11px;
+	vertical-align: middle;
+	line-height: 17px;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	cursor: default;
+	padding-left: 4px;
+	color:#ffffff !important;
+}
+

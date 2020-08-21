@@ -1,0 +1,41 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">信息类型</label>
+            <div class="layui-input-inline">
+                <select name="infoType" id="infoType">
+                    <option value="1">天气</option>
+                    <option value="2">新闻</option>
+                    <option value="127">其他</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">信息内容</label>
+            <div class="layui-input-inline">
+                <input type="text" name="infoContent" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8304";
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = data.field;
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

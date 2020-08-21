@@ -1,0 +1,351 @@
+<script src="layui/xm-select.js"></script>
+
+<form class="layui-form" id="queryInfo" method="post" lay-filter="queryInfo">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">逻辑通道号</label>
+            <div class="layui-input-inline">
+                <select name="channelId" id="channelId">
+                    <option value="0" selected>所有通道</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline" style="width: 160px;">
+            <input type="text" id="startTime" placeholder="开始时间" class="layui-input">
+        </div>
+        <div class="layui-inline" style="width: 160px;">
+            <input type="text" id="endTime" placeholder="结束时间" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">报警标志</label>
+            <div class="layui-input-inline">
+                <div id="alarmSelector"></div>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">音视频资源类型</label>
+            <div class="layui-input-inline">
+                <select name="avItemType" id="avItemType">
+                    <option value="0" selected>音视频</option>
+                    <option value="1">音频</option>
+                    <option value="2">视频</option>
+                    <option value="3">视频或音视频</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">码流类型</label>
+            <div class="layui-input-inline">
+                <select name="streamType" id="streamType">
+                    <option value="0" selected>所有码流</option>
+                    <option value="1">主码流</option>
+                    <option value="2">子码流</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">存储器类型</label>
+            <div class="layui-input-inline">
+                <select name="memoryType" id="memoryType">
+                    <option value="0" selected>所有存储器</option>
+                    <option value="1">主存储器</option>
+                    <option value="2">备灾存储器</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn layui-btn-normal" id="query">查询资源列表</button>
+    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="queryFtpFile">查询FTP上传文件</button>
+</div>
+
+<table class="layui-hide" id="resourcesTable" lay-filter="resourcesTable"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-normal layui-btn-mini" lay-event="play">播放</a>
+    <a class="layui-btn layui-btn-normal layui-btn-mini" lay-event="download">下载</a>
+</script>
+
+</body>
+<script>
+    var paramSelector;
+    var terminalId;
+    var simNum;
+    $.ajax({
+        type: "POST",
+        dataType: 'json',
+        contentType: "application/json;charset=UTF-8",
+        url: appName + "/api/v1/global/alarmTypeList",
+        data: JSON.stringify(["ALARM", "JT1078_ALARM"]),
+        success: function (ret) {
+            if (ret.code == 0) {
+                let paramInfoArr = [];
+                ret.data.forEach(item => {
+                    paramInfoArr.push({name: item.desc, value: item.code});
+                });
+                paramSelector = xmSelect.render({
+                    el: '#alarmSelector',
+                    toolbar: {
+                        show: true,
+                    },
+                    theme: {
+                        color: '#0081ff',
+                    },
+                    data: paramInfoArr
+                });
+            } else {
+                layer.msg("查询报警类型失败:" + ret.msg, {icon: 5});
+            }
+        }
+    });
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#startTime'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+    });
+
+    layui.use(['table', 'form', 'util'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        var util = layui.util;
+        form.render();
+        table.render({
+            id: 'resourcesTable'
+            , elem: '#resourcesTable'
+            , height: 500
+            , title: '录像资源列表'
+            , limit: Number.MAX_VALUE //数据表格默认全部显示
+            , cols: [[
+                {field: 'channelId', title: '逻辑通道号', width: 100}
+                , {
+                    field: 'startTime', title: '开始时间', width: 180, templet: function (d) {
+                        return util.toDateString(d.startTime, 'yyyy-MM-dd HH:mm:ss');
+                    }
+                }
+                , {
+                    field: 'endTime', title: '结束时间', width: 180, templet: function (d) {
+                        return util.toDateString(d.endTime, 'yyyy-MM-dd HH:mm:ss');
+                    }
+                }
+                , {
+                    field: 'alarmFlag', title: '报警标志', width: 150, templet: function (d) {
+                        //报警标志格式化十六进制(4字节)
+                        var alarmFlagHex = d.alarmFlag.toString(16).toUpperCase();
+                        while (alarmFlagHex.length < 8) {
+                            alarmFlagHex = "0" + alarmFlagHex;
+                        }
+                        return "0x" + alarmFlagHex;
+                    }
+                }
+                , {
+                    field: 'avItemType', title: '音视频资源类型', width: 150, templet: function (d) {
+                        var desc = "";
+                        if (d.avItemType === "AV") {
+                            desc = "音视频";
+                        } else if (d.avItemType === "AUDIO") {
+                            desc = "音频";
+                        } else if (d.avItemType === "VIDEO") {
+                            desc = "视频";
+                        } else if (d.avItemType === "VIDEO_OR_AV") {
+                            desc = "视频或音视频";
+                        }
+                        return desc;
+                    }
+                }
+                , {
+                    field: 'streamType', title: '码流类型', width: 150, templet: function (d) {
+                        var desc = "";
+                        if (d.streamType === "MAIN_STREAM") {
+                            desc = "主码流";
+                        } else if (d.streamType === "SUB_STREAM") {
+                            desc = "子码流";
+                        }
+                        return desc;
+                    }
+                }
+                , {
+                    field: 'memoryType', title: '存储器类型', width: 150, templet: function (d) {
+                        var desc = "";
+                        if (d.memoryType === "MAIN_MEMORY") {
+                            desc = "主存储器";
+                        } else if (d.memoryType === "BACKUP_MEMORY") {
+                            desc = "备灾存储器";
+                        }
+                        return desc;
+                    }
+                }
+                , {
+                    field: 'fileSize', title: '文件大小', width: 150, templet: function (d) {
+                        return fileSizeFormat(d.fileSize, 1);
+                    }
+                }
+                , {field: 'operation', title: '操作', width: 200, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //获取按钮
+        table.on('tool(resourcesTable)', function (obj) {
+            var data = obj.data;
+            //下载
+            if (obj.event === 'download') {
+                var url = "/api/v1/commands/jt808/media/sendCommand9206";
+                var paramsEntity = {
+                    channelId: data.channelId
+                    , startTime: data.startTime
+                    , endTime: data.endTime
+                    , alarmFlag: data.alarmFlag
+                    , avItemType: data.avItemType
+                    , streamType: data.streamType
+                    , memoryType: data.memoryType
+                };
+                //发送JT808指令
+                sendJt808Command(url, paramsEntity, 8000);
+            } else if (obj.event === 'play') {
+                layer.open({
+                    type: 2,
+                    title: "录像回放",
+                    area: ['70%', '85%'],
+                    skin: 'layui-layer-nobg',
+                    shadeClose: true,
+                    content: "command/av/playback.html",
+                    success: function (layero, index) {
+                        //获取子页面的iframe
+                        var iframe = window['layui-layer-iframe' + index];
+                        iframe.child(terminalId, simNum, data, index);
+                    }
+                });
+            }
+        });
+
+        form.on('submit(queryFtpFile)', function (data) {
+            layer.open({
+                type: 2,
+                title: 'FTP录像文件管理',
+                shadeClose: true,
+                offset: '10%',
+                area: ['90%', '80%'],
+                content: 'command/av/recordFileManage.html'
+            });
+            return false;
+        });
+
+        $("#query").click(function () {
+            //已勾选的报警类型
+            if (!paramSelector) {
+                layer.msg("下拉框未初始化", {icon: 5});
+                return false;
+            }
+            var alarmBits = paramSelector.getValue('value');
+
+            //开始时间和结束时间
+            var startTime = new Date($('#startTime').val()).getTime();
+            var endTime = new Date($('#endTime').val()).getTime();
+
+            var url = "/api/v1/commands/jt808/media/sendCommand9205";
+            var paramsEntity = {
+                channelId: $('#channelId').val()
+                , startTime: startTime
+                , endTime: endTime
+                , alarmBits: alarmBits
+                , avItemType: $('#avItemType').val()
+                , streamType: $('#streamType').val()
+                , memoryType: $('#memoryType').val()
+            };
+            //发送JT808指令
+            var timeout = 30000;
+            layer.msg("正在发送,等待时间:" + timeout + "毫秒")
+            //清空表格
+            table.reload("resourcesTable", {
+                data: []
+            });
+            sendJt808Command(url, paramsEntity, timeout, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        if (ret.data.responseParams) {
+                            terminalId = ret.data.terminalId;
+                            simNum = ret.data.simCode;
+                            var jsonObj = eval('(' + ret.data.responseParams + ')');
+                            var itemList = jsonObj;
+                            table.reload('resourcesTable', {
+                                data: itemList
+                            });
+                        }
+                    } else {
+                        layer.msg("发送失败:" + ret.data.resultDesc + ",等待时间:" + timeout + "毫秒", {icon: 5});
+                    }
+                } else {
+                    layer.msg("发送失败:" + ret.msg + ",等待时间:" + timeout + "毫秒", {icon: 5});
+                }
+            });
+        });
+
+        /**
+         * [fileSizeFormat 格式化文件大小]
+         * @param  {[int]} total [文件大小]
+         * @param  {[int]} n     [total参数的原始单位如果为Byte，则n设为1，如果为kb，则n设为2，如果为mb，则n设为3，以此类推]
+         * @return {[string]}       [带单位的文件大小的字符串]
+         */
+        function fileSizeFormat(total, n) {
+            var format;
+            var len = total / (1024.0);
+            if (len > 1000) {
+                return arguments.callee(len, ++n);
+            } else {
+                switch (n) {
+                    case 1:
+                        format = len.toFixed(2) + "KB";
+                        break;
+                    case 2:
+                        format = len.toFixed(2) + "MB";
+                        break;
+                    case 3:
+                        format = len.toFixed(2) + "GB";
+                        break;
+                    case 4:
+                        format = len.toFixed(2) + "TB";
+                        break;
+                }
+                return format;
+            }
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,56 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">发送类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sendType" value="0" title="文本" checked>
+            </div>
+            <div class="layui-input-block">
+                <input type="radio" name="sendType" value="1" title="十六进制字符串">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">消息类型</label>
+            <div class="layui-input-inline">
+                <select name="msgType" id="infoType">
+                    <option value="0">GNSS模块详细定位数据</option>
+                    <option value="11">道路运输证IC卡信息</option>
+                    <option value="65">串口1透传</option>
+                    <option value="66">串口2透传</option>
+                    <option value="247">状态查询</option>
+                    <option value="248">信息查询</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">信息内容</label>
+            <div class="layui-input-inline">
+                <input type="text" name="content" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8900";
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = data.field;
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

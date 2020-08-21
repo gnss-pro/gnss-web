@@ -1,0 +1,163 @@
+<link rel="stylesheet" href="layui/css/layui.css" media="all">
+<script src="jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+
+<div class="layui-carousel" id="carouselView">
+    <div carousel-item="" id="preview">
+    </div>
+</div>
+<div>
+    <a class="layui-btn layui-btn-normal layui-btn-mini" id="download">下载所有附件</a>
+</div>
+
+<script>
+    var appName = "/gnss-web";
+    var windowIndex;
+    var alarmId;
+    var fileServerConfig;
+    var attachmentList;
+
+    /**
+     * 接收父组件的参数
+     */
+    function child(data, index) {
+        windowIndex = index;
+        alarmId = data.alarmId;
+        //查询文件服务器配置信息
+        fileServerConfig = queryFileServerConfig();
+        initCarousel();
+    }
+
+    function initCarousel() {
+        layui.use(['carousel', 'form'], function () {
+            var carousel = layui.carousel;
+            //查询附件列表并动态添加到轮播组件
+            $.ajax({
+                url: appName + "/api/v1/terminal/attachments/alarm/" + alarmId,
+                type: 'get',
+                data: null,
+                dataType: 'json',
+                success: function (ret) {
+                    if (!ret.data || ret.data.length === 0) {
+                        parent.layer.msg("无附件数据", {icon: 5});
+                        parent.layer.close(windowIndex);
+                        return;
+                    }
+                    attachmentList = ret.data;
+                    $.each(ret.data, function (i, item) {
+                        //组拼文件服务器的播放url
+                        var fileUrl = location.protocol + "//" + fileServerConfig.wanIp + ":"
+                            + fileServerConfig.httpPort
+                            + "/file-server/api/v1/files/play?path="
+                            + item.base64FilePath;
+                        //文件类型(0图片,1音频,2视频,3文本,4其他)
+                        var fileType = item.fileType;
+                        var str = '<div>\n';
+                        if (fileType === 0) {
+                            str += '<img src="' + fileUrl + '" alt="" style="width: 600px;height: 320px;">\n';
+                        } else if (fileType === 1) {
+                            str += '<audio src="' + fileUrl + '" controls="controls"></audio>\n';
+                        } else if (fileType === 2) {
+                            str += '<video src="' + fileUrl + '" style="width: 600px;height: 320px;" controls="controls" autoplay="autoplay"></video>\n';
+                        }
+                        str += '</div>';
+                        $('#preview').append(str);
+                    });
+                    //改变下时间间隔、动画类型、高度
+                    var ins = carousel.render({
+                        elem: '#carouselView'
+                        , interval: 3000
+                        , arrow: 'always'
+                        , anim: 'default'
+                        , width: '600px'
+                        , height: '320px'
+                    });
+                    ins.reload({
+                        elem: '#carouselView'
+                        , interval: 2000
+                        , arrow: 'always'
+                        , anim: 'default'
+                        , width: '600px'
+                        , height: '320px'
+                    });
+                },
+                error: function () {
+                    parent.layer.msg("查询附件失败", {icon: 5});
+                    parent.layer.close(windowIndex);
+                }
+            });
+        });
+    }
+
+    /**
+     * 同步请求查询文件服务器配置信息
+     * @returns {null}
+     */
+    function queryFileServerConfig() {
+        var fileServerConfig = null;
+        $.ajax({
+            url: appName + "/api/v1/global/fileServerInfo",
+            type: 'get',
+            async: false,
+            data: null,
+            dataType: 'json',
+            success: function (ret) {
+                fileServerConfig = ret.data;
+            }
+        });
+        return fileServerConfig;
+    }
+
+    /**
+     * 批量下载文件
+     */
+    $("#download").click(function () {
+        $.each(attachmentList, function (i, item) {
+            //组拼文件服务器的下载url
+            var fileUrl = location.protocol + "//" + fileServerConfig.wanIp + ":"
+                + fileServerConfig.httpPort
+                + "/file-server/api/v1/files/download?path="
+                + item.base64FilePath;
+            download(item, fileUrl);
+        });
+    });
+
+    /**
+     * 下载单个文件
+     * @param attachmentInfo
+     * @param fileUrl
+     */
+    function download(attachmentInfo, fileUrl) {
+        // 获取XMLHttpRequest
+        var xmlResquest = new XMLHttpRequest();
+        // 发起请求
+        xmlResquest.open("GET", fileUrl, true);
+        // 设置请求头类型
+        xmlResquest.setRequestHeader("Content-type", "application/json");
+        xmlResquest.responseType = "blob";
+        // 返回
+        xmlResquest.onload = function (oEvent) {
+            var content = xmlResquest.response;
+            // 组装a标签
+            var elink = document.createElement("a");
+
+            var newFileName = attachmentInfo.fileName;
+            //设置文件下载路径
+            elink.download = newFileName;
+            elink.style.display = "none";
+            var blob = new Blob([content]);
+
+            //解决下载不存在文件的问题，根据blob大小判断
+            if (blob.size == 0) {
+                layer.msg('服务器没找到此文件，请联系管理员!');
+            } else {
+                elink.href = URL.createObjectURL(blob);
+                document.body.appendChild(elink);
+                elink.click();
+                document.body.removeChild(elink);
+            }
+        };
+        xmlResquest.send();
+    }
+
+</script>

@@ -1,0 +1,126 @@
+<script src="layui/xm-select.js"></script>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="queryConfig">查询参数设置</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <div id="paramIdList"></div>
+            </div>
+            <div class="layui-input-inline">
+                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="multiQueryConfig">查询指定终端参数</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var paramInfoMap = {};
+    var paramSelector;
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        contentType: "application/json;charset=UTF-8",
+        url: appName + "/api/v1/global/terminalParamInfo",
+        success: function (ret) {
+            if (ret.code == 0) {
+                let paramInfoArr = [];
+                ret.data.forEach(item => {
+                    paramInfoMap[item.paramId + ""] = item.paramDesc;
+                    paramInfoArr.push({name: item.paramDesc, value: item.paramId});
+                });
+                paramSelector = xmSelect.render({
+                    el: '#paramIdList',
+                    toolbar: {
+                        show: true,
+                    },
+                    theme: {
+                        color: '#0081ff',
+                    },
+                    data: paramInfoArr
+                });
+            } else {
+                layer.msg("查询参数选项失败:" + ret.msg, {icon: 5});
+            }
+        }
+    });
+
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        //查询参数设置
+        form.on('submit(queryConfig)', function (data) {
+            var url = "/api/v1/commands/jt808/basic/sendCommand8104";
+            sendJt808Command(url, {}, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS' && ret.data.responseParams) {
+                        layer.msg("查询成功", {icon: 1});
+                        handleResult(ret);
+                    } else {
+                        layer.msg("查询失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("查询失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+
+        //查询指定终端参数
+        form.on('submit(multiQueryConfig)', function (data) {
+            if (!paramSelector) {
+                layer.msg("下拉框未初始化", {icon: 5});
+                return false;
+            }
+            var paramIdList = paramSelector.getValue('value');
+            if (!paramIdList.length) {
+                layer.msg("请选择查询的参数", {icon: 5});
+                return false;
+            }
+            var paramsEntity = {paramIdList: paramIdList};
+            var url = "/api/v1/commands/jt808/basic/sendCommand8106";
+            sendJt808Command(url, paramsEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS' && ret.data.responseParams) {
+                        layer.msg("查询成功", {icon: 1});
+                        handleResult(ret);
+                    } else {
+                        layer.msg("查询失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("查询失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+
+    /**
+     * 处理成功响应的结果
+     * @param ret
+     */
+    function handleResult(ret) {
+        var jsonObj = eval('(' + ret.data.responseParams + ')');
+        var content = '<div style="padding: 20px 40px;">'
+        content += "应答流水号:" + jsonObj["replyMsgFlowId"] + ";应答参数个数:" + jsonObj["itemCount"] + "<br/><br/>";
+        var itemMap = jsonObj["itemMap"];
+        for (var key in itemMap) {
+            var paramDesc = paramInfoMap[key + ""];
+            if (paramDesc) {
+                content += paramDesc + ":" + itemMap[key] + "<br/>";
+            } else {
+                content += key + ":" + itemMap[key] + "<br/>";
+            }
+        }
+        content += "</div>";
+        layer.open({
+            type: 1
+            , title: '查询终端参数应答'
+            , area: ['40%', '70%']
+            , content: content
+            , shade: 0
+        });
+    }
+</script>

@@ -1,0 +1,168 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">位置汇报策略</label>
+            <div class="layui-input-inline">
+                <select name="0020">
+                    <option value="">请选择</option>
+                    <option value="0">定时汇报</option>
+                    <option value="1">定距汇报</option>
+                    <option value="2">定时和定距汇报</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">位置汇报方案</label>
+            <div class="layui-input-inline">
+                <select name="0021">
+                    <option value="">请选择</option>
+                    <option value="0">根据ACC状态</option>
+                    <option value="1">根据登录状态和ACC状态</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">驾驶员未登录汇报时间间隔(秒)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0022" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">休眠时汇报时间间隔(秒)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0027" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">紧急报警时汇报时间间隔(秒)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0028" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">缺省时间汇报间隔(秒)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0029" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">缺省距离汇报间隔(米)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="002C" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">驾驶员未登录汇报距离间隔(米)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="002D" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">休眠时汇报距离间隔(米)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="002E" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">紧急报警时汇报距离间隔(米)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="002F" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">拐点补传角度</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0030" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">电子围栏半径(非法位移阈值)(米)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0031" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">违规行驶时段范围</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" id="startTime0032" placeholder="开始时间" class="layui-input">
+            </div>
+            <div class="layui-form-mid">-</div>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" id="endTime0032" placeholder="结束时间" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+        //监听提交
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = {
+                items: data.field,
+            };
+
+            //违规行驶时段范围
+            var startTime0032 = $("#startTime0032").val();
+            var endTime0032 = $("#endTime0032").val();
+            if ((startTime0032 && !endTime0032) || (!startTime0032 && endTime0032)) {
+                layer.msg("违规行驶时段范围开始和结束时间不能为空", {icon: 5});
+                return false;
+            }
+            if (startTime0032 && endTime0032) {
+                var startTime0032Arr = startTime0032.split(":");
+                var endTime0032Arr = endTime0032.split(":");
+                paramsEntity['param0032'] = [startTime0032Arr[0], startTime0032Arr[1], endTime0032Arr[0], endTime0032Arr[1]];
+            }
+
+            //发送JT808指令
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#startTime0032'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime0032'
+            ,type: 'time'
+            ,format: 'HH:mm'
+            ,theme: '#1E9FFF'
+        });
+    });
+</script>

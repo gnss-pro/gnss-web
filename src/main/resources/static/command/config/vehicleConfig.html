@@ -1,0 +1,87 @@
+<script src="city-picker/city-picker.data.js"></script>
+<link href="city-picker/city-picker.css" rel="stylesheet"/>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">车辆里程表读数(0.1km)</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0080" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">车辆所在的省市</label>
+            <div class="layui-input-inline">
+                <input type="text" autocomplete="on" class="layui-input" id="city-picker" name="city-picker" readonly="readonly" data-toggle="city-picker" placeholder="请选择">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">车牌号码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0083" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">车牌颜色</label>
+            <div class="layui-input-inline">
+                <select name="0084">
+                    <option value="1">蓝色</option>
+                    <option value="2">黄色</option>
+                    <option value="3">黑色</option>
+                    <option value="4">白色</option>
+                    <option value="5">绿色</option>
+                    <option value="9">其他</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.extend({
+        citypicker: 'city-picker/city-picker'
+    }).use(['jquery', 'table', 'citypicker'], function () {
+        var $ = layui.$
+            , table = layui.table
+            , form = layui.form
+            , cityPicker = layui.citypicker;
+
+        var currentPicker = new cityPicker("#city-picker", {
+            provincename:"provinceId",
+            cityname:"cityId",
+            districtname: "districtId",
+            level: 'cityId'
+        });
+    });
+
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+        form.on('submit(paramForm)', function (data) {
+            var cityId = $("#cityId").val();
+            if (cityId) {
+                data.field["0081"] = cityId.substr(0, 2);
+                data.field["0082"] = cityId.substr(2);
+            }
+            //删除省市控件的属性
+            delete data.field["city-picker"];
+            delete data.field["provinceId"];
+            delete data.field["cityId"];
+
+            var paramsEntity = {
+                items: data.field
+            };
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>JT808测试</title>
+    <link rel="stylesheet" type="text/css" href="js/dhtmlx/dhtmlxGrid/codebase/dhtmlxgrid.css">
+    <link rel="stylesheet" type="text/css" href="js/dhtmlx/dhtmlxGrid/codebase/skins/dhtmlxgrid_dhx_skyblue.css">
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+    <script src="jquery.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/dhtmlx/dhtmlxGrid/codebase/dhtmlxcommon.js"></script>
+    <script src="js/dhtmlx/dhtmlxGrid/codebase/dhtmlxgrid.js"></script>
+    <script src="js/dhtmlx/dhtmlxGrid/codebase/dhtmlxgridcell.js"></script>
+    <script src="js/dhtmlx/dhtmlxGrid/codebase/excells/dhtmlxgrid_excell_link.js"></script>
+    <script src="jt808Test.js"></script>
+    <script src="commandMenu.js"></script>
+    <style type="text/css">
+        * {
+            font-size: 13px;
+        }
+
+        fieldset {
+            position: relative;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            padding: 5px 5px 5px 5px;
+        }
+
+        legend {
+            color: blue;
+        }
+
+        .grid_hover {
+            background-color: #7FFFD4;
+            font-size: 20px;
+        }
+
+        .layui-form-select dl dd.layui-this {
+            background-color: #1E9FFF !important;
+        }
+
+        .layui-form-label {
+            padding: 5px 15px;
+        }
+
+        .layui-input, .layui-select, .layui-textarea {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .layui-form-select dl dd, .layui-form-select dl dt {
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="responseInfo" style="color:red"></div>
+<br/>
+<fieldset>
+    <legend>资料维护</legend>
+    <button id="docManage" class="layui-btn layui-btn-xs layui-btn-normal">接口文档</button>
+    <button id="serverInfoManage" class="layui-btn layui-btn-xs layui-btn-normal">服务器配置信息</button>
+    <br/>
+    终端手机号:<input id="terminalSimCode" type="text">
+    终端号码:<input id="terminalNum" type="text">
+    车牌号:<input id="vehicleNum" type="text">
+    车牌颜色:
+    <select name="vehicleColor" id="vehicleColor">
+        <option value="BLUE">蓝色</option>
+        <option value="YELLOW" selected="selected">黄色</option>
+        <option value="BLACK">黑色</option>
+        <option value="WHITE">白色</option>
+        <option value="GREEN">绿色</option>
+        <option value="OTHER">其他</option>
+    </select>
+    <button id="createTerminalInfo" class="layui-btn layui-btn-xs layui-btn-normal">添加终端信息</button>
+    <br/>
+    终端手机号:<input id="terminalSimCode1" type="text">
+    <button id="queryTerminalInfo" class="layui-btn layui-btn-xs layui-btn-normal">查询终端信息</button>
+</fieldset>
+<br/>
+<fieldset>
+    <legend>压力测试</legend>
+    <button id="queryLoadTestInfo" class="layui-btn layui-btn-xs layui-btn-normal">查询压力测试状态</button>
+    <button id="resetLocationCount" class="layui-btn layui-btn-xs layui-btn-normal">重置位置数量</button>
+    <button class="layui-btn layui-btn-xs layui-btn-normal" onClick="openJavaMediaPage()">JT1078音视频(JAVA流媒体)</button>
+    <button class="layui-btn layui-btn-xs layui-btn-normal" onClick="openGoMediaPage()">JT1078音视频(GO流媒体)</button>
+    <br>
+    <br>
+    终端手机号:<input id="phoneNum" type="text">
+    <button id="queryLastLocation" class="layui-btn layui-btn-xs layui-btn-normal">查询最后位置</button>
+    <button id="queryTrack" class="layui-btn layui-btn-xs layui-btn-normal">查询轨迹</button>
+    <button id="queryAlarms" class="layui-btn layui-btn-xs layui-btn-normal">查询报警</button>
+    <button id="queryMediaFiles" class="layui-btn layui-btn-xs layui-btn-normal">查询多媒体文件</button>
+    <button id="queryRecordFiles" class="layui-btn layui-btn-xs layui-btn-normal">查询FTP上传文件</button>
+    <button id="querySafetyAlarms" class="layui-btn layui-btn-xs layui-btn-normal">查询主动安全报警</button>
+</fieldset>
+<br/>
+<fieldset>
+    <legend>指令下发</legend>
+    终端手机号:<input id="commandPhoneNum" type="text">
+    <div>
+        <div style="float: left; width: 200px; height: 300px; padding: 10px; border: 1px solid #ddd; overflow: auto;">
+            <ul id="commandMenu"></ul>
+        </div>
+        <div class="site-tips"
+             style="height: 300px; padding: 10px; margin-left: 10px; vertical-align: top; overflow: auto;"
+             id="form-view">
+        </div>
+    </div>
+</fieldset>
+<br/>
+<fieldset>
+    <legend>JT808日志信息</legend>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <div class="layui-input-inline">
+                <input type="checkbox" name="logBtn" id="logBtn" lay-skin="switch" lay-filter="switchLog"
+                       lay-text="开启日志上传|关闭日志上传">
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" id="phoneNum1" class="layui-input" placeholder="终端手机号">
+            </div>
+            <div class="layui-input-inline">
+                <input class="layui-input" placeholder="开始时间" id="logStartTime">
+            </div>
+            <div class="layui-input-inline">
+                <input class="layui-input" placeholder="结束时间" id="logEndTime">
+            </div>
+            <div class="layui-input-inline">
+                <button id="queryJt808Log" class="layui-btn layui-btn-sm layui-btn-normal" lay-submit="" lay-filter="logForm">查询</button>
+                <button id="deleteJt808Log" class="layui-btn layui-btn-sm layui-btn-normal" lay-submit="" lay-filter="deleteLog">删除</button>
+            </div>
+        </div>
+    </form>
+    <div id="gridbox" style="width:100%; height:300px; background-color:white; font-size:20px;"></div>
+</fieldset>
+
+<script type="text/javascript">
+    function openJavaMediaPage(){
+        window.open('/gnss-web/static/flv.html','_blank')
+    }
+    function openGoMediaPage(){
+        window.open('/gnss-web/static/play/video.html','_blank')
+    }
+</script>
+</body>
+</html>

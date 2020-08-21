@@ -1,0 +1,72 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">定位间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="interval" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">位置跟踪有效期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="duration" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">开始跟踪</button>
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="stopTracking">停止跟踪</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        var url = "/api/v1/commands/jt808/basic/sendCommand8202";
+        form.on('submit(paramForm)', function (data) {
+            if (!data.field["interval"]) {
+                layer.msg("发送失败:定位间隔不能为空", {icon: 5});
+                return false;
+            }
+            if (parseInt(data.field["interval"]) < 1) {
+                layer.msg("发送失败:定位间隔必须大于0", {icon: 5});
+                return false;
+            }
+            if (!data.field["duration"]) {
+                layer.msg("发送失败:位置跟踪有效期不能为空", {icon: 5});
+                return false;
+            }
+            var paramEntity = data.field;
+            sendJt808Command(url, paramEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        layer.msg("发送成功", {icon: 1});
+                    } else {
+                        layer.msg("发送失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("发送失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(stopTracking)', function (data) {
+            var paramEntity = {interval: 0};
+            sendJt808Command(url, paramEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        layer.msg("发送成功", {icon: 1});
+                    } else {
+                        layer.msg("发送失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("发送失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>

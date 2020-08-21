@@ -1,0 +1,159 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">实时流编码模式</label>
+            <div class="layui-input-inline">
+                <select name="rtCodecMode">
+                    <option value="0" selected>CBR(固定码率)</option>
+                    <option value="1">VBR(可变码率)</option>
+                    <option value="2">ABR(平均码率)</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">实时流分辨率</label>
+            <div class="layui-input-inline">
+                <select name="rtResolution">
+                    <option value="0">QCIF</option>
+                    <option value="1" selected>CIF</option>
+                    <option value="2">WCIF</option>
+                    <option value="3">D1</option>
+                    <option value="4">WD1</option>
+                    <option value="5">720P</option>
+                    <option value="6">1080P</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">实时流关键帧间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="rtKeyFrameInterval" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">实时流目标帧率</label>
+            <div class="layui-input-inline">
+                <input type="text" name="rtFrameRate" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">实时流目标码率</label>
+            <div class="layui-input-inline">
+                <input type="text" name="rtBitRate" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">存储流编码格式</label>
+            <div class="layui-input-inline">
+                <select name="storageCodecMode">
+                    <option value="0" selected>CBR(固定码率)</option>
+                    <option value="1">VBR(可变码率)</option>
+                    <option value="2">ABR(平均码率)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">存储流分辨率</label>
+            <div class="layui-input-inline">
+                <select name="storageResolution">
+                    <option value="0">QCIF</option>
+                    <option value="1" selected>CIF</option>
+                    <option value="2">WCIF</option>
+                    <option value="3">D1</option>
+                    <option value="4">WD1</option>
+                    <option value="5">720P</option>
+                    <option value="6">1080P</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">存储流关键帧间隔</label>
+            <div class="layui-input-inline">
+                <input type="text" name="storageKeyFrameInterval" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">存储流目标帧率</label>
+            <div class="layui-input-inline">
+                <input type="text" name="storageFrameRate" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">存储流目标码率</label>
+            <div class="layui-input-inline">
+                <input type="text" name="storageBitRate" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">启用音频输出</label>
+            <div class="layui-input-inline">
+                <select name="enableAudio">
+                    <option value="0">不启用</option>
+                    <option value="1" selected>启用</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="osdBit" title="日期和时间" lay-skin="primary" value="0">
+            <input type="checkbox" name="osdBit" title="车牌号码" lay-skin="primary" value="1">
+            <input type="checkbox" name="osdBit" title="逻辑通道号" lay-skin="primary" value="2">
+            <input type="checkbox" name="osdBit" title="经纬度" lay-skin="primary" value="3">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="osdBit" title="行驶记录速度" lay-skin="primary" value="4">
+            <input type="checkbox" name="osdBit" title="卫星定位速度" lay-skin="primary" value="5">
+            <input type="checkbox" name="osdBit" title="连续驾驶时间" lay-skin="primary" value="6">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+        //监听提交
+        form.on('submit(paramForm)', function (data) {
+            var param0075 = data.field;
+            //OSD字幕叠加设置
+            var chkArr = [];
+            $('input[name="osdBit"]:checked').each(function () {
+                chkArr.push($(this).val());
+            });
+            param0075.osdBits = chkArr;
+
+            var paramsEntity = {
+                param0075: param0075
+            };
+            //发送JT808指令
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

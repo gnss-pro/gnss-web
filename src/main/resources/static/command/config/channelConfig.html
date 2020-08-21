@@ -1,0 +1,204 @@
+<div class="site-text" style="margin: 5%; display: none" id="window" target="channelConfig">
+    <form class="layui-form" id="configInfo" method="post" lay-filter="configInfo">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">物理通道号</label>
+                <div class="layui-input-inline">
+                    <select name="physicalChannel" id="physicalChannel">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">逻辑通道号</label>
+                <div class="layui-input-inline">
+                    <select name="logicalChannel" id="logicalChannel">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">通道类型</label>
+                <div class="layui-input-inline">
+                    <select name="channelType" id="channelType">
+                        <option value="0" selected>音视频</option>
+                        <option value="1">音频</option>
+                        <option value="2">视频</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否连接云台</label>
+                <div class="layui-input-inline">
+                    <select name="connectPtz" id="connectPtz">
+                        <option value="0" selected>未连接</option>
+                        <option value="1">连接</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="layui-btn-group demoTable">
+    <button class="layui-btn layui-btn-normal" id="add">新增</button>
+    <button class="layui-btn layui-btn-normal" id="send">发送指令</button>
+</div>
+<table class="layui-hide" id="channelConfig" lay-filter="channelConfig"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+</body>
+<script>
+    layui.use(['table', 'form'], function () {
+        var table = layui.table;
+        var form = layui.form;
+        form.render();
+        table.render({
+            id: 'channelConfig'
+            , elem: '#channelConfig'
+            , height: 500
+            , title: 'JT809鉴权信息管理'
+            , cols: [[ //表头
+                , {field: 'physicalChannel', title: '物理通道号', width: 200}
+                , {field: 'logicalChannel', title: '逻辑通道号', width: 200}
+                , {
+                    field: 'channelType', title: '通道类型', width: 200, templet: function (d) {
+                        if (d.channelType == 0) {
+                            return "音视频";
+                        } else if (d.channelType == 1) {
+                            return "音频";
+                        } else {
+                            return "视频";
+                        }
+                    }
+                }
+                , {
+                    field: 'connectPtz', title: '是否连接云台', width: 200, templet: function (d) {
+                        return d.connectPtz == 0 ? "未连接" : "连接";
+                    }
+                }
+                , {field: 'operation', title: '操作', width: 200, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //获取按钮
+        table.on('tool(channelConfig)', function (obj) {
+            //删除
+            if (obj.event === 'del') {
+                var physicalChannel = obj.data.physicalChannel;
+                var tableData = table.cache["channelConfig"];
+                //从表格数组中删除
+                tableData.forEach(item => {
+                    if (item.physicalChannel == physicalChannel) {
+                        var i = tableData.indexOf(item);
+                        tableData.splice(i, 1);
+                        table.reload("channelConfig", {
+                            data: tableData
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#add").click(function () {
+            layer.open({
+                type: 1,
+                title: "新增",
+                area: ['60%', '50%'],
+                btn: ['确定', '取消'],
+                content: $("#window"),
+                success: function (layero, index) {
+                    //重置form
+                    $("#configInfo")[0].reset();
+                    var tableData = table.cache["channelConfig"];
+                    //获取表格不存在的物理通道号
+                    let nextChannel = 1;
+                    for (let i = 1; i <= 16; i++) {
+                        let isFind = tableData.some(config => config.physicalChannel == i);
+                        if (!isFind) {
+                            nextChannel = i;
+                            break;
+                        }
+                    }
+                    $('#physicalChannel').val(nextChannel);
+                    $('#logicalChannel').val(nextChannel);
+                }
+                , yes: function (index, layero) {
+                    var tableData = table.cache["channelConfig"];
+                    var physicalChannel = $('#physicalChannel').val();
+                    //检查表格是否存在此物理通道号
+                    let isFind = tableData.some(config => config.physicalChannel == physicalChannel);
+                    if (isFind) {
+                        layer.msg("添加失败,请选择其他物理通道号", {icon: 5});
+                        return false;
+                    }
+
+                    //添加一行
+                    var formData = {
+                        physicalChannel: $('#physicalChannel').val()
+                        , logicalChannel: $('#logicalChannel').val()
+                        , channelType: $('#channelType').val()
+                        , connectPtz: $('#connectPtz').val()
+                    };
+                    tableData.push(formData);
+                    //重新刷新表格
+                    table.reload("channelConfig", {
+                        data: tableData
+                    });
+                    //关闭弹出层
+                    layer.close(index);
+                }
+            });
+        });
+
+        $("#send").click(function () {
+            var tableData = table.cache["channelConfig"];
+            if (tableData.length > 0) {
+                var paramsEntity = {
+                    param0076: tableData,
+                };
+                var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+                //发送JT808指令
+                sendJt808Command(url, paramsEntity, 5000);
+            } else {
+                layer.msg("请新增通道信息", {icon: 5});
+            }
+        });
+    });
+</script>
+</html>

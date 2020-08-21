@@ -1,0 +1,67 @@
+<script src="layui/xm-select.js"></script>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="queryProperty">查询终端音视频属性</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        //查询参数设置
+        form.on('submit(queryProperty)', function (data) {
+            var url = "/api/v1/commands/jt808/media/sendCommand9003";
+            sendJt808Command(url, {}, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        layer.msg("查询成功", {icon: 1});
+                        var jsonObj = eval('(' + ret.data.responseParams + ')');
+                        var content = '<div style="padding: 20px 40px;">'
+                        if (jsonObj.inputAudioFormat) {
+                            content += "输入音频编码格式:" + jsonObj.inputAudioFormat + "<br/>";
+                        }
+                        if (jsonObj.inputAudioChannelNum) {
+                            content += "输入音频声道数:" + jsonObj.inputAudioChannelNum + "<br/>";
+                        }
+                        if (jsonObj.inputAudioSamplingRate) {
+                            content += "输入音频采样率:" + jsonObj.inputAudioSamplingRate + "<br/>";
+                        }
+                        if (jsonObj.inputAudioSamplingBits) {
+                            content += "输入音频采样位数:" + jsonObj.inputAudioSamplingBits + "<br/>";
+                        }
+                        if (jsonObj.audioFrameLen) {
+                            content += "音频帧长度:" + jsonObj.audioFrameLen + "<br/>";
+                        }
+                        if (jsonObj.audioOutputSupport) {
+                            content += "是否支持音频输出:" + jsonObj.audioOutputSupport + "<br/>";
+                        }
+                        if (jsonObj.videoFormat) {
+                            content += "视频编码方式:" + jsonObj.videoFormat + "<br/>";
+                        }
+                        if (jsonObj.audioMaxChannel) {
+                            content += "终端支持的最大音频物理通道数量:" + jsonObj.audioMaxChannel + "<br/>";
+                        }
+                        if (jsonObj.videoMaxChannel) {
+                            content += "终端支持的最大视频物理通道数量:" + jsonObj.videoMaxChannel + "<br/>";
+                        }
+                        content += "</div>";
+                        layer.open({
+                            type: 1
+                            , title: '查询终端音视频属性应答'
+                            , area: ['40%', '70%']
+                            , content: content
+                            , shade: 0
+                        });
+                    } else {
+                        layer.msg("查询失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("查询失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>

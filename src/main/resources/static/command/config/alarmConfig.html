@@ -1,0 +1,124 @@
+
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">最高速度(km/h)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0055" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">超速持续时间(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0056" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">连续驾驶时间门限(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0057" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">当天累计驾驶时间门限(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0058" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">最小休息时间(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0059" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">最长停车时间(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="005A" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">超速预警差值(0.1km/h)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="005B" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">疲劳驾驶预警差值(秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="005C" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">碰撞时间(毫秒)</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="005D_1" id="005D_1" lay-verify="new_number" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">碰撞加速度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="005D_2" id="005D_2" lay-verify="new_number" class="layui-input" value="10">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">侧翻角度</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="005E" lay-verify="new_number" class="layui-input" value="30">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        layui.use('form', function(){
+            var form = layui.form;
+            var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+            form.on('submit(paramForm)', function(data){
+                var paramsEntity = {
+                    items: data.field
+                };
+
+                //0x005D碰撞报警参数,将碰撞时间和碰撞加速度属性合并到005D属性中
+                var param005D_1 = $("#005D_1").val();
+                var param005D_2 = $("#005D_2").val();
+                if (param005D_1 && !param005D_2) {
+                    //碰撞加速度默认10
+                    var value005D = (10 << 8) | param005D_1;
+                    data.field["005D"] = value005D;
+                } else if(!param005D_1 && param005D_2) {
+                    var value005D = (param005D_2 << 8);
+                    data.field["005D"] = value005D;
+                } else if (param005D_1 && param005D_2) {
+                    var value005D = (param005D_2 << 8) | param005D_1;
+                    data.field["005D"] = value005D;
+                }
+                //删除碰撞时间和碰撞加速度属性
+                delete data.field["005D_1"];
+                delete data.field["005D_2"];
+
+                sendJt808Command(url, paramsEntity, 5000);
+                return false;
+            });
+        });
+    </script>

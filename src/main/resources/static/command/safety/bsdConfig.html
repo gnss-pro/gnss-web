@@ -1,0 +1,56 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">后方接近报警时间阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p1" value="1" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">侧后方接近报警时间阈值</label>
+            <div class="layui-input-inline">
+                <input type="text" name="p2" value="1" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="query">查询参数</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        form.on('submit(paramForm)', function (data) {
+            var bsdConfigParams = data.field;
+            var url = "/api/v1/commands/jt808/safety/sendCommand8103";
+            var paramsEntity = {
+                activeSafetyType: "BSD",
+                bsdConfig: bsdConfigParams
+            };
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+
+        form.on('submit(query)', function (data) {
+            var paramsEntity = {paramIdList: [0xF367]};
+            var url = "/api/v1/commands/jt808/basic/sendCommand8106";
+            sendJt808Command(url, paramsEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS' && ret.data.responseParams) {
+                        layer.msg("查询成功:" + ret.data.responseParams, {icon: 1});
+                    } else {
+                        layer.msg("查询失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("查询失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>

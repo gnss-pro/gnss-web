@@ -1,0 +1,99 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">GNSS定位模式</label>
+            <div class="layui-inline">
+                <input type="checkbox" name="gnssMode" title="GPS定位" lay-skin="primary" value="0">
+                <input type="checkbox" name="gnssMode" title="北斗定位" lay-skin="primary" value="1">
+                <input type="checkbox" name="gnssMode" title="GLONASS定位" lay-skin="primary" value="2">
+                <input type="checkbox" name="gnssMode" title="Galileo定位" lay-skin="primary" value="3">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">GNSS波特率</label>
+            <div class="layui-input-inline">
+                <select name="0091">
+                    <option value="">请选择</option>
+                    <option value="0">4800</option>
+                    <option value="1">9600</option>
+                    <option value="2">19200</option>
+                    <option value="3">38400</option>
+                    <option value="4">57600</option>
+                    <option value="5">115200</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">GNSS模块输出频率</label>
+            <div class="layui-input-inline">
+                <select name="0092">
+                    <option value="0">500ms</option>
+                    <option value="1" selected>1000ms</option>
+                    <option value="2">2000ms</option>
+                    <option value="3">3000ms</option>
+                    <option value="4">4000ms</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">GNSS模块采集频率</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0093" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">GNSS数据上传方式</label>
+            <div class="layui-input-inline">
+                <select name="0094">
+                    <option value="0" selected>本地存储</option>
+                    <option value="1">按时间间隔</option>
+                    <option value="2">按距离间隔</option>
+                    <option value="11">按累计时间</option>
+                    <option value="12">按累计距离</option>
+                    <option value="13">按累计条数</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">GNSS数据上传设置</label>
+            <div class="layui-input-inline">
+                <input type="text" name="0095" lay-verify="new_number" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+        form.on('submit(paramForm)', function (data) {
+            //勾选的GNSS定位模式
+            var gnssModeArr = [];
+            $('input[name="gnssMode"]:checked').each(function () {
+                gnssModeArr.push($(this).val());
+            });
+
+            delete data.field["gnssMode"];
+            var paramsEntity = {
+                param0090: gnssModeArr,
+                items: data.field
+            };
+            sendJt808Command(url, paramsEntity, 5000);
+            return false;
+        });
+    });
+</script>

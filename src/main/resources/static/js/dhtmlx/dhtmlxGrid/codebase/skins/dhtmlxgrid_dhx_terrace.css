@@ -1,0 +1,130 @@
+div.gridbox_dhx_terrace .xhdr{
+	background-color:#fff;	
+}
+div.gridbox_dhx_terrace table.hdr tr{
+	background-color:#f9f9f9;	
+}
+
+div.gridbox_dhx_terrace .ftr tr{
+	background-color:#f9f9f9;	
+}
+
+div.gridbox_dhx_terrace table.obj tr td{
+	font-family:Arial;
+	font-size:13px;
+	color:#262626;
+	border-color:#e6e6e6;
+	border-width:0px 0px 1px 0px;
+	padding-right:20px;
+	padding-left:20px;
+}
+div.gridbox_dhx_terrace .xhdr{
+	border-bottom:1px solid #cecece;
+	background-color:#f9f9f9;
+}
+div.gridbox_dhx_terrace table.hdr td div.hdrcell{
+	width:auto;
+	padding-left:20px;
+	line-height:37px;
+	text-transform:uppercase;
+	width:100% !ie;
+}
+div.gridbox_dhx_terrace .ftr table td{
+	width:auto;
+	background-color:#fff;
+	border-width:1px 0px 0px 0px;
+	font-style:normal;
+	color:#262626;
+	border-color:#cecece;
+	padding-left:20px;
+	line-height:41px;
+	width:100% !ie;
+}
+div.gridbox_dhx_terrace table.hdr td {
+	border: 1px solid #8B8B8B;
+	border-width: 0px 0px 0px 0px;
+	padding:0px 0px 0px 0px;
+	
+	background-color:#f9f9f9;
+	
+	
+	font-family:Arial;
+	font-size:11px;
+	color:#262626;
+	vertical-align:top;
+	text-align:left;
+}
+
+
+div.gridbox_dhx_terrace {
+  border:1px solid  #cecece;
+}
+div.gridbox_dhx_terrace table.obj tr  td{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+div.gridbox_dhx_terrace table.obj.row20px tr  td{
+    padding-top:0px;
+    padding-bottom:0px;
+    height:40px;
+}
+
+div.gridbox_dhx_terrace table.obj tr  td.editable{
+    padding-left:20px;
+    padding-right:0px;
+
+}
+
+div.gridbox_dhx_terrace table.obj tr  td.editable div.treegrid_cell{
+	padding-left:4px;
+	padding-top:1px;
+}
+div.gridbox_dhx_terrace table.obj tr.rowselected{
+	background-color:#fff3a1;
+}
+div.gridbox_dhx_terrace table.obj tr.rowselected td{
+	background-color:#fff3a1;
+}
+div.gridbox_dhx_terrace table.obj.row20px tr.rowselected td{
+	background-color:#fff3a1;
+}
+div.gridbox_dhx_terrace table.obj tr.rowselected td.cellselected {
+	background-color:#fff3a1;
+}
+div.gridbox_dhx_terrace .odd_dhx_terrace{
+	background-color:#fafaf8;
+}
+
+.gridbox_dhx_terrace .dhx_combo_edit{
+    font-family:Arial;
+    font-size:13px;
+    line-height:32px;
+}
+.dhx_combo_select, .dhx_textarea{
+	margin-left:20px;
+	line-height:20px;
+	font-family:Arial;
+    font-size:13px;
+}
+
+.gridbox_dhx_terrace .dhx_combo_edit{
+	padding:1px 0px 1px 1px;
+}
+.gridbox_dhx_terrace .dhx_sub_row {
+	background-color:transparent;
+}
+
+.gridbox_dhx_terrace table.hdr  td.filter{
+	padding-left:20px;
+	line-height:41px;
+	height:30px;
+
+}
+div.gridbox_dhx_terrace td.filter input, div.gridbox_dhx_terrace td.filter select{
+	font-size:13 !important; font-family:Arial !important;
+	height:22px;
+	border-radius:3px;
+	border:1px solid #cecece;
+	background:#fff;
+	box-shadow:none;
+}

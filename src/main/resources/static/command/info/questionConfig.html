@@ -1,0 +1,114 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <input type="checkbox" name="flags" title="紧急" lay-skin="primary" value="0">
+            <input type="checkbox" name="flags" title="终端TTS播读" lay-skin="primary" value="3">
+            <input type="checkbox" name="flags" title="广告屏显示" lay-skin="primary" value="4">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">问题</label>
+            <div class="layui-input-inline">
+                <input type="text" name="questionContent" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">候选答案1</label>
+            <div class="layui-input-inline">
+                <input type="text" name="answer1" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">候选答案2</label>
+            <div class="layui-input-inline">
+                <input type="text" name="answer2" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">候选答案3</label>
+            <div class="layui-input-inline">
+                <input type="text" name="answer3" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">候选答案4</label>
+            <div class="layui-input-inline">
+                <input type="text" name="answer4" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8302";
+        form.on('submit(paramForm)', function (data) {
+            //已勾选的标志
+            var flagArr = [];
+            $('input[name="flags"]:checked').each(function () {
+                flagArr.push($(this).val());
+            });
+            var answerArr = [];
+            for (let i = 1; i <= 4; i++) {
+                var answerContent = data.field['answer' + i];
+                if (answerContent) {
+                    answerArr.push({answerId: i, answerContent: answerContent});
+                }
+            }
+            if (!answerArr.length) {
+                layer.msg("候选答案不能全部为空", {icon: 5});
+                return false;
+            }
+
+            var paramsEntity = {
+                flags: flagArr,
+                questionContent: data.field["questionContent"],
+                answerList: answerArr
+            }
+            sendJt808Command(url, paramsEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        var jsonObj = eval('(' + ret.data.responseParams + ')');
+                        var content = '<div style="padding: 20px 40px;">'
+                        content += "应答流水号:" + jsonObj.replyMsgFlowId + "<br/>";
+                        content += "答案ID:" + jsonObj.answerId + "<br/>";
+                        content += "</div>";
+                        layer.open({
+                            type: 1
+                            , title: '提问应答'
+                            , area: ['30%', '50%']
+                            , content: content
+                            , shade: 0
+                        });
+                    }else {
+                        layer.msg("发送失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("发送失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+</script>

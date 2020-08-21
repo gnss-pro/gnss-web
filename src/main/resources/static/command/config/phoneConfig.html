@@ -1,0 +1,96 @@
+
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">监控平台电话号码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0040" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">复位电话号码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0041" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">恢复出厂设置电话号码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0042" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">监控平台SMS电话号码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0043" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">接收终端SMS文本报警号码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0044" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">终端电话接听策略</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0045" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">每次最长通话时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0046" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">当月最长通话时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0047" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">监听电话号码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0048" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">监管平台特权短信号码</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="0049" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        layui.use('form', function(){
+            var form = layui.form;
+            var url = "/api/v1/commands/jt808/basic/sendCommand8103";
+            form.on('submit(paramForm)', function(data){
+                var paramsEntity = {
+                    items: data.field
+                };
+                sendJt808Command(url, paramsEntity, 5000);
+                return false;
+            });
+        });
+    </script>

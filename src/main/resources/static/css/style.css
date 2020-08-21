@@ -1,0 +1,324 @@
+.flv-player-win{
+    display: inline-block;
+    border:1px solid gray;
+    position: relative;
+    margin:-1px;
+    float:left;
+}
+
+
+.flv-player-win .flv-ctrl{
+    line-height:40px;
+    height:40px;
+    width:100%;
+    background:rgba(0,0,0,0.7);
+    position: absolute;
+    bottom: 0;
+    font-size:12px;
+    display: none;
+}
+
+.flv-player-win:hover .flv-ctrl{
+    display: block;
+}
+
+.flv-ctrl i{
+    line-height: 40px !important;
+}
+
+.flv-ctrl .fa-ban{
+    color: rgba(221, 49, 10, 0.7);
+    font-size: 20px !important;
+    display: none ;
+}
+
+.flv-player-win video{
+    background: url("player.jpg");
+    background-size: 100% 100%;
+    object-fit:fill;
+    object-position: 0 0%;
+    width:100%;
+    height:100%;
+}
+
+.win-focus{
+    border:1px solid greenyellow !important;
+    z-index: 100;
+ }
+
+.loading{
+    background: rgba(255, 255, 255, 0.5) url("loading.gif") no-repeat scroll center center;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.flv-ctrl-text{
+    max-width:20%;
+    color:greenyellow;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    float:left;
+}
+
+.flv-ctrl-speed{
+    width:15%;
+    overflow: hidden;
+    float:left;
+    color:#fff;
+    margin-left:10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flv-ctrl-operator{
+    float: right;
+
+}
+
+.flv-ctrl-operator .disable{
+    color:gray;
+}
+.flv-btn{
+    color: #fff;
+    position: relative;
+    width: 24px;
+    height: 100%;
+    float: left;
+    text-align: center;
+}
+
+.flv-btn i{
+    font-size: 14px;
+    cursor: pointer;
+}
+.disable i{
+    cursor: inherit;
+}
+.flv-btn:hover{
+    /*background: rgba(0,0,0,0.5);*/
+    color:burlywood;
+}
+
+.disable:hover{
+    color:gray;
+}
+
+.multiple {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 18px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance:none;
+    text-align: center;
+    color: inherit;
+}
+
+.flv-volume:hover .flv-volume-slider{
+    display: block;
+}
+
+.disable:hover .flv-volume-slider{
+    display: none;
+}
+
+.flv-volume-slider{
+    height: 30px;
+    width: 80px;
+    text-align: center;
+    transform: rotate(-90deg);
+    background: rgba(235,236,235,0.4);
+    position: absolute;
+    top: -55px;
+    left: -28px;
+    display: none;
+}
+
+.flv-volume-slider  input[type=range]{
+    width: 60px;
+    display: block;
+    margin:13px 10px;
+    height:3px;
+    background: linear-gradient(to right, transparent 0%, #95FA1D 0%, #95FA1D 50%, transparent 0%),linear-gradient(to right, transparent 0%, #666 50%, #666 100%, transparent 100%);
+}
+
+.playback-track{
+    width: 100%;
+    left: 0;
+    position: absolute;
+    height: 3px;
+    margin: 0;
+    cursor: pointer;
+    top:-3px;
+    background-size: 0% 100%;
+    background-repeat:no-repeat;
+    background-color: rgba(186, 182, 184, 0.8);
+}
+input[type=range] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 10px; /*这个属性设置使填充进度条时的图形为圆角*/
+}
+
+
+ input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+ input[type=range]::-webkit-slider-runnable-track {
+    height: 2px;
+    border-radius: 10px; /*将轨道设为圆角的*/
+    /*box-shadow: 0 1px 1px #def3f8, inset 0 .125em .125em #0d1112; !*轨道内置阴影效果*!*/
+}
+
+ input[type=range]:focus {
+    outline: none;
+}
+
+ input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 12px;
+    width: 12px;
+    cursor:pointer;
+    margin-top: -6px; /*使滑块超出轨道部分的偏移量相等*/
+    background: #ffffff;
+    border-radius: 50%; /*外观设置为圆形*/
+    border: solid 0.125em rgba(205, 224, 230, 0.5); /*设置边框*/
+    box-shadow: 0 .125em .125em #3b4547; /*添加底部阴影*/
+}
+
+ .playback-track::-webkit-slider-thumb{
+     width:4px !important;
+     height:2px !important;
+     margin-top: -1px !important;
+ }
+
+.track-focus{
+    height:6px;
+    top:-6px;
+}
+
+.track-focus::-webkit-slider-thumb{
+    height:6px !important;
+    margin-top:0 !important;
+}
+
+.track-focus::-webkit-slider-runnable-track{
+    height: 6px !important;
+}
+
+ input[type=range]::-moz-range-progress {
+    background: linear-gradient(#059CFA, #059CFA) no-repeat;
+    /*height: 3px;*/
+    /*border-radius: 10px;*/
+}
+
+.playback-track::-moz-range-progress{
+    background: linear-gradient(#95FA1D, #95FA1D) no-repeat !important;
+}
+
+
+ input[type=range]::-moz-range-track {
+    /*height: 2px;*/
+    /*border-radius: 10px; !*将轨道设为圆角的*!*/
+    /*box-shadow: 0 1px 1px #def3f8, inset 0 .125em .125em #0d1112; !*轨道内置阴影效果*!*/
+    background-color: rgba(0,0,0,0.4);
+}
+
+ input[type=range]::-moz-range-thumb {
+    -webkit-appearance: none;
+    height: 2px;
+    width: 2px;
+    cursor:pointer;
+    margin-top: -1px; /*使滑块超出轨道部分的偏移量相等*/
+    background: #ffffff;
+    border-radius: 50%; /*外观设置为圆形*/
+    border: solid 0.125em rgba(205, 224, 230, 0.5); /*设置边框*/
+    box-shadow: 0 .125em .125em #3b4547; /*添加底部阴影*/
+}
+.playback-track::-moz-range-track {
+    height: 3px;
+}
+.playback-track::-moz-range-thumb{
+    width:4px !important;
+    height:2px !important ;
+    border-radius: 50%;
+    margin-top: -1px !important;
+}
+
+.track-focus::-moz-range-track{
+    height: 6px !important;
+}
+.track-focus::-moz-range-thumb{
+    height: 6px !important;
+    margin-top:0 !important;
+}
+
+ input[type=range]::-ms-track {
+    height: 2px;
+    border-radius: 10px;
+    /*box-shadow: 0 1px 1px #def3f8, inset 0 .125em .125em #0d1112;*/
+    background: gray;
+    border-color: transparent; /*去除原有边框*/
+    color: transparent; /*去除轨道内的竖线*/
+}
+
+ input[type=range]::-ms-thumb {
+    border: solid 0.125em rgba(205, 224, 230, 0.5);
+    height: 2px;
+    width: 2px;
+    cursor:pointer;
+    border-radius: 50%;
+    background: #ffffff;
+    margin-top: -6px;
+    box-shadow: 0 .125em .125em #3b4547;
+}
+
+.playback-track::-ms-thumb {
+    width:4px!important;
+    height:2px !important;
+    border-radius: 50%;
+    margin-top: -1px !important;
+}
+
+.track-focus::-ms-track {
+    height: 6px !important;
+}
+.track-focus::-ms-thumb {
+    height: 6px !important;
+    margin-top:0 !important;
+}
+
+ input[type=range]::-ms-fill-lower {
+    /*进度条已填充的部分*/
+    height: 3px;
+    border-radius: 10px;
+    /*background: linear-gradient(to right, #059CFA, white 100%, white);*/
+    background: linear-gradient(#059CFA, #059CFA) no-repeat;
+}
+
+.playback-track::-ms-fill-lower{
+    background: linear-gradient(#95FA1D, #95FA1D) no-repeat;
+}
+
+input[type=range]::-ms-fill-upper {
+    /*进度条未填充的部分*/
+    height: 3px;
+    border-radius: 10px;
+    background: gray;
+}
+
+ input[type=range]:focus::-ms-fill-lower {
+     background: linear-gradient(#059CFA, #059CFA) no-repeat;
+    /*background: linear-gradient(to right, #059CFA, white 100%, white);*/
+}
+
+.playback-track:focus::-ms-fill-lower{
+    background: linear-gradient(#95FA1D, #95FA1D) no-repeat;
+}
+
+ input[type=range]:focus::-ms-fill-upper {
+    background: #ffffff;
+}

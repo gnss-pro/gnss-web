@@ -1,0 +1,97 @@
+<script src="js/base64.js"></script>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">执行标准</label>
+            <div class="layui-input-inline">
+                GB-T19056-2012
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">信息类型</label>
+            <div class="layui-input-inline">
+                <select name="cmdType">
+                    <option value="0" selected>(00H)采集记录仪执行标准版本</option>
+                    <option value="1">(01H)采集当前驾驶人信息</option>
+                    <option value="2">(02H)采集记录仪实时时间</option>
+                    <option value="3">(03H)采集累计行驶里程</option>
+                    <option value="4">(04H)采集记录仪脉冲系数</option>
+                    <option value="5">(05H)采集车辆信息</option>
+                    <option value="6">(06H)采集记录仪状态信号配置信息</option>
+                    <option value="7">(07H)采集记录仪唯一性编号</option>
+                    <option value="8">(08H)采集指定的行驶速度记录</option>
+                    <option value="9">(09H)采集指定的位置信息记录</option>
+                    <option value="16">(10H)采集指定的事故疑点记录</option>
+                    <option value="17">(11H)采集指定的超时驾驶记录</option>
+                    <option value="18">(12H)采集指定的驾驶人身份记录</option>
+                    <option value="19">(13H)采集指定的外部供电记录</option>
+                    <option value="20">(14H)采集指定的参数修改记录</option>
+                    <option value="21">(15H)采集指定的速度状态日志</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'util'], function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8700";
+        form.on('submit(paramForm)', function (data) {
+            var paramEntity = data.field;
+            sendJt808Command(url, paramEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        layer.msg("发送成功", {icon: 1});
+                        var jsonObj = eval('(' + ret.data.responseParams + ')');
+                        var content = '<div style="padding: 20px 40px;">'
+                        content += "应答流水号:" + jsonObj.replyMsgFlowId + "<br/>";
+                        content += "命令字:" + jsonObj.commandType + "<br/>";
+                        var dataBlock = Base64.toUint8Array(jsonObj.travelDataInfo);
+                        content += "数据块:" + bytes2HexString(dataBlock) + "<br/>";
+                        content += "</div>";
+                        layer.open({
+                            type: 1
+                            , title: '行驶记录应答'
+                            , area: ['60%', '50%']
+                            , content: content
+                            , shade: 0
+                        });
+                    } else {
+                        layer.msg("发送失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("发送失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+    });
+
+    //字节数组转十六进制字符串，对负值填坑
+    function bytes2HexString(arrBytes) {
+        var str = "";
+        for (var i = 0; i < arrBytes.length; i++) {
+            var tmp;
+            var num = arrBytes[i];
+            if (num < 0) {
+                //此处填坑，当byte因为符合位导致数值为负时候，需要对数据进行处理
+                tmp = (255 + num + 1).toString(16);
+            } else {
+                tmp = num.toString(16);
+            }
+            if (tmp.length == 1) {
+                tmp = "0" + tmp;
+            }
+            str += tmp;
+        }
+        return str;
+    }
+</script>

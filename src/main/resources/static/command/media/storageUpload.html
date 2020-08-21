@@ -1,0 +1,138 @@
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">多媒体类型</label>
+            <div class="layui-input-inline">
+                <select name="mediaType">
+                    <option value="0" selected>图像</option>
+                    <option value="1">音频</option>
+                    <option value="2">视频</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">通道ID</label>
+            <div class="layui-input-inline">
+                <select name="channelId">
+                    <option value="0" selected>所有通道</option>
+                    <option value="1">通道1</option>
+                    <option value="2">通道2</option>
+                    <option value="3">通道3</option>
+                    <option value="4">通道4</option>
+                    <option value="5">通道5</option>
+                    <option value="6">通道6</option>
+                    <option value="7">通道7</option>
+                    <option value="8">通道8</option>
+                </select>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">事件类型</label>
+                <div class="layui-input-inline">
+                    <select name="eventItemCode">
+                        <option value="0" selected>平台下发指令</option>
+                        <option value="1">定时动作</option>
+                        <option value="2">抢劫报警触发</option>
+                        <option value="3">碰撞侧翻报警触发</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">时间范围</label>
+            <div class="layui-input-inline">
+                <input type="text" id="startTime" placeholder="开始时间" class="layui-input">
+            </div>
+            <div class="layui-form-mid">-</div>
+            <div class="layui-input-inline">
+                <input type="text" id="endTime" placeholder="结束时间" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">删除标志</label>
+            <div class="layui-input-inline">
+                <select name="deleteFlag">
+                    <option value="0" selected>保留</option>
+                    <option value="1">删除</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="paramForm">发送指令</button>
+            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="queryFile">查询多媒体文件</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form;
+        form.render();
+        var url = "/api/v1/commands/jt808/basic/sendCommand8803";
+        form.on('submit(paramForm)', function (data) {
+            var paramsEntity = data.field;
+            //校验时间范围
+            var startTimeStr = $("#startTime").val();
+            var endTimeStr = $("#endTime").val();
+            var startTime;
+            var endTime;
+            if (startTimeStr) {
+                startTime = new Date(startTimeStr).getTime();
+            }
+            if (endTimeStr) {
+                endTime = new Date(endTimeStr).getTime();
+            }
+            if (startTime && endTime && (startTime > endTime)) {
+                layer.msg("开始时间不能大于结束时间", {icon: 5});
+                return false;
+            }
+            paramsEntity["startTime"] = startTime;
+            paramsEntity["endTime"] = endTime;
+            sendJt808Command(url, paramsEntity, 10000, function (ret) {
+                if (ret.code == 0) {
+                    if (ret.data.sendResult == 'SUCCESS') {
+                        layer.msg("发送成功", {icon: 1});
+                    } else {
+                        layer.msg("发送失败:" + ret.data.resultDesc, {icon: 5});
+                    }
+                } else {
+                    layer.msg("发送失败:" + ret.msg, {icon: 5});
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(queryFile)', function (data) {
+            layer.open({
+                type: 2,
+                title: '多媒体文件管理',
+                shadeClose: true,
+                offset: '10%',
+                area: ['90%', '80%'],
+                content: 'command/media/jt808MediaFileManage.html'
+            });
+            return false;
+        });
+    });
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#startTime'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+    });
+</script>

@@ -1,0 +1,2191 @@
+/*
+ * $Id: om-theme.css,v 1.36 2012/06/26 08:57:31 chentianzhen Exp $
+ * operamasks-ui CSS Framework 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+
+.om-helper-hidden { display: none; }
+.om-helper-position-absolute { position: absolute; }
+.om-helper-hidden-accessible { left:-20000px; top:-20000px; position: absolute !important; clip: rect(1px 1px 1px 1px); clip: rect(1px,1px,1px,1px); }
+.om-helper-reset { margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none; }
+.om-helper-clearfix:after { content: "."; display: block; font-size:0; height: 0; clear: both; visibility: hidden; }
+.om-helper-clearfix { display: inline-block; }
+/* required comment for clearfix to work in Opera \*/
+* html .om-helper-clearfix { height:1%; }
+.om-helper-clearfix { display:block; }
+/* end clearfix */
+.om-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
+
+
+/* Interaction Cues
+----------------------------------*/
+.om-state-disabled { cursor: default !important; }
+.om-state-cursor-pointer {cursor: pointer;}
+
+
+/* Icons
+----------------------------------*/
+
+/* states and images */
+.om-icon { display: block; text-indent: -99999px; overflow: hidden; background-repeat: no-repeat; }
+.om-vertical-align-middle { vertical-align: middle; }
+
+
+/* Misc visuals
+----------------------------------*/
+
+/* Overlays */
+.om-widget-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* Component containers
+----------------------------------*/
+.om-widget { font-family: Verdana,Arial,sans-serif; font-size: 12px; }
+.om-widget .om-widget { font-size: 1em; }
+.om-widget input, .om-widget select, .om-widget textarea, .om-widget button { font-family: Verdana,Arial,sans-serif; font-size: 1em; }
+.om-widget input, input.om-widget {padding: 1px; *padding: 0px;}
+.om-widget-content { border: 1px solid #86A3C4; background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x; color: #222222;}
+.om-widget .om-widget-header { background: url("images/header_bg.png") repeat-x scroll 0 0 #FFFFFF; color: #23466D; font-weight: bold;}
+.om-widget-header a { color: #23466D; }
+
+/* Interaction states
+----------------------------------*/
+.om-state-default, .om-widget-content .om-state-default, .om-widget-header .om-state-default { border: 1px solid #86A3C4; background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #555555; }
+.om-state-default a, .om-state-default a:link, .om-state-default a:visited { color: #555555; text-decoration: none; }
+.om-state-hover, .om-widget-content .om-state-hover, .om-widget-header .om-state-hover, .om-state-focus, .om-widget-content .om-state-focus, .om-widget-header .om-state-focus { background: #6C99DD; font-weight: normal; color: #ffffff; }
+.om-state-hover a, .om-state-hover a:hover { color: #212121; text-decoration: none; }
+.om-state-focus, .om-widget-content .om-state-focus, .om-widget-header .om-state-focus { border: 1px solid #2966B1; }
+.om-state-focus a, .om-state-focus a:hover { color: #212121; text-decoration: none; }
+.om-state-active, .om-widget-content .om-state-active, .om-widget-header .om-state-active { background:#a5c7ff; font-weight: normal; color: #212121; }
+.om-state-active a, .om-state-active a:link, .om-state-active a:visited { color: #212121; text-decoration: none; }
+.om-widget :active { outline: none; }
+.om-empty-text{ color: #CCCCCC; }
+/* Interaction Cues
+----------------------------------*/
+.om-state-highlight, .om-widget-content .om-state-highlight, .om-widget-header .om-state-highlight  {border: 1px solid #fcefa1; background: #1C62CB; color:#ffffff; }
+.om-state-highlight a, .om-widget-content .om-state-highlight a,.om-widget-header .om-state-highlight a { color: #363636; }
+.om-state-disabled, .om-widget-content .om-state-disabled, .om-widget-header .om-state-disabled { opacity: .6; filter:Alpha(Opacity=60); background-image: none; }
+
+/* Icons
+----------------------------------*/
+
+/* states and images */
+.om-icon { width: 16px; height: 16px; background-image: url(images/om-icons-default.png); }
+.om-state-default .om-icon { background-image: url(images/om-icons-default.png); }
+.om-state-hover .om-icon, .om-state-focus .om-icon {background-image: url(images/om-icons-hover.png); }
+.om-state-active .om-icon {background-image: url(images/om-icons-hover.png); }
+
+/* common icons */
+.om-icon-seek-start {background-position: 0 0}
+.om-icon-seek-end {background-position: -16px 0}
+.om-icon-seek-prev {background-position: -32px 0}
+.om-icon-seek-next {background-position: -48px 0}
+.om-icon-refresh {background-position: -64px 0}
+.om-icon-grip-diagonal-se {background-position: -80px 0}
+
+/* Misc visuals
+----------------------------------*/
+
+/* Corner radius */
+.om-corner-all, .om-corner-top, .om-corner-left, .om-corner-tl { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; -khtml-border-top-left-radius: 4px; border-top-left-radius: 4px; }
+.om-corner-all, .om-corner-top, .om-corner-right, .om-corner-tr { -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; -khtml-border-top-right-radius: 4px; border-top-right-radius: 4px; }
+.om-corner-all, .om-corner-bottom, .om-corner-left, .om-corner-bl { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; -khtml-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; }
+.om-corner-all, .om-corner-bottom, .om-corner-right, .om-corner-br { -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; -khtml-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
+/* Overlays */
+.om-widget-overlay { background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
+.om-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -khtml-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }
+
+/* no background */
+.om-state-nobg, .om-widget-content .om-state-nobg {background: none; color: #000;}
+/* no border */
+.om-state-nobd, .om-widget-content .om-state-nobd {border: none;}
+
+.om-loading { background-image: url("images/load.gif") !important; background-repeat: no-repeat; background-position: center !important; }
+
+/* trigger */
+.om-state-default .om-combo-trigger, .om-state-default .om-calendar-trigger {background-position:0px 0;}
+.om-state-hover .om-combo-trigger, .om-state-hover .om-calendar-trigger {background-position:-19px 0;}
+.om-state-focus .om-combo-trigger, .om-state-focus .om-calendar-trigger {background-position:-19px 0;}
+.om-state-active .om-combo-trigger, .om-state-active .om-calendar-trigger {background-position:-38px 0;}
+
+/* dropLisr */
+.om-droplist .om-state-hover {background-color: #FCEFA1; color: black; border: none; }
+
+/*
+ * jQuery UI Resizable 1.8.15
+ * $Id: om-resizable.css,v 1.3 2012/02/08 06:00:53 licongping Exp $
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Resizable#theming
+ */
+.om-resizable { position: relative;}
+.om-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block; }
+.om-resizable-disabled .om-resizable-handle, .om-resizable-autohide .om-resizable-handle { display: none; }
+.om-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0; }
+.om-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0; }
+.om-resizable-e { cursor: e-resize; width: 7px; right: -5px; top: 0; height: 100%; }
+.om-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0; height: 100%; }
+.om-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
+.om-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
+.om-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
+.om-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}/*
+ * $Id: om-panel.css,v 1.22 2012/06/27 09:10:27 licongping Exp $
+ * operamasks-ui panel 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-panel{
+	overflow: hidden;
+}
+.om-panel-header{
+ 	padding: 5px;
+ 	height: 14px;
+ 	line-height: 14px;
+ 	background: url("images/panel/om-panel-header-bg-d.png") repeat-x scroll 0 0 #FFFFFF;
+ 	border:1px solid #99BBE8;
+ 	position: relative;
+ 	cursor: default;
+ }
+.om-panel-body{
+ 	background-image: none;
+ 	border-top-width: 0;
+ 	padding: 1em;
+ 	overflow: auto;
+}
+.om-panel-noheader{
+ 	border-top-width:1px;
+}
+.om-panel-title{
+	white-space: nowrap;
+	overflow: hidden;
+}
+.om-panel-icon{
+	float: left;
+	background-image: none;
+	width:20px;
+	height:18px;
+}
+.om-panel-tool{
+	position: absolute;
+	right: 5px;
+	top: 3px;
+}
+.om-panel-tool div.om-icon{
+	float:left;
+	margin-left:2px;
+	cursor:pointer;
+	width: 20px;
+	height: 18px;
+	line-height: 18px;
+	display:block;
+}
+.om-panel-loadingMessage{
+	background-color: white;
+    left: 0;
+    opacity: .8; filter:Alpha(Opacity=80);
+    position: absolute;
+    top: 0;
+    z-index:100;
+}
+.om-panel-loadingMessage .valignMiddle{
+	left: 50%;
+   	margin-left: -30px;
+   	margin-top: -8px;
+   	position: absolute;
+   	top: 50%;
+}
+.om-panel-loadingMessage .loadingImg{
+	background: url("images/load.gif") repeat scroll 0 0 transparent;
+    height: 16px;
+    padding-left:20px;
+    background-repeat: no-repeat;
+}
+.om-panel-tool-collapse{
+	background: url("images/ui-toolbar-btn.png") no-repeat scroll -22px 0 transparent
+}
+.om-panel-tool-expand{
+	background: url("images/ui-toolbar-btn.png") no-repeat scroll -2px 0 transparent
+}
+.om-panel-tool-min{
+	background: url("images/ui-toolbar-btn.png") no-repeat scroll -44px 0 transparent
+}
+.om-panel-tool-max{
+	background: url("images/ui-toolbar-btn.png") no-repeat scroll -67px 0 transparent
+}
+.om-panel-tool-close{
+	background: url("images/ui-toolbar-btn.png") no-repeat scroll -90px 0 transparent
+}
+
+.om-panel-tool-collapse-hover{
+	background-position: -22px -36px;
+}
+.om-panel-tool-expand-hover{
+	background-position: -2px -36px;
+}
+.om-panel-tool-min-hover{
+	background-position: -44px -36px;
+}
+.om-panel-tool-max-hover{
+	background-position: -67px -36px;
+}
+.om-panel-tool-close-hover{
+	background-position: -90px -36px;
+}/*
+ * $Id: om-grid.css,v 1.25 2012/06/04 07:37:32 chentianzhen Exp $
+ * operamasks-ui grid 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+
+.om-grid {position: relative; overflow: hidden;}
+
+.om-grid.hideBody {height: 26px !important;border-bottom: 1px solid #ccc;}
+
+.ie6fullwidthbug {
+	border-right: 0px solid #ccc;
+	padding-right: 2px;
+}
+
+.om-grid div.nDiv {
+	background: #eee url(images/grid/line.gif) repeat-y -1px top;
+	border: 1px solid #ccc;
+	border-top: 0px;
+	overflow: auto;
+	left: 0px;
+	position: absolute;
+	z-index: 999;
+	float: left;
+}
+
+.om-grid div.nDiv table {
+	margin: 2px;
+}
+
+.om-grid div.gBlock {
+	position: absolute;
+	z-index: 100;
+	left:0;
+	top:0;
+	background-color: white;
+	opacity: 0.6;
+	filter:Alpha(Opacity=60);
+}
+.om-grid div.gBlock .gBlock-valignMiddle{
+	position: absolute;
+	top:50%;
+	left: 50%;
+	margin-top: -8px;
+	margin-left: -8px;
+}
+
+.om-grid div.hDivBox {
+	float: left;
+	padding-right: 40px;
+}
+
+
+.om-grid div.bDiv table.autoht {
+	border-bottom: 0px;
+	margin-bottom: 0px;
+}
+
+.om-grid div.bDiv tr.oddRow {
+    background-color: transparent;
+}
+.om-grid div.bDiv tr.evenRow {
+    background-color: #E8EEF7;
+}
+
+.om-grid div.nDiv td {
+	padding: 2px 3px;
+	border: 1px solid #eee;
+	cursor: default;
+}
+
+.om-grid div.nDiv tr:hover td,.om-grid div.nDiv tr.ndcolover td {
+	background: #d5effc url(images/grid/hl.png) repeat-x top;
+	border: 1px solid #a8d8eb;
+}
+
+.om-grid div.nDiv td.ndcol1 {
+	border-right: 1px solid #ccc;
+}
+
+.om-grid div.nDiv td.ndcol2 {
+	border-left: 1px solid #fff;
+	padding-right: 10px;
+}
+
+.om-grid div.nDiv tr:hover td.ndcol1,.om-grid div.nDiv tr.ndcolover td.ndcol1
+	{
+	border-right: 1px solid #d2e3ec;
+}
+
+.om-grid div.nDiv tr:hover td.ndcol2,.om-grid div.nDiv tr.ndcolover td.ndcol2
+	{
+	border-left: 1px solid #eef8ff;
+}
+
+.om-grid div.nBtn {
+	position: absolute;
+	height: 22px;
+	width: 14px;
+	z-index: 900;
+	background: #fafafa url(images/grid/fhbg.gif) repeat-x bottom;
+	border: 0px solid #ccc;
+	border-left: 1px solid #ccc;
+	top: 0px;
+	left: 0px;
+	margin-top: 1px;
+	cursor: pointer;
+	display: none;
+}
+
+.om-grid div.nBtn div {
+	height: 24px;
+	width: 12px;
+	border-left: 1px solid #fff;
+	float: left;
+	background: url("images/grid/grid-icons.png");
+	background-position: 0px 0px;
+}
+
+.om-grid div.nBtn.srtd {
+	background: url(images/grid/wbg.gif) repeat-x 0px -1px;
+}
+
+/* title */
+.om-grid div.mDiv {border-left: 0px; border-right: 0px; border-top: 0px;font-weight: bold;display: block;overflow: hidden; white-space: nowrap; position: relative;}
+.om-grid div.mDiv div {padding: 6px; white-space: nowrap;}
+.om-grid div.mDiv div.ptogtitle {position: absolute; top: 4px; right: 3px; padding: 0px; overflow: hidden; cursor: pointer;}
+.om-grid div.mDiv div.ptogtitle span {display: block;}
+
+/* toolbar */
+.om-grid div.tDiv {position: relative; overflow: hidden; height: 32px; border-left: 0px; border-right: 0px; border-top: 0px;}
+.om-grid div.tDiv2 {float: left; clear: both; padding: 5px;}
+.om-grid div.sDiv {position: relative; border: 1px solid #ccc; border-top: 0px; overflow: hidden; display: none;}
+.om-grid div.sDiv2 {float: left; clear: both; padding: 5px; padding-left: 5px; width: 1024px;}
+.om-grid div.sDiv2 input,.om-grid div.sDiv2 select {vertical-align: middle;}
+
+.om-grid div.btnseparator {float: left; height: 24px; width: 2px; background: url("images/grid/space-bg.png") no-repeat; margin: 0 1px;}
+
+.om-grid div.fbutton {float: left; display: block; height: 22px;}
+
+.om-grid div.fbutton div {
+    border: 1px solid transparent;
+    line-height: 20px;
+    cursor: pointer;
+    float: left;
+    padding: 0px 4px;
+}
+
+.om-grid div.fbutton span {
+	float: left;
+	display: block;
+}
+
+.om-grid div.fbutton div:hover,.om-grid div.fbutton div.fbOver {
+	background-color : #dce8ff;
+	border-radius : 2px;
+	border: 1px solid #8ea9d5;
+}
+
+/* end toolbar*/
+/* column title */
+.om-grid div.hDiv {
+	position: relative;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	overflow: hidden;
+	width:100%
+}
+
+.om-grid div.cDrag {
+	float: left;
+	position: absolute;
+	z-index: 2;
+	overflow: visible;
+}
+
+.om-grid div.cDrag div {
+	float: left;
+	background: none;
+	display: block;
+	position: absolute;
+	height: 24px;
+	width: 5px;
+	cursor: col-resize;
+}
+
+.om-grid div.cDrag div:hover,.om-grid div.cDrag div.dragging {
+	background: url(images/grid/line.gif) repeat-y 2px center;
+}
+
+.om-grid div.cDrag div.checkboxcol:hover{
+	background: none;
+	cursor: default;
+}
+
+.om-grid div.cDrag div.indexcol:hover{
+    background: none;
+    cursor: default;
+}
+
+.om-grid div.iDiv {
+	border: 1px solid #316ac5;
+	position: absolute;
+	overflow: visible;
+	background: none;
+}
+
+.om-grid div.iDiv input,.om-grid div.iDiv select,.om-grid div.iDiv textarea
+	{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+}
+
+.om-grid div.iDiv input.tb {
+	border: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	padding: 0px;
+	background: none;
+}
+
+.om-grid div.bDiv {
+	border-top: 0px;
+	background: #fff;
+	overflow: auto;
+	position: relative;
+}
+
+.om-grid div.bDiv table {
+	margin-bottom: 10px;
+	border-bottom: 1px solid #d0daee;
+}
+
+.om-grid div.hGrip {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	height: 5px;
+	width: 5px;
+	background: url(images/grid/line.gif) repeat-x center;
+	margin-right: 1px;
+	cursor: col-resize;
+}
+
+.om-grid div.hGrip:hover,.om-grid div.hGrip.hgOver {
+	border-right: 1px solid #999;
+	margin-right: 0px;
+}
+
+.om-grid div.vGrip {
+	height: 5px;
+	overflow: hidden;
+	position: relative;
+	background: #fafafa url(images/grid/wbg.gif) repeat-x 0px -1px;
+	border: 1px solid #ccc;
+	border-top: 0px;
+	text-align: center;
+	cursor: row-resize;
+}
+
+.om-grid div.vGrip span {
+	display: block;
+	margin: 1px auto;
+	width: 20px;
+	height: 1px;
+	overflow: hidden;
+	border-top: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	background: none;
+}
+
+.om-grid div.hDiv th,.om-grid  div.bDiv td
+	/* common cell properties*/ {
+	text-align: left;
+	border:0px;
+	border-right: 1px solid #BDCBE8;
+	overflow: hidden;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.om-grid div.hDiv th div,.om-grid  div.bDiv td  div,div.colCopy div
+	/* common inner cell properties*/ {
+	padding: 5px;
+	border-left: 0px solid #fff;
+	overflow:hidden;
+}
+
+.om-grid div.hDiv th div.checkboxheader {
+	padding: 4px 5px;
+}
+
+.om-grid div.hDiv th,div.colCopy {
+	font-weight: normal;
+	height: 24px;
+	cursor: default;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.om-grid div.hDiv th div.wrap,.om-grid div.bDiv td div.wrap{
+    white-space: normal;
+    word-wrap:break-word;
+    word-break:break-all;
+}
+
+div.colCopy {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+	background: #fafafa url(images/grid/fhbg.gif) repeat-x bottom;
+	border: 1px solid #ccc;
+	border-bottom: 0px;
+	overflow: hidden;
+}
+
+.om-grid div.hDiv th.sorted {
+	background: url(images/grid/wbg.gif) repeat-x 0px -1px;
+	border-bottom: 0px solid #ccc;
+}
+
+.om-grid div.hDiv th.thOver {
+	
+}
+
+.om-grid div.hDiv th.thOver div,.om-grid div.hDiv th.sorted.thOver div
+{
+	border-bottom: 1px solid orange;
+	padding-bottom: 3px;
+} 
+
+.om-grid div.hDiv th.sorted div {
+	border-bottom: 0px solid #ccc;
+}
+
+.om-grid div.hDiv th.thMove {
+	background: #fff;
+	color: #fff;
+}
+
+.om-grid div.hDiv th.sorted.thMove div {
+	border-bottom: 1px solid #fff;
+	padding-bottom: 4px
+}
+
+.om-grid div.hDiv th.thMove div {
+	background: #fff !important;
+}
+
+.om-grid div.hDiv th div.sdesc {
+	background: url(images/grid/grid-icons-ud.png) no-repeat center top;
+	background-position:0px 0px;
+}
+
+.om-grid div.hDiv th div.sasc {
+	background: url(images/grid/grid-icons-ud.png) no-repeat center top;
+	background-position:-7px 0px;
+}
+
+.om-grid div.bDiv td {
+	border-bottom: 1px solid #fff;
+	vertical-align: top;
+	white-space: nowrap;
+	cursor: default;
+}
+
+.om-grid span.cdropleft {
+	display: block;
+	background: url(images/grid/prev.png) no-repeat -4px center;
+	width: 24px;
+	height: 24px;
+	position: relative;
+	top: -24px;
+	margin-bottom: -24px;
+	z-index: 3;
+}
+
+.om-grid div.hDiv span.cdropright {
+	display: block;
+	background: url(images/grid/next.png) no-repeat 12px center;
+	width: 24px;
+	height: 24px;
+	float: right;
+	position: relative;
+	top: -24px;
+	margin-bottom: -24px;
+}
+
+.om-grid div.bDiv td div.innerCol {
+	border-top: 0px solid #fff;
+	padding-bottom: 4px;
+}
+
+.om-grid tr td.sorted {
+	background: #f3f3f3;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #f3f3f3;
+}
+
+.om-grid tr td.sorted div {
+	
+}
+
+.om-grid tr.erow td {
+	background: #e8eef7;
+	border-bottom: 1px solid #e8eef7;
+}
+
+.om-grid tr.erow td.sorted {
+	background: #e3e3e3;
+	border-bottom: 1px solid #e3e3e3;
+}
+
+.om-grid div.bDiv tr.trOver td
+	{
+	background: #d9ebf5;
+}
+
+.om-grid div.bDiv tr.om-state-highlight:hover td,.om-grid div.bDiv tr.om-state-highlight:hover td.sorted,.om-grid div.bDiv tr.trOver.om-state-highlight td.sorted,.om-grid div.bDiv tr.trOver.om-state-highlight td,.om-grid tr.om-state-highlight td.sorted,.om-grid tr.om-state-highlight td
+	{
+	background: #F9EAC8;
+}
+
+/* novstripe adjustments */
+.om-grid.novstripe .bDiv table {
+	border-bottom: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+.om-grid.novstripe  div.bDiv td {
+	border-right-color: #fff;
+}
+
+.om-grid.novstripe div.bDiv tr.erow td.sorted {
+	border-right-color: #e3e3e3;
+}
+
+.om-grid.novstripe div.bDiv tr td.sorted {
+	border-right-color: #f3f3f3;
+}
+
+.om-grid.novstripe  div.bDiv tr.erow td {
+	border-right-color: #f7f7f7;
+	border-left-color: #f7f7f7;
+}
+
+.om-grid.novstripe div.bDiv tr.om-state-highlight:hover td,.om-grid.novstripe div.bDiv tr.om-state-highlight:hover td.sorted,.om-grid.novstripe div.bDiv tr.trOver.om-state-highlight td.sorted,.om-grid.novstripe div.bDiv tr.trOver.om-state-highlight td,.om-grid.novstripe tr.om-state-highlight td.sorted,.om-grid.novstripe tr.om-state-highlight td
+	{
+	border-right: 1px solid #0066FF;
+	border-left: 1px solid #0066FF;
+}
+
+.om-grid.novstripe div.bDiv tr.trOver td,.om-grid.novstripe div.bDiv tr:hover td
+	{
+	border-left-color: #d9ebf5;
+	border-right-color: #d9ebf5;
+}
+
+/* end novstripe */
+.om-grid div.pDiv {
+	border-bottom: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	overflow: hidden;
+	white-space: nowrap;
+	position: relative;
+}
+
+.om-grid div.pDiv div.pDiv2 {
+	margin :4px 4px 4px -1px;
+	text-align:center;
+	float: left;
+	width: 1024px;
+	height:24px;
+	line-height: 24px;
+}
+
+div.pGroup {
+	float: left; 
+	background: none;
+	height: 24px;
+	margin: 0px 5px;
+}
+
+.om-grid div.pDiv .pPageStat, .om-grid div.pDiv .pcontrol, .om-grid div.pDiv .pageLink {
+	position: relative;
+	overflow: visible;
+}
+
+.om-grid div.pDiv .pageLink a {
+	color: #000;
+	margin-left: 3px;
+	margin-right: 3px;
+	font-size: 13px;
+	text-decoration: none;
+}
+
+.om-grid div.pDiv a.now-page-link {
+	color: #FF0000;
+}
+
+.om-grid div.pDiv .pageLink a:HOVER {
+	text-decoration: underline;
+}
+
+.om-grid div.pDiv input {
+	position: relative;
+	text-align: center;
+	padding: 0;
+	width: 30px;
+	height: 14px;
+	line-height: 14px;
+	margin: 0px 2px 0px 2px;
+}
+
+.om-grid div.pDiv  div.pButton {
+	float: left;
+	width: 16px; 
+	height: 16px;
+	border: 1px solid transparent;
+	background-repeat : no-repeat;
+	cursor: pointer;
+	overflow: hidden;
+	margin : 1px 2px;
+	padding : 2px;
+	/*the next 2 rows is for IE6,because IE6 not support transparent*/
+	_border-color:tomato;
+	_filter:chroma(color=tomato);
+}
+
+.om-grid div.pDiv  div.pButton span {
+	width: 16px;
+	height: 16px;
+	display: block;
+	float: left;
+	*+float: none;
+	*+display:inline;
+}
+
+.om-grid .pSearch {
+	background: url("images/grid/grid-icons.png");
+	background-position: -48px 0px;
+}
+
+.om-grid .pReload.loading {
+	background: url(images/load.gif) no-repeat center;
+}
+
+/* ie adjustments */
+.om-grid.ie div.hDiv th div,.om-grid.ie  div.bDiv td  div,div.colCopy.ie div
+	/* common inner cell properties*/ {
+	overflow: hidden;
+}
+
+.om-grid div.hDiv span.checkbox {
+	background: url("images/grid/grid-icons.png");
+	background-position: -32px 0px;
+	width: 16px;
+	height: 16px;
+	display: block;
+	cursor: pointer;
+	margin:0 auto;
+}
+
+.om-grid div.hDiv span.selected {
+	background: url("images/grid/grid-icons.png");
+	background-position: -16px 0px;
+	width: 16px;
+	height: 16px;
+	display: block;
+	cursor: pointer;
+}
+
+.om-grid span.checkbox {
+	background: url("images/grid/grid-icons.png");
+	background-position: -32px 0px;
+	width: 16px;
+	height: 16px;
+	display: block;
+	cursor: pointer;
+	margin:0 auto;
+}
+
+.om-grid .om-state-highlight span.checkbox {
+	background: url("images/grid/grid-icons.png");
+	background-position: -16px 0px;
+	width: 16px;
+	height: 16px;
+	display: block;
+	cursor: pointer;
+}
+
+/* @chenjie,for toolbar */
+
+.om-grid .tDiv .tDiv2 .fbutton div .tbText {
+	margin-left: 4px;
+}
+.om-grid .tDiv .tDiv2 .fbutton div .tbIcon {
+	display:block;
+	width:16px;
+	height:16px;
+	margin: 2px 0;
+	float:left;
+}
+.om-grid .tDiv .tDiv2 .fbutton {
+	margin-left: 10px;
+}
+
+.om-grid .loadingImg {
+	background: url('images/load.gif');
+	height:16px;
+	width:16px;
+}
+
+.om-grid div.mDiv {color:#15428B;}
+.om-grid div.tDiv {background: url("images/grid/tool-bg.png") repeat-x scroll 0 0 transparent;}
+.om-grid div.sDiv {background: #fafafa url(images/grid/bg.gif) repeat-x top;}
+.om-grid div.hDiv {background: #fafafa url(images/grid/head-bg.png) repeat-x bottom;border-top: 1px solid #C8C4BF;border-bottom: 1px solid #C8C4BF;}
+.om-grid div.pDiv {background: url(images/grid/pager-bg.png) repeat-x 0 0;}
+
+.om-grid .pFirst {background-position: 3px 2px;}
+.om-grid .pLast {background-position: -15px 2px;}
+.om-grid .pPrev {background-position: -30px 2px;}
+.om-grid .pNext {background-position: -44px 2px;}
+.om-grid .pReload {background-position: -61px 2px;}
+
+.om-widget-content .bDiv .om-state-hover, .om-widget-content .bDiv .om-state-highlight {color: #000000;}
+.om-widget-content .bDiv .om-state-hover {background-color:#D9EBF5}
+.om-grid div.hDiv {color:#000;/*for IE6*/zoom:1;}
+.om-grid div.hDiv .om-state-hover{background: #fafafa url(images/grid/head-bg.png) repeat-x bottom;color:#000;}
+.om-grid div.pDiv div.pButton.om-state-hover{background-image: url("images/om-icons-hover.png"); border : 1px solid #8ea9d5;background-color: #d3e2ff;border-radius : 2px;cursor: pointer;}
+.om-grid div.pDiv div.pButton.om-stat-hover span{width: 19px;height: 19px;border-top: 1px solid #fff;border-left: 1px solid #fff;}
+.om-grid .om-state-default {border: 1px solid #C8C4BF;}
+.om-grid .om-widget .om-widget-content{border: 1px solid #C8C4BF;}
+.om-grid .titleDiv {background: #fafafa url(images/grid/tool-bg.png) repeat-x bottom;color:#000;}
+.om-grid .titleDiv .titleContent {color:#15428B;font-weight: bold;padding:6px;}/*
+ * $Id: om-accordion.css,v 1.18 2012/02/21 09:01:48 chentianzhen Exp $
+ * operamasks-ui Accordion 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+/* "width:100%" IE/Win - Fix animation bug - #4615 */
+.om-accordion { width: 100%;}
+.om-accordion .om-panel .om-panel-header{border-width: 0 1px 1px;}
+.om-accordion .om-panel .om-panel-body{border-top-width: 0;}
+.om-accordion .om-panel .om-panel-header-hover{
+	background: url("images/panel/om-panel-header-bg-h.png") repeat-x scroll 0 0 #FFFFFF;
+	color:#000;
+	font-weight:bold;
+}
+.om-accordion .om-state-disabled{cursor:not-allowed!important;}
+.om-accordion-disable{background-color:#CCCCCC; opacity: .6; filter:Alpha(Opacity=60); }/*
+ * $Id: om-borderlayout.css,v 1.14 2012/06/14 03:22:51 licongping Exp $
+ * operamasks-ui borderlayout 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-borderlayout-resizable-helper-e { border-right: 5px solid gray; }
+.om-borderlayout-resizable-helper-w { border-left: 5px solid gray; }
+.om-borderlayout-resizable-helper-n { border-top: 5px solid gray; }
+.om-borderlayout-resizable-helper-s { border-bottom: 5px solid gray; }
+.om-borderlayout{
+	position: relative;
+	background-color: #D2E0F2;
+	overflow: hidden;
+}
+.om-borderlayout .om-borderlayout-region-body{
+	background-color: #FFFFFF;
+	padding: 0px;
+}
+.om-borderlayout .om-borderlayout-region-header .om-icon{
+	background-image: url(images/borderlayout/tools.gif);
+	width: 15px;
+	height: 15px;
+}
+.om-borderlayout-mask{
+	left:0;
+	top:0;
+	background: none repeat scroll 0 0 #FAFAFA;
+    opacity: 0.1;
+	filter:Alpha(Opacity=0.1);    
+    position: absolute;
+}
+.om-borderlayout-region{
+	position: absolute;
+	overflow: visible;
+}
+.om-borderlayout-region .om-borderlayout-region-header .om-panel-tool-close{
+	background-position: 0 0;
+}
+.om-borderlayout-region .om-borderlayout-region-header .om-panel-tool-close-hover{
+	background-position: -15px 0;
+}
+.om-borderlayout-region-south{
+	left: 0px;
+}
+.om-borderlayout-region-south .panel-tool-collapse{
+	background-position: 0 -45px;
+}
+.om-borderlayout-region-south .panel-tool-collapse-hover{
+	background-position: -15px -45px;
+}
+.om-borderlayout-region-north{
+	top: 0px;
+	left: 0px;
+}
+.om-borderlayout-region-north .panel-tool-collapse{
+	background-position: 0 -60px;
+}
+.om-borderlayout-region-north .panel-tool-collapse-hover{
+	background-position: -15px -60px;
+}
+.om-borderlayout-region-west{
+	left: 0px;
+}
+.om-borderlayout-region-west .panel-tool-collapse{
+	background-position: 0 -30px;
+}
+.om-borderlayout-region-west .panel-tool-collapse-hover{
+	background-position: -15px -30px;
+}
+.om-borderlayout-region-east{
+	right: 0px;
+}
+.om-borderlayout-region-east .panel-tool-collapse{
+	background-position: 0 -15px;
+}
+.om-borderlayout-region-east .panel-tool-collapse-hover{
+	background-position: -15px -15px;
+}
+
+.om-borderlayout-proxy{
+	position: absolute;
+	cursor: pointer;
+	background-color: #D2E0F2;
+	border: 1px solid #86A3C4;
+	z-index: 100;
+	display: none;
+}
+.om-borderlayout .om-borderlayout-proxy .om-icon{
+	background-image: url(images/borderlayout/tools.gif);
+	width: 15px;
+	height: 15px;
+}
+.om-borderlayout-proxy-north{
+	height: 26px;
+	left: 0px;
+	top: 0px;
+}
+.om-borderlayout-proxy-north .panel-tool-expand{
+	background-position: 0 -45px;
+}
+.om-borderlayout-proxy-north .panel-tool-expand-hover{
+	background-position: -15px -45px;
+}
+.om-borderlayout-proxy-south{
+	height: 26px;
+	left: 0px;
+	bottom: 0px;
+}
+.om-borderlayout-proxy-south .panel-tool-expand{
+	background-position: 0 -60px;
+}
+.om-borderlayout-proxy-south .panel-tool-expand-hover{
+	background-position: -15px -60px;
+}
+.om-borderlayout-proxy-west{
+	left: 0px;
+	width: 26px;
+}
+.om-borderlayout-proxy-west .panel-tool-expand{
+	background-position: 0 -15px;
+}
+.om-borderlayout-proxy-west .panel-tool-expand-hover{
+	background-position: -15px -15px;
+}
+.om-borderlayout-proxy-east{
+	right: 0px;
+	width: 26px;
+}
+.om-borderlayout-proxy-east .panel-tool-expand{
+	background-position: 0 -30px;
+}
+.om-borderlayout-proxy-east .panel-tool-expand-hover{
+	background-position: -15px -30px;
+}
+.om-borderlayout-proxy-hover{
+	background-color: #D9E8FB;
+}
+
+.om-resizable-handle .om-borderlayout-collaps-trigger-west{
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 100%;
+	height: 16px;
+	margin-top: -8px;
+	cursor: pointer;
+	background: url(images/borderlayout/trigger_buttons.png) no-repeat -100px 5px;
+}
+.om-resizable-handle .om-borderlayout-collaps-trigger-north{
+	position: absolute;
+	left: 50%;
+	top: 0;
+	width: 16px;
+	height: 100%;
+	margin-left: -8px;
+	cursor: pointer;
+	background: url(images/borderlayout/trigger_buttons.png) no-repeat 4px 0px;
+}
+.om-resizable-handle .om-borderlayout-collaps-trigger-south{
+	position: absolute;
+	left: 50%;
+	top: 0;
+	width: 16px;
+	height: 100%;
+	margin-left: -8px;
+	cursor: pointer;
+	background: url(images/borderlayout/trigger_buttons.png) no-repeat -46px 0px;
+}
+.om-resizable-handle .om-borderlayout-collaps-trigger-east{
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 100%;
+	height: 16px;
+	margin-top: -8px;
+	cursor: pointer;
+	background: url(images/borderlayout/trigger_buttons.png) no-repeat -154px 5px;
+}
+
+.om-borderlayout-trigger-proxy-west{
+	border-left: 0;
+	border-right : 0;
+	left: 0;
+}
+.om-borderlayout-trigger-proxy-east{
+	border-left: 0;
+	right: 0;
+}
+.om-borderlayout-trigger-proxy-south{
+	border-top: 0;
+	bottom: 0;
+}
+.om-borderlayout-trigger-proxy-north{
+	border-top: 0;
+	border-bottom: 0;
+}
+
+.om-borderlayout-trigger-proxy-west .om-borderlayout-expand-trigger{
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 100%;
+	height: 16px;
+	margin-top: -8px;
+	cursor: pointer;
+	background: url(images/borderlayout/trigger_buttons.png) no-repeat -154px 5px;
+}
+.om-borderlayout-trigger-proxy-east .om-borderlayout-expand-trigger{
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 100%;
+	height: 16px;
+	margin-top: -8px;
+	cursor: pointer;
+	background: url(images/borderlayout/trigger_buttons.png) no-repeat -100px 5px;
+}
+.om-borderlayout-trigger-proxy-north .om-borderlayout-expand-trigger{
+	position: absolute;
+	left: 50%;
+	top: 0;
+	width: 16px;
+	height: 100%;
+	margin-left: -8px;
+	cursor: pointer;
+	background: url(images/borderlayout/trigger_buttons.png) no-repeat -50px 0px;
+}
+.om-borderlayout-trigger-proxy-south .om-borderlayout-expand-trigger{
+	position: absolute;
+	left: 50%;
+	top: 0;
+	width: 16px;
+	height: 100%;
+	margin-left: -8px;
+	cursor: pointer;
+	background: url(images/borderlayout/trigger_buttons.png) no-repeat 4px 0px;
+}/*
+ * operamasks-ui button 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-btn {display: inline-block;text-align: center;vertical-align: middle;background: transparent !important;white-space: nowrap;overflow: visible;height: 24px;cursor: pointer;padding: 0 2px;}
+.om-btn-txt {color: #555555;line-height: 24px;height:24px;display: inline-block;text-decoration: none;background : none transparent;margin: 0;padding: 0;border: 0;overflow:visible;vertical-align: text-bottom;cursor: pointer;}
+.om-btn.om-btn-bg {overflow: hidden;}
+.om-btn-icon {padding-left: 20px;}
+.om-btn-only-icon{height: 24px;width: 20px;}
+.om-btn .om-btn-left, .om-btn .om-btn-center, .om-btn .om-btn-right {border: none;display: inline-block;height:24px;}
+.om-btn .om-btn-left {width: 5px;}
+.om-btn .om-btn-right {width: 5px;}
+.om-btn .om-btn-center {vertical-align: top;text-align: center;line-height: 24px;}
+a.om-btn-only-icon{display: block;}
+*a.om-btn-txt{margin-top:2px;}
+
+/* From theme.css  */
+.om-state-default .om-btn-bg {background: url(images/button/button-nomal-bg.png);}
+.om-state-hover .om-btn-bg {background: url(images/button/button-hover-bg.png);}
+.om-state-focus .om-btn-bg {background: url(images/button/button-focus-bg.png);}
+.om-state-active .om-btn-bg {background: url(images/button/button-mousedown-bg.png);}
+.om-btn .om-btn-left {background-position: 100% 0px;background-repeat: no-repeat;}
+.om-btn {border: none !important;}
+.om-btn .om-btn-center {background-position: 100% -24px;background-repeat: repeat-x;}
+.om-btn .om-btn-right {background-position: 100% -48px;background-repeat: no-repeat;}
+ /*
+ * operamasks-ui buttonbar 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-buttonbar {height: 26px;border: 1px solid #99A8BC;background: url("images/buttonbar/buttonbar-bg.png");}
+.om-buttonbar-null {float: left;width: 20px;height: 26px;}
+.om-buttonbar .om-btn {float: left;height: 26px;}
+.om-buttonbar .om-btn .om-btn-txt{line-height: 27px\9;}
+.om-buttonbar .om-state-default .om-btn-bg {background: none;}
+.om-buttonbar .om-state-hover{background: url("images/buttonbar/button-hover-bg.png") !important;}
+.om-buttonbar-sep {background: url("images/buttonbar/separtor-bg.png");background-repeat: no-repeat;height: 24px;width: 2px;display: block;margin-left:2px;margin-right:2px;margin-top : 2px;float: left;overflow: hidden;}/*
+ * $Id: om-calendar.css,v 1.17 2012/06/27 07:38:03 linxiaomin Exp $
+ * operamasks-ui calendar 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+/* 清除浮动 */
+.om-clearfix:after {content: '\20';display: block;height: 0;clear: both;}
+.om-clearfix { *zoom: 1; }
+.hidden {display:none;}
+
+/*--日历--*/
+.om-calendar-list-wrapper {height:auto;}
+.om-calendar-list-wrapper.multi-1 {width:184px !important;_width:186px;}
+.om-calendar-list-wrapper.multi-2 {width:368px !important;_width:376px}
+.om-calendar-list-wrapper.multi-3 {width:552px !important;_width:564px}
+
+.om-calendar-list-wrapper {-moz-box-shadow: 2px 2px 0px #ccc;-webkit-box-shadow: 2px 2px 0px #ccc;-khtml-box-shadow: 2px 2px 0px #ccc;-ms-box-shadow: 2px 2px 0px #ccc;filter: progid:DXImageTransform.Microsoft.Shadow(direction = 155, Color = #dadada, Strength = 3), progid:DXImageTransform.Microsoft.DropShadow(Color = #22aaaaaa, OffX = 0, OffY = 0);    }
+
+.om-calendar-list-wrapper .om-cal-box {height:auto;width:auto;float:left;_padding-bottom:3px;position:relative;border-right:1px solid #C2D9EF;}
+.om-calendar-list-wrapper .om-cal-hd.om-widget-header{width:183px;_width:185px;height:26px;position:relative;border:none;}
+.om-calendar-list-wrapper .om-cal-hd a {cursor: pointer;}
+.om-calendar-list-wrapper .om-cal-hd a.om-prev {overflow:hidden;text-indent:-100em;float:left;position:absolute;left:8px;top:5px;text-decoration:none;}
+.om-calendar-list-wrapper .om-cal-hd a.om-next {overflow:hidden;text-indent:-100em;position:absolute;right:8px;top:5px;text-decoration:none;}
+
+.om-calendar-list-wrapper .om-cal-hd a.om-title:link,
+.om-calendar-list-wrapper .om-cal-hd a.om-title:visited {text-decoration:none;position:relative;margin-left:auto;margin-right:auto;width:85px;height:17px;line-height:17px;display:block;top:4px;text-align:center;}
+
+.om-calendar-list-wrapper .om-cal-bd {width:183px;}
+.om-calendar-list-wrapper .om-cal-bd .om-whd {width:auto;height:19px;overflow:hidden;*padding-left:2px;*width:179px;border-top:1px solid #C2D9EF;}
+.om-calendar-list-wrapper .om-cal-bd .om-whd span {float:left;width:25.857px;text-align:center;line-height:19px;}
+
+/*--hack for ff2 {{ --*/
+.om-calendar-list-wrapper .om-cal-bd .om-whd span, x:-moz-any-link {width:25px;}
+.om-calendar-list-wrapper .om-cal-bd .om-whd span, x:-moz-any-link, x:default {width:25.857px;}
+/*--hack for ff2 }} --*/
+
+.om-calendar-list-wrapper .om-cal-bd .om-dbd {width:181px;height:auto;margin-top:4px;*padding-left:2px;*width:179px;}
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a,
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a:link,
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a:visited {float:left;width:25.857px;text-align:center;line-height:22px;text-decoration:none;}
+
+/*--hack for ff2 {{ --*/
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a, x:-moz-any-link {width:25px;}
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a:link, x:-moz-any-link {width:25px;}
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a:visited, x:-moz-any-link {width:25px;}
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a,
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a:link,
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a:visited, x:-moz-any-link, x:default {width:25.857px;}
+/*--hack for ff2 }} --*/
+
+/*--日期的状态--*/
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a.om-null,
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a.om-null:link,
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a.om-null:visited {background:white;color:white;cursor:default;}
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a.om-today,
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a.om-today:link,
+.om-calendar-list-wrapper .om-cal-bd .om-dbd a.om-today:visited {font-weight:bold;}
+
+.om-calendar-list-wrapper .om-cal-ft {text-align:center;width:180px;margin:0 0 3px 3px;}
+
+/*--时间控件--*/
+.om-calendar-list-wrapper .om-cal-ft .om-cal-time {float:left;height: 17px;display:inline-block;*display:inline;*zoom:1;padding:3px 5px;*padding:2px 5px;_padding:4px 5px;width:95px;position:relative;padding-right:18px}
+.om-calendar-list-wrapper .om-cal-ft .ct-ok {padding: 1px;width: 50px;line-height: 18px;float:left;margin-left: 1px;}
+.om-cal-time .cta {width:16px;height:22px;position:absolute;right:0;top:0;line-height:0;}
+/*hack for Opera*/
+@media all and (-webkit-min-device-pixel-ratio:10000), not all and (-webkit-min-device-pixel-ratio:0){
+	head~body .om-calendar-list-wrapper .om-cal-ft .om-cal-time {padding:2px 5px 2px 0px;display:block;float:left;width:110px;margin-left:13px;}
+	head~body .om-calendar-list-wrapper .om-cal-ft .ct-ok {margin-left:0px;}
+	head~body .om-cal-time .cta{}
+}
+.om-cal-time button {width:16px;height:11px;border:0;overflow:hidden;cursor:pointer;}
+.om-cal-time span {cursor:pointer;}
+.om-cal-time span.on {padding:0 0px;}
+
+/*--选择月份容器--*/
+.om-setime {position:absolute;left:0px;top:28px;right:0px;width:181px;text-align:center;vertical-align:middle;height:auto;padding-top:10px;padding-bottom:10px;}
+.om-setime p {height:30px;margin:0;padding:0;}
+.om-setime select,.om-setime input {width:80px;}
+
+/*--选择时间的容器--*/
+.om-selectime {position:absolute;left:0px;bottom:28px;*bottom:32px;right:0px;width:180px;text-align:center;vertical-align:middle;height:auto;padding-top:10px;padding-bottom:10px;}
+.om-selectime a,
+.om-selectime a:link,
+.om-selectime a:visited {margin-left:10px;display:inline-block;*display:inline;float:left;text-decoration:none;}
+.om-selectime a:hover {text-decoration:underline;}
+.om-selectime a.x {position:absolute;right:3px;bottom:2px;font-weight:bold;font-family:"comic Sans MS"}
+.om-selectime select,.om-selectime input {width:80px;}
+
+.om-calendar {white-space: nowrap;display: inline-block;height: 20px;}
+.om-calendar input {margin:0px; border: 0px;height: 18px;line-height: 18px;*vertical-align: top;}
+.om-calendar .om-calendar-trigger {cursor: pointer;display: inline-block;height: 20px;vertical-align: top;width: 19px;background-color: #e6e6e6;}
+.om-calendar-list-wrapper .om-cal-bd a.om-state-disabled {color: #8C8C8C; filter:none;}
+.om-calendar.om-widget {background: none;}
+
+/* from theme.css */
+.om-calendar-trigger {background: url("images/calendar/calendar-trigger.png") no-repeat scroll 0px 50% transparent;}
+.om-calendar-list-wrapper .om-cal-hd {background:url('images/calendar/year_head_bkgd.gif') repeat-x ;background-color:#40a6ff;border:1px solid #8391b4;}
+.om-calendar-list-wrapper .om-cal-hd a.om-title:hover {color:#000000;border: 1px solid #8EA9D5;top:2px;background-color: #DCE8FF;border-radius: 2px 2px 2px 2px;}
+.om-calendar-list-wrapper .om-cal-bd .om-whd {background:url('images/calendar/week_day_bkgd.gif') repeat-x;}
+.om-cal-time button.om-icon {background:url("images/calendar/time_up_down.gif") no-repeat;}
+.om-cal-time button.u {background-position:0 1px;}
+.om-cal-time button.d {background-position:0 -10px;}
+
+.om-cal-box a {color:#222222}/*
+ * $Id: om-combo.css,v 1.15 2012/06/27 07:38:03 linxiaomin Exp $
+ * operamasks-ui combo 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-combo {white-space: nowrap;display: inline-block;height: 20px;}
+.om-widget.om-combo {background: none;}
+.om-combo input {margin:0px; border: 0px solid;height: 18px;line-height : 20px;vertical-align: top;}
+.om-combo .om-combo-trigger {cursor: pointer;display: inline-block;height: 20px;vertical-align: top;width: 19px;background-color: #e6e6e6;}
+.om-combo-list-row {height: 20px; line-height: 20px; padding: 0 5px; margin : 1px; overflow-x: hidden; white-space: nowrap;cursor:default;}
+
+.om-combo-trigger{background: url("images/combo/combo-trigger.png") no-repeat scroll 0px 50% transparent;}
+.om-combo-selected, .om-state-hover.om-combo-selected {background:none repeat scroll 0 0 #FFCA88}/*
+ * $Id: om-dialog.css,v 1.12 2012/06/07 09:37:34 linxiaomin Exp $
+ * operamasks-ui dialog 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-dialog { position: absolute; width: 300px; overflow: hidden; }
+.om-dialog .om-dialog-titlebar { height: 29px; position: relative;  background: url("images/dialog/title-bg.png") repeat-x scroll 0 0 transparent; border: none;border-radius: 8px 8px 0 0;border-bottom: 1px solid #86A3C4;}
+.om-dialog .om-dialog-title { float: left; margin: 0.7em 16px 0.1em 0.5em; } 
+.om-dialog .om-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 25px; margin: -12px 0 0 0; padding: 1px; height: 18px; }
+.om-dialog .om-dialog-titlebar-close span { display: block; margin: 1px; }
+.om-dialog .om-dialog-titlebar-close:hover, .om-dialog .om-dialog-titlebar-close:focus {border:none; color: #222222; background-color: transparent}
+
+.om-dialog .om-icon-closethick {background-image: url("images/ui-toolbar-btn.png") !important;_background-image: url("images/ui-toolbar-btn.gif") !important;background-position: -88px 0!important;width: 22px; height: 18px;text-indent:-9999px}
+.om-dialog .om-icon-closethick:hover{background-position: -88px -36px!important;}
+
+.om-dialog .om-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
+.om-dialog .om-dialog-buttonpane { text-align: left; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; border-top:1px solid #86A3C4;}
+.om-dialog .om-dialog-buttonpane .om-dialog-buttonset { float: right; }
+.om-dialog .om-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .om-dialog-titlebar { cursor: move; }
+.om-dialog.om-widget-content {border-radius: 8px 8px 0 0;}
+/*
+ * $Id: om-fileupload.css,v 1.5 2012/02/08 06:00:53 licongping Exp $
+ * operamasks-ui fileupload 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-fileupload-queueitem {
+	background-color: #FFFFFF;
+	border: 1px solid #E7E7E7;
+	margin-top: 5px;
+	padding: 10px;
+	width: 350px;
+}
+.om-fileupload-error {
+	background-color: #FFE4E5 !important;
+	border: 1px solid #EECFCF !important;
+}
+.om-fileupload-queueitem .cancel {
+	float: right;
+	background: url("images/fileupload/cancel.gif") no-repeat scroll 0 -10px transparent;
+	width: 10px;
+	height: 10px;
+	cursor: pointer;
+}
+.om-fileupload-error .cancel {
+	background-position:  0 0;
+}
+.om-fileupload-queue .completed {
+	background-color: #E5E5E5;
+}
+.om-fileupload-progress {
+	background: url("images/fileupload/progressbar.png") repeat-x scroll 0 0 transparent;
+	margin-top: 10px;
+	width: 100%;
+	height: 8px;
+	padding: 1px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	padding: 0 1px;
+}
+.om-fileupload-progressbar {
+	background: url("images/fileupload/progressbar.png") repeat-x scroll 0 -8px transparent;
+	height: 5px;
+	width: 0px;
+	position: relative;
+	top: 1.2px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}.om-grid div.hDiv th.group-header-1{
+	border-bottom: 1px solid #C8C4BF;
+}
+.om-grid div.hDiv th.group-header-2{
+	border-bottom: 1px solid #C8C4BF;
+}
+.om-grid div.hDiv th.group-header-3{
+	border-bottom: 1px solid #C8C4BF;
+}
+.om-grid div.hDiv th.group-header-4{
+	border-bottom: 1px solid #C8C4BF;
+}
+.om-grid div.hDiv-group-header{
+	background: none;
+	background-color:  #EFF2F7;
+}.om-grid .grid-edit-view{
+	position:absolute;
+	border:2px solid #99BCE8;
+	background-color:#D3E1F1;
+	border-left-style:none;
+	border-right-style:none;
+}
+.om-grid .grid-edit-view .body-wrapper{
+	background-repeat: repeat-x;
+}
+.om-grid .grid-edit-row{
+	height:28px;
+	position:relative;
+}
+.om-grid .grid-edit-row input{
+	margin-left:1px;
+	margin-right:1px
+}
+.om-grid .gird-edit-btn{
+	padding:2px 5px;
+	border:2px solid #99BCE8;
+	position:absolute;
+	background-color:#D3E1F1;
+	border-top-style:none;
+}
+.om-grid .gird-edit-btn input{
+	width: 70px;
+	height: 24px;
+}
+.om-grid div.bDiv tr.om-grid-row td.grid-cell-dirty{
+	background-repeat: no-repeat;
+	background-image: url("images/grid-roweditor/dirty.gif");
+}
+.om-grid input.om-numberfield{
+	 background: none repeat scroll 0 0 #FFFFFF;
+	 border: 1px solid #86A3C4;
+}
+.om-grid form.grid-edit-form{
+	
+}
+.om-grid span.om-calendar , .om-grid span.om-combo{
+	border: 1px solid #86A3C4;
+	margin-left:1px;
+	margin-right:1px;
+}
+
+.om-grid span.om-combo input{
+	margin-left:0px;
+}
+
+.om-grid div.grid-edit-custom{
+	display:inline;
+	height:20px;
+	line-height:20px;
+}
+.om-grid .grid-edit-form input{
+	border:1px solid #86A3C4;
+	height:18px;
+	line-height:18px;
+	padding:1px;
+}
+.om-grid .om-calendar input , .om-grid .om-combo input{
+	border:0;
+}
+.om-grid input.grid-edit-text{
+	vertical-align: top;
+}
+.om-grid td.indexCol .om-icon{
+	background-image: url("images/grid-roweditor/new.png");	
+}
+.om-grid input.readonly-text{
+	color: #AAAAAA;
+}
+.om-grid .gird-edit-btn{
+	width:168px;
+}
+/**
+*校验相关
+**/
+.om-grid form.grid-edit-form input.error{
+	border: 1px solid red;
+	position:relative;
+}
+.om-grid div.bDiv div.errorContainer{
+	position:absolute;
+	border:1px solid red;
+	background-image:;
+	background:url("images/grid-roweditor/error.png") no-repeat scroll 0 50% #FCEFE3;
+	padding:5px 10px 5px 20px;
+	display:inline;
+	z-index:10000;
+	white-space: nowrap;
+}.om-grid .bDiv .expenderCol div{
+    background: url("images/grid-rowexpander/grid-row-expand-sprite.gif") no-repeat scroll 5px 5px transparent;
+    height:14px;
+}
+.om-grid .bDiv .expenderCol div.rowExpand-expanded{
+    background-position: -19px 5px;
+}
+
+.om-grid tr.rowExpand-rowDetails div.rowExpand-rowDetails-content{
+    border: 1px solid #BDCBE8;
+    border-width : 1px 0;
+}.om-grid-sortIcon{
+	display: none;
+	background-repeat: no-repeat;
+	height: 4px;
+    margin-left: 3px;
+    vertical-align: middle;
+    width: 13px;
+    border: 0 none;
+}
+.om-grid .asc .om-grid-sortIcon{
+	background-image: url("images/grid-sort/sort_asc.gif");
+	display: inline;
+}
+.om-grid .desc .om-grid-sortIcon{
+    background-image: url("images/grid-sort/sort_desc.gif");
+    display: inline;
+}.om-itemselector .om-itemselector-toolbar{
+    padding: 0 2px;
+    width:60px;
+}
+.om-itemselector-toolbar .om-icon{
+    margin:5px auto;
+}
+.om-itemselector .header{
+	background: url("images/itemselector/header_bg.png") repeat-x;
+	border-bottom: 1px solid #99A8BD;
+	height: 26px;
+}
+.om-itemselector .header span.checkbox{
+	margin: 5px 0 0 6px;
+}
+.om-itemselector .header span.om-itemselector-title{
+	float: left;
+	line-height: 26px;
+}
+.om-itemselector .om-itemselector-leftpanel, .om-itemselector .om-itemselector-rightpanel{
+    border: 1px solid #99A8BD;
+}
+
+.om-itemselector .om-itemselector-items{
+    overflow: hidden;
+    width: 100%;
+    background-color: #DBE2EC;
+    position: relative;
+}
+.om-itemselector-items dl{
+    margin: 5px 0 0;
+    padding: 0;
+}
+.om-itemselector-items dl dt{
+    padding: 0px 5px;
+    cursor: pointer;
+    height: 21px;
+    -moz-user-select: none;
+}
+
+.om-itemselector-items dt.om-state-highlight{
+    background: none repeat scroll 0 0 #B4C5DF;
+    color: #000000;
+    border: none;
+}
+
+.om-itemselector-items dt:hover{
+	background: none repeat scroll 0 0 #C4D6EC;
+}
+
+.om-itemselector span.checkbox {
+	background: url("images/itemselector/checkbox2.png");
+	width: 16px;
+	height: 16px;
+	display: block;
+	cursor: pointer;
+	float: left;
+}
+
+.om-itemselector .om-state-highlight span.checkbox , .header span.selected{
+	background: url("images/itemselector/checkbox1.png");
+	width: 16px;
+	height: 16px;
+	display: block;
+	cursor: pointer;
+	float: left;
+}
+
+.om-itemselector-up, .om-itemselector-down{
+	background: url("images/itemselector/button_bg.png") repeat-x;
+	height: 18px;
+	border: 1px solid #97A9C1;
+	display: none;
+}
+
+.om-itemselector-up:hover, .om-itemselector-down:hover{
+	background: url("images/itemselector/button_bg_hover.png") repeat-x;
+	border: 1px solid #738BAC;
+}
+.om-itemselector-up-disabled, .om-itemselector-down-disabled,
+.om-itemselector-up-disabled:hover, .om-itemselector-down-disabled:hover{
+	background: url("images/itemselector/button_bg_disabled.png") repeat-x;
+	border: 1px solid #AFAFAF;
+}
+
+.om-itemselector-up span.upbtn{
+	background:url("images/itemselector/up.png") no-repeat center center;
+	height:20px;
+	display: block;
+	cursor: pointer;
+}
+
+.om-itemselector-up-disabled span.upbtn{
+	background:url("images/itemselector/up_disable.png") no-repeat center center;
+	height:20px;
+	display: block;
+	cursor: auto;
+}
+
+.om-itemselector-down span.downbtn{
+	background:url("images/itemselector/down.png") no-repeat center center;
+	height:20px;
+	display: block;
+	cursor: pointer;
+}
+
+.om-itemselector-down-disabled span.downbtn{
+	background:url("images/itemselector/down_disable.png") no-repeat center center;
+	height:20px;
+	display: block;
+	cursor: auto;
+}
+.om-itemselector-toolbar .om-icon{
+    width:30px;
+    height:30px;
+    cursor: pointer;
+}
+.om-itemselector-toolbar .om-itemselector-tbar-space{
+    background: none;
+    height: 10px;
+}
+
+.om-itemselector-tbar-add{
+    background-image: url("images/itemselector/add.png");
+}
+.om-itemselector-tbar-remove{
+    background-image: url("images/itemselector/remove.png");
+}
+.om-itemselector-tbar-add:hover{
+    background-image: url("images/itemselector/add_hover.png");
+}
+.om-itemselector-tbar-remove:hover{
+    background-image: url("images/itemselector/remove_hover.png");
+}/*
+ * $Id: om-menu.css,v 1.17 2012/06/27 01:58:28 luoyegang Exp $
+ * operamasks-ui menu 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-menu {position: relative;}
+.om-menu-container {top: 0;left: -999px;} /* position: absolute; */
+.om-menu-content {width:auto; background : url("images/menu/menu_bg.gif") repeat-y scroll 0 0 #F0F0F0;border: 1px solid #AAAAAA;color: #222222;padding: 4px !important;*padding:4px;}
+.om-menu , .om-menu ul{ list-style-type:none; padding: 0; margin:0; }
+.om-menu ul{position: absolute;}
+.om-menu li{border:1px solid #F0F0F0;clear: both;cursor:pointer ;margin: 0;padding: 0;width: 98%;display: block;white-space: nowrap;overflow: hidden;}
+.om-menu a:link,.om-menu a:visited,.om-menu a:hover,.om-menu a:active {color:#222222; float:left; width:98%; padding:3px; text-decoration:none; outline: 0 !important;*outline:0; }
+.om-menu-icon{float: left;position: inherit;margin-left: -3px;_margin-left: -1px;border: 0px;width: 16px;height: 16px;}
+.om-menu-indicator .ui-icon-span{background: url("images/menu/menu_rightarrow.png") no-repeat scroll 6px 6px transparent;float: right;width: 16px;height: 16px;}
+.om-menu .om-state-disabled a{cursor: default;}
+.om-menu-sep-li{font-size: 1px;line-height: 1px;}
+.om-menu-item-sep{background-color: #E0E0E0;border-bottom: 1px solid;color: #FFFFFF;display: block;line-height: 1px;overflow: hidden;}
+.om-menu-indicator span{float: left;margin-left: 10px;white-space:nowrap;word-break:keep-all;overflow:hidden;text-overflow:ellipsis;*display:inline-block;}
+.om-menu .om-menu-item-hover{border:1px solid #AECFF7;background-color:#ECF0F6;color: #FFFFFF;outline: medium none;}/*
+ * $Id: om-messagebox.css,v 1.16 2012/03/12 03:15:13 wangfan Exp $
+ * operamasks-ui messageBox 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+div.om-messageBox { position: absolute; width: 300px; overflow: hidden; outline:0; border: 1px solid #86A3C4; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;}
+.om-messageBox .om-messageBox-titlebar { height: 29px; position: relative; border-radius: 4px 4px 0 0; background: url("images/messagebox/title-bg.png") repeat-x scroll 0 0 transparent; border: none; border-bottom: 1px solid #86A3C4;}
+.om-messageBox .om-messageBox-title { float: left; margin: 0.7em 16px 0.1em 0.5em; }
+
+.om-messageBox .om-messageBox-titlebar-close { position: absolute; right: .3em; top: 50%; width: 22px; margin: -12px 0 0 0; padding: 1px; height: 18px; }
+.om-messageBox .om-messageBox-titlebar-close span { display: block; margin: 1px; }
+.om-messageBox .om-messageBox-titlebar-close:hover, .om-messageBox .om-messageBox-titlebar-close:focus { border:none; color: #222222; background-color: transparent }
+.om-messageBox .om-icon-closethick {background-image: url("images/ui-toolbar-btn.png") !important;_background-image: url("images/ui-toolbar-btn.gif") !important;background-position: -88px 0!important;width: 22px; height: 18px;}
+.om-messageBox .om-icon-closethick:hover{background-position: -88px -36px!important;}
+.om-messageBox .om-state-mousedown .om-icon-closethick{background-position: -88px -18px!important;}
+
+.om-messageBox .om-messageBox-content { position: relative; border:none; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
+.om-messageBox .om-messageBox-buttonpane { text-align: center; border-width: 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; border-color: #86A3C4; }
+.om-messageBox .om-messageBox-buttonpane button { cursor: pointer; }
+.om-messageBox .om-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
+.ui-draggable .om-messageBox-titlebar { cursor: move; }
+
+.om-messageBox-content table{ table-layout: fixed; width: 276px }
+.om-message-content-html{ word-wrap: break-word; word-break: break-all; }
+.om-message-content-html input{ height: 18px; width: 206px }
+.om-messageBox-imageTd{ width: 32px; height: 32px; }
+
+
+.om-messageBox-image{ background: none no-repeat scroll 0 0 transparent; position: absolute; top: 10px; left: 10px; overflow: hidden; height: 32px; width: 32px; }
+.om-messageBox-image-success{ background: url("images/messagebox/messagebox-icons.gif") -128px 0px; }
+.om-messageBox-image-error{ background: url("images/messagebox/messagebox-icons.gif") -64px 0px;}
+.om-messageBox-image-warning{ background: url("images/messagebox/messagebox-icons.gif") -96px 0px;}
+.om-messageBox-image-confirm{ background: url("images/messagebox/messagebox-icons.gif") -32px 0px; }
+.om-messageBox-image-question{ background: url("images/messagebox/messagebox-icons.gif") -32px 0px; }
+.om-messageBox-image-alert{ background: url("images/messagebox/messagebox-icons.gif") 0px 0px;}
+.om-messageBox-image-prompt{ background: url("images/messagebox/messagebox-icons.gif") -160px 0px; }
+.om-messageBox-image-waiting{ background-image: url("images/messagebox/waiting.gif"); }
+/*
+ * $Id: om-messagetip.css,v 1.11 2012/03/12 03:09:58 wangfan Exp $
+ * operamasks-ui messagetip 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+body {/*解决IE6不支持position:fixed的问题*/ _background-image: url(about:blank);/*用浏览器空白页面作为背景*/_background-attachment: fixed;     /* prevent screen flash in IE6 确保滚动条滚动时，元素不闪动*/}
+.om-messageTip { position: fixed; right:5px; bottom:5px;width: 200px; overflow: hidden; outline:0; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;_position:absolute;_left:expression(eval(document.documentElement.scrollLeft+document.documentElement.clientWidth-this.offsetWidth)-(parseInt(this.currentStyle.marginLeft,10)||0)-(parseInt(this.currentStyle.marginRight,10)||0)-5);_top:expression(eval(document.documentElement.scrollTop+document.documentElement.clientHeight-this.offsetHeight-(parseInt(this.currentStyle.marginTop,10)||0)-(parseInt(this.currentStyle.marginBottom,10)||0))-5);}
+.om-messageTip .om-widget-header { height: 29px; position: relative; border-radius: 4px 4px 0 0; border:1px solid #86A3C4;border-bottom-width: 0}
+.om-messageTip-title { float: left; margin: 0.7em 16px 0.1em 0.5em; }
+
+.om-messageTip-titlebar-close { position: absolute; right: .3em; top: 50%; width: 22px; margin: -12px 0 0 0; padding: 1px; height: 18px; }
+.om-messageTip-titlebar-close span { display: block; margin: 1px; }
+.om-messageTip .om-icon-closethick {background-image: url("images/ui-toolbar-btn.png") !important;_background-image: url("images/ui-toolbar-btn.gif") !important;background-position: -88px 0!important;width: 22px; height: 18px;text-indent:-9999px}
+.om-messageTip .om-icon-closethick:hover{background-position: -88px -36px!important;}
+.om-messageTip .om-state-mousedown .om-icon-closethick{background-position: -88px -18px!important;}
+.om-messageTip a.om-state-hover,.om-messageTip a.om-state-focus,.om-messageTip a.om-state-mousedown{background-color: transparent;border: none}
+
+.om-messageTip-content { padding: 10px; overflow: auto; zoom: 1; border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;}
+.om-messageTip-content-body{ word-wrap: break-word; word-break: break-all;float:left;width:136px;margin-left: 10px;}
+.om-messageTip-image{ background: none no-repeat scroll 0 0 transparent;height: 32px;width: 32px;overflow: hidden;float: left;}
+.om-messageTip-image-alert{ background: url("images/messagebox/messagebox-icons.gif") 0px 0px; }
+.om-messageTip-image-warning{ background: url("images/messagebox/messagebox-icons.gif") -96px 0px; }
+.om-messageTip-image-question{ background: url("images/messagebox/messagebox-icons.gif") -32px 0px; }
+.om-messageTip-image-success{ background: url("images/messagebox/messagebox-icons.gif") -128px 0px; }
+.om-messageTip-image-error{ background: url("images/messagebox/messagebox-icons.gif") -64px 0px; }
+.om-messageTip-image-waiting{ background: url("images/messagebox/waiting.gif");}
+/*
+ * $Id: om-numberfield.css,v 1.6 2012/02/08 06:00:53 licongping Exp $
+ * operamasks-ui numberfield 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+input.om-numberfield-disabled, .om-widget-content input.om-numberfield-disabled{
+	background-color: #EBEBE4;
+}
+input.om-numberfield{
+	*height: 20px;
+	*vertical-align: top;
+}/*
+ * jQuery UI Progressbar 1.8.16
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Progressbar#theming
+ */
+.om-progressbar { height:14px; }
+.om-progressbar .om-progressbar-value {height:100%; }
+.om-progressbar .om-progressbar-text {text-align: center; position: absolute;}/*
+ * $Id: om-scrollbar.css,v 1.1 2012/06/14 00:48:20 chentianzhen Exp $
+ * operamasks-ui combo 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+ 
+.om-scrollbar {
+	background-color: #83888B;
+	position : absolute;
+	top : 0;
+	opacity: .8; filter:Alpha(Opacity=80);
+}/*
+ * $Id: om-slider.css,v 1.10 2012/02/28 07:51:23 wangfan Exp $
+ * operamasks-ui slider 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-slider{
+	position: relative;
+    overflow: hidden;
+}
+.om-slider img{
+	border: 0;
+}
+.om-slider ul.om-slider-content{
+	position: absolute;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.om-slider ul.om-slider-effect-slide-h{
+	width: 10000px;
+}
+.om-slider ul.om-slider-effect-slide-h li.om-slider-item{
+	position: relative;
+	display: list-item;
+	float: left;
+}
+.om-slider ul.om-slider-content .om-slider-item {
+	display: none;
+	position: absolute;
+	_position: static;
+}
+.om-slider ul.om-slider-effect-slide-v li.om-slider-item{
+	position: relative;
+    display: block;
+}
+.om-slider-directionNav {
+	display: none;
+}
+.om-slider-directionNav a {
+	background: url("images/slider/arrows.png") no-repeat scroll 0 0 transparent;
+    border: 0 none;
+    display: block;
+    height: 42px;
+    text-indent: -9999px;
+    width: 30px;
+    cursor: pointer;
+    position: absolute;
+    top: 45%;
+    z-index: 100;
+}
+.om-slider-directionNav a.om-slider-prevNav {
+    left: 15px;
+}
+.om-slider-directionNav a.om-slider-nextNav {
+	background-position: -70px 0;
+    right: 15px;
+}
+
+.om-slider-nav-classical{
+	position: absolute;
+	right: 10px;
+	height: 18px;
+	list-style: none;
+	bottom: 2px;
+	margin: 12px 0;
+}
+
+.om-slider-nav-classical li{
+	background-color: #FFFFFF;
+	opacity: .7;
+	color: #0092D2;
+	height: 20px;
+	line-height: 20px;
+	margin-top: -2px;
+	width: 20px;
+	float: left;
+	text-align: center;
+	font-size: 13px;
+	margin-left: 3px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	position: relative;
+	cursor: pointer;
+	overflow: visible;
+}
+.om-slider-nav-classical li.nav-selected{
+	opacity: 1;
+	color: #FFFFFF;
+	background-color: #0092D2;
+	font-weight: bold;
+}
+
+.om-slider-nav-dot{
+    position: absolute;
+    left: 50%;
+    bottom: 5px;
+}
+.om-slider-nav-dot a{
+	background: url("images/slider/bullets.gif") no-repeat scroll 0 0 transparent;
+    border: 0 none;
+    display: block;
+    float: left;
+    height: 22px;
+    margin-right: 3px;
+    text-indent: -9999px;
+    width: 22px;
+    outline:0 none;
+}
+.om-slider-nav-dot a.nav-selected{
+	background-position: 0 -22px;
+}
+
+.om-slider-hidden{
+	display: none;
+}
+
+/*
+ * $Id: om-suggestion.css,v 1.7 2012/06/19 07:27:06 luoyegang Exp $
+ * operamasks-ui suggestion 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-suggestion-list-row {height: 20px; line-height: 20px; padding: 0 5px; margin : 1px;}
+.om-widget .om-droplist {overflow-x: hidden;}
+.om-suggestion{background: white;}/*
+ * $Id: om-tabs.css,v 1.22 2012/06/28 06:36:00 chentianzhen Exp $
+ * operamasks-ui tabs 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-tabs .om-tabs-headers {
+    overflow: hidden;
+    padding: 2px 0 2px;
+    position: relative;
+    _width: 100%;
+    border:1px solid #86A3C4;
+    border-bottom-width:0px
+}
+.om-tabs .om-tabs-headers .om-state-default a{
+	color: #23466D;
+}
+.om-tabs .header-no-border{
+	border-width:0px;
+}
+.om-tabs .om-tabs-scroll-left {
+	background : url(images/tabs/om-tabs-scroll-left.gif) no-repeat;
+	height: 29px;
+    left: 0;
+    position: absolute;
+    top: 1px;
+    width: 18px;
+    cursor: pointer;
+    z-index: 100;
+}
+.om-tabs .om-tabs-scroll-right {
+	background : url(images/tabs/om-tabs-scroll-right.gif) no-repeat;
+	height: 29px;
+    right: 0;
+    position: absolute;
+    top: 1px;
+    width: 18px;
+    cursor: pointer;
+    z-index: 100;
+}
+.om-tabs .om-tabs-scroll-right:hover {
+	background-position: -18px 0;
+}
+.om-tabs .om-tabs-scroll-left:hover {
+	background-position: -18px 0;
+}
+.om-tabs .om-tabs-scroll-disabled {
+	background-position: 0 0 !important;
+    cursor: default;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    opacity: 0.5;
+}
+.om-tabs .om-tabs-headers ul {
+    width: 5000px;
+    font-size: 12px;
+    margin: 0 ;
+    padding: 0 0 0 4px;
+    border-bottom: 1px solid #86A3C4;
+}
+.om-tabs .om-tabs-headers ul.om-tabs-scrollable {
+	padding : 0 23px;
+	position: relative;
+}
+.om-tabs .om-tabs-headers ul li {
+	background: url("images/tabs/om-tabs-bg-d.png") repeat-x scroll 0 0 #DCF0FB;
+    display: inline-block;
+    margin: 0 4px -1px 0;
+    padding: 0;
+    position : relative;
+    -moz-user-select: none;
+    float: left;
+    
+}
+.om-tabs .om-tabs-headers ul li.om-state-hover{
+	background: url("images/tabs/om-tabs-bg-h.png") repeat-x scroll 0 0 #DAEAFA;
+}
+.om-tabs .om-tabs-headers ul li.om-tabs-activated {
+	border-color: #8DB2E3 #8DB2E3 #FFFFFF;
+	background: url("images/tabs/om-tabs-bg-a.png") repeat-x scroll 0 0 #FFFFFF;
+	font-weight: bold;
+}
+.om-tabs .om-tabs-headers ul li a.om-tabs-inner {
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    white-space: nowrap;
+    float: left;
+    padding: 0 10px;
+}
+.om-tabs .om-icon-close {
+	float: left;
+	margin: 0.4em 0.2em 0 0;
+	cursor: pointer;
+}
+.om-tabs .om-tabs-headers ul li a.om-icon-close{
+	background: url("images/tabs/om-tabs-closebtn.gif") no-repeat;
+    display: block;
+    height: 10px;
+    width: 10px;
+    margin: 7px 6px 0 0;
+}
+.om-tabs .om-tabs-headers ul li.om-state-hover a.om-icon-close{
+	background-position: 0 -9px;
+}
+
+.om-tabs .om-tabs-panels {
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    position: relative;
+}
+.om-tabs .om-tabs-panels .om-panel-body{
+	padding:1em;
+}
+.om-tabs-noborder {
+	border-width: 0;
+}/*
+ * $Id: om-tooltip.css,v 1.5 2012/03/02 05:26:54 luoyegang Exp $
+ * operamasks-ui tooltip 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.tip{background-color: #E9F2FF;background-image: none;border-radius: 3px 3px 3px 3px;border-style: solid;border-width: 1px;padding: 2px;border-color: #8EAACE;position: fixed;_position : absolute;z-index:3000;}
+.tip-body{overflow: hidden;padding: 3px;position: relative;font-size: 12px;margin : 2px;}
+.tip-anchor-bottom {background-position: -9px 0px;width: 10px;}
+.tip-anchor-top {background-position: 0px 0px;width: 10px;}
+.tip-anchor-left {background-position: -28px 0px;width: 10px;}
+.tip-anchor-right {background-position: -19px 0px;width: 10px;}
+.tip-anchor{height: 10px;overflow: hidden;position: absolute;width: 9px;background-image: url("images/tooltip/tip-anchor-sprite.gif");background-repeat: no-repeat;}/*
+ * $Id: om-tree.css,v 1.26 2012/06/14 01:08:25 linxiaomin Exp $
+ * operamasks-ui tree 2.0
+ *
+ * Copyright 2011, AUTHORS.txt (http://ui.operamasks.org/about)
+ * Dual licensed under the MIT or LGPL Version 2 licenses.
+ * http://ui.operamasks.org/license
+ *
+ * http://ui.operamasks.org/docs/
+ */
+.om-tree, .om-tree ul { 
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.om-tree ul {
+	margin-top: 4px;
+}
+
+.om-tree .hitarea {
+	background: url(images/tree/treeview-default.gif) -64px -25px no-repeat;
+	height: 16px;
+	width: 16px;
+	margin-left: -16px;
+	float: left;
+	cursor: pointer;
+}
+/* fix for IE6 */
+* html .hitarea {
+	display: inline;
+	float:none;
+}
+
+.om-tree li { 
+	margin: 0;
+	padding: 3px 0pt 2px 16px;
+}
+.om-tree li.om-tree-node{
+	white-space: nowrap;
+}
+.om-tree li span{
+	display: inline-block;
+	*overflow: hidden;
+}
+
+.om-tree .om-tree-node a:link {
+    color: black;
+    text-decoration: none;
+}
+
+.om-tree .om-tree-node a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+#treecontrol { margin: 1em 0; display: none; }
+
+.om-tree .om-tree-node span.hover { cursor: pointer;text-decoration: underline; }
+
+.om-tree li { background: url(images/tree/treeview-default-line.gif) 0 0 no-repeat;zoom:1;}
+.om-tree li.collapsable, .om-tree li.expandable { background-position: 0 -176px; }
+
+.om-tree .expandable-hitarea { background-position: -80px -3px; }
+
+.om-tree li.last { background-position: 0 -1766px }
+.om-tree li.lastCollapsable, .om-tree li.lastExpandable { background-image: url(images/tree/treeview-default.gif); }  
+.om-tree li.lastCollapsable { background-position: 0 -111px }
+.om-tree li.lastExpandable { background-position: -32px -67px }
+
+.om-tree div.lastCollapsable-hitarea, .om-tree div.lastExpandable-hitarea { background-position: 0; }
+
+.om-tree .placeholder {
+	background: url(images/tree/tree-loading.gif) 0 0 no-repeat;
+	display: block;
+	padding: 1px 0 1px 16px;
+}
+.om-tree span.folder, .om-tree span.file { padding: 1px 0 1px 16px;}
+.om-tree span.folder { background: url(images/tree/tree-icons.gif) 0 -16px no-repeat;  }
+.om-tree li.expandable span.folder { background: url(images/tree/tree-icons.gif) 0 -32px no-repeat;  }
+.om-tree span.file { background: url(images/tree/tree-icons.gif) 0 0 no-repeat;}
+
+.om-tree li.om-tree-node span.selected {
+	padding-top: 0px;
+    background-color: #D9E8FB !important;
+    color: black;
+    border: 1px #6495ed solid;
+}
+.om-tree .tree-checkbox {
+    background: url(images/tree/checkbox.png) 0 0 no-repeat;
+    width: 13px;
+    height:13px;
+    _overflow:hidden;
+    float:left;
+    cursor: pointer;
+    padding-right: 3px;
+    margin-top: 2px;
+}
+
+.om-tree .checkbox_full {
+    background-position:0px -36px;
+}
+
+.om-tree .checkbox_part {
+    background-position:0px -48px;
+}
+/* 
+.om-tree li.treenode-checkable span.file, .om-tree li.treenode-checkable span.folder {
+    margin-left: 16px;
+}
+*/
+.om-tree li.treenode-droppable {border-bottom: 1px dotted #dd0000;}
+/* when we want to use the line hover we may use this style, we can see the style use in the om-tree.js line 435 */
+/* 
+.om-tree li.om-tree-node .selection {display: none;}
+.om-tree li.hover .selection { display: block; background-color: #D4D4D4; }
+.om-tree li.selected .selection { display: block; background-color: #eaf1fb; }
+.selection { height: 17px; position: absolute; left: 0; right: 0; z-index: -1; width: 100%;}
+*/

@@ -1,0 +1,188 @@
+<link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+<script src="../../jquery.min.js"></script>
+<script src="../../layui/layui.js"></script>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <input type="text" name="nameLike" id="nameLike" placeholder="请输入车牌号/SIM卡号" autocomplete="off" class="layui-input">
+        </div>
+        <button class="layui-btn layui-btn-normal" id="query" lay-submit lay-filter="query">查询</button>
+        <button class="layui-btn layui-btn-danger" id="batchDelete" lay-submit lay-filter="batchDelete">批量删除</button>
+    </div>
+</form>
+
+<table class="layui-hide" id="mediaData" lay-filter="mediaData"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-normal" lay-event="display">查看</a>
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+
+<!--定义一个需要打开的图片 img标签-->
+<div id="fileDiv" style="display: none;">
+    <img id="fileImg" src="">
+</div>
+
+<script>
+    var appName = "/gnss-web";
+    layui.use(['table', 'form', 'util'], function () {
+        var form = layui.form;
+        form.render();
+
+        var table = layui.table;
+        //展示已知数据
+        table.render({
+            id: 'mediaData'
+            , elem: '#mediaData'
+            , method: 'get'
+            , url: appName + "/api/v1/terminal/mediaFile"
+            , page: {
+                curr: '0',
+                limit: 10
+            }
+            , request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                , limitName: 'size' //每页数据量的参数名，默认：limit
+            }
+            , startByZero: true
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.data.totalElements, //解析数据长度
+                    "data": res.data.content //解析数据列表
+                };
+            }
+            , cols: [[ //标题栏
+                {field: 'mediaFileId', hide: true}
+                , {type: 'checkbox', width: 50}
+                , {field: 'vehicleNum', title: '车牌号', width: 100}
+                , {field: 'plateColor', title: '车牌颜色', width: 100}
+                , {field: 'simNum', title: '终端手机号', width: 120}
+                , {field: 'mediaId', title: '多媒体ID', width: 100}
+                , {field: 'channelId', title: '通道ID', width: 100}
+                , {field: 'mediaType', title: '多媒体类型', width: 120}
+                , {field: 'mediaFormatCode', title: '多媒体格式编码', width: 150}
+                , {field: 'eventItemCode', title: '事件项编码', width: 150}
+                , {field: 'fileSize', title: '文件大小', width: 130}
+                , {
+                    field: 'location', title: '位置', width: 100, templet: function (d) {
+                        return '<a class="layui-blue" href="javascript:void(0);" lay-event="detail">详情</a>';
+                    }
+                }
+                , {field: 'createdDate', title: '创建时间', width: 180}
+                , {field: 'operation', title: '操作', width: 200, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //表格按钮点击事件
+        table.on('tool(mediaData)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'detail') {
+                var location = data.location;
+                //报警标志格式化十六进制(4字节)
+                var alarmFlagHex = location.alarmFlag.toString(16).toUpperCase();
+                while (alarmFlagHex.length < 8) {
+                    alarmFlagHex = "0" + alarmFlagHex;
+                }
+                //状态格式化十六进制(4字节)
+                var statusHex = location.status.toString(16).toUpperCase();
+                while (statusHex.length < 8) {
+                    statusHex = "0" + statusHex;
+                }
+                var content = '<div style="padding: 20px 40px;">'
+                content += "报警标志:0x" + alarmFlagHex + "<br/>";
+                content += "状态:0x" + statusHex + "<br/>";
+                content += "纬度:" + location.lat + "<br/>";
+                content += "经度:" + location.lon + "<br/>";
+                content += "高程:" + location.altitude + "<br/>";
+                content += "速度:" + location.speed + "<br/>";
+                content += "方向:" + location.direction + "<br/>";
+                content += "时间:" + location.gpsTime + "<br/>";
+                content += "附加数据:" + (location.extraInfo ? location.extraInfo : "") + "<br/>";
+                content += "</div>";
+                layer.open({
+                    type: 1
+                    , title: '位置详情'
+                    , area: ['60%', '70%']
+                    , content: content
+                    , shade: 0
+                });
+            } else if (obj.event === 'display') {
+                var imgUrl = appName + "/api/v1/terminal/mediaFile/display?path=" + data.base64FilePath;
+                $("#fileImg").attr("src", imgUrl);
+                layer.open({
+                    type: 1,
+                    title: "多媒体文件",
+                    area: ['70%', '90%'],
+                    skin: 'layui-layer-nobg',
+                    shadeClose: true,
+                    content: $('#fileDiv')
+                });
+            } else if (obj.event === 'del') {
+                layer.confirm('确定删除吗？', {title: '删除'}, function (index) {
+                    batchDelete([data.mediaFileId]);
+                });
+            }
+        });
+
+        form.on('submit(query)', function (data) {
+            table.reload("mediaData", {
+                method: 'get'
+                , where: {
+                    nameLike: data.field['nameLike'] // 添加查询的参数
+                }
+                , page: {
+                    curr: '0' // 重载后从第一页开始
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(batchDelete)', function (data) {
+            var checkStatus = layui.table.checkStatus('mediaData').data;
+            if (!checkStatus.length) {
+                layer.msg("请勾选需要删除的多媒体文件", {icon: 5});
+                return false;
+            }
+
+            layer.confirm('确定删除吗？', {title: '删除'}, function (index) {
+                var fileIdArr = checkStatus.map(item => {
+                    return item.mediaFileId;
+                });
+                batchDelete(fileIdArr);
+            });
+            return false;
+        });
+
+        function batchDelete(fileIdList) {
+            $.ajax({
+                type: "DELETE",
+                dataType: 'json',
+                contentType: "application/json;charset=UTF-8",
+                url: appName + "/api/v1/terminal/mediaFile",
+                data: JSON.stringify(fileIdList),
+                success: function (ret) {
+                    if (ret.code == 0) {
+                        layer.msg("删除多媒体文件成功", {icon: 1});
+                        table.reload("mediaData", {
+                            method: 'get'
+                            , where: {
+                                //添加查询的参数
+                                nameLike: $("#nameLike").val()
+                            }
+                            , page: {
+                                //重载后从第一页开始
+                                curr: '0'
+                            }
+                        });
+                    } else {
+                        layer.msg("删除多媒体文件失败:" + ret.msg, {icon: 5});
+                    }
+                }
+            });
+        }
+    });
+</script>

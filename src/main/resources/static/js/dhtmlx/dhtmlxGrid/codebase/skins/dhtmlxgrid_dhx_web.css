@@ -1,0 +1,82 @@
+div.gridbox_dhx_web .xhdr{
+	background-color:#ECECEC;	
+}
+div.gridbox_dhx_web table.hdr tr{
+	background-color:#ECECEC;	
+}
+
+div.gridbox_dhx_web table.obj tr td{
+	font-family:Tahoma;
+	font-size:12px;
+	border-width:0px 0px 0px 0px;
+	padding-right:4px;
+	padding-left:4px;
+}
+div.gridbox_dhx_web table.hdr td div.hdrcell{
+	width:auto;
+	padding-left:10px;
+	width:100% !ie;
+}
+div.gridbox_dhx_web table.hdr td {
+	border: 1px solid #8B8B8B;
+	border-width: 0px 1px 1px 0px;
+	padding:8px 0px 9px 0px;
+	
+	background-color:#ECECEC;
+	
+	
+	font-family:Tahoma;
+	font-size:12px;
+	color:black;
+	vertical-align:top;
+	text-align:left;
+}
+
+
+div.gridbox_dhx_web {
+  border:1px solid  #8B8B8B;
+}
+div.gridbox_dhx_web table.obj tr  td{
+    padding-top:8px;
+    padding-bottom:8px;
+}
+div.gridbox_dhx_web table.obj.row20px tr  td{
+    padding-top:0px;
+    padding-bottom:0px;
+    height:30px;
+
+}
+
+div.gridbox_dhx_web table.obj tr  td.editable{
+    padding:0px;
+}
+div.gridbox_dhx_web table.obj tr  td.editable div.treegrid_cell{
+	padding-left:4px;
+	padding-top:1px;
+}
+div.gridbox_dhx_web table.obj tr.rowselected{
+	background-color:#ACDAF0;
+}
+div.gridbox_dhx_web table.obj tr.rowselected td{
+	background-color:#ACDAF0;
+}
+div.gridbox_dhx_web table.obj.row20px tr.rowselected td{
+	background-color:#ACDAF0;
+}
+div.gridbox_dhx_web table.obj tr.rowselected td.cellselected {
+	background-color:#ACDAF0;
+}
+div.gridbox_dhx_web .odd_dhx_web{
+	background-color:#ECECEC;
+}
+
+.dhx_combo_select, .gridbox_dhx_web .dhx_combo_edit, .gridbox_dhx_web .dhx_textarea{
+    font-family:Tahoma;
+    font-size:12px;
+}
+.gridbox_dhx_web .dhx_combo_edit{
+	padding:1px 0px 1px 1px;
+}
+.gridbox_dhx_web .dhx_sub_row {
+	background-color:transparent;
+}

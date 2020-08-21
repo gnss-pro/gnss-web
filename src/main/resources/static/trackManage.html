@@ -1,0 +1,202 @@
+<link rel="stylesheet" href="layui/css/layui.css" media="all">
+<script src="jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <input type="text" name="nameLike" id="nameLike" placeholder="请输入车牌号/SIM卡号" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <input class="layui-input" placeholder="开始时间" id="startTime">
+        </div>
+        <div class="layui-input-inline">
+            <input class="layui-input" placeholder="结束时间" id="endTime">
+        </div>
+        <button class="layui-btn layui-btn-normal" id="query" lay-submit lay-filter="query">查询</button>
+    </div>
+</form>
+
+<table class="layui-hide" id="trackData" lay-filter="trackData"></table>
+<script type="text/html" id="operation">
+    <a class="layui-btn layui-btn-normal layui-btn-mini" lay-event="extraData">附加数据</a>
+</script>
+
+<script>
+    var appName = "/gnss-web";
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#startTime'
+            , lang: 'cn'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , theme: '#1E9FFF'
+        });
+
+        laydate.render({
+            elem: '#endTime'
+            , lang: 'cn'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm:ss'
+            , max: 1
+            , theme: '#1E9FFF'
+        });
+    });
+
+    layui.use(['table', 'form', 'util'], function () {
+        var form = layui.form;
+        form.render();
+
+        var table = layui.table;
+        //展示已知数据
+        table.render({
+            id: 'trackData'
+            , elem: '#trackData'
+            , method: 'get'
+            , url: appName + "/api/v1/terminal/locations"
+            , page: {
+                curr: '0',
+                limit: 10
+            }
+            , request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                , limitName: 'size' //每页数据量的参数名，默认：limit
+            }
+            , startByZero: true
+            , parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.msg, //解析提示文本
+                    "count": res.data.totalElements, //解析数据长度
+                    "data": res.data.content //解析数据列表
+                };
+            }
+            , cols: [[ //标题栏
+                {field: 'locationId', hide: true}
+                , {field: 'vehicleNum', title: '车牌号', width: 130}
+                , {field: 'plateColor', title: '车牌颜色', width: 100}
+                , {field: 'simNum', title: '终端手机号', width: 120}
+                , {
+                    field: 'gpsValid', title: '是否定位', width: 100, templet: function (d) {
+                        return d.gpsValid == 0 ? "未定位" : "定位";
+                    }
+                }
+                , {field: 'lat', title: '纬度', width: 120}
+                , {field: 'lon', title: '经度', width: 120}
+                , {field: 'altitude', title: '高程', width: 120}
+                , {field: 'speed', title: '速度', width: 120}
+                , {field: 'direction', title: '方向', width: 120}
+                , {field: 'gpsTime', title: '定位时间', width: 180}
+                , {field: 'mileage', title: '里程', width: 120}
+                , {field: 'fuel', title: '油量', width: 120}
+                , {
+                    field: 'status', title: '状态', width: 120, templet: function (d) {
+                        //报警标志格式化十六进制(4字节)
+                        var statusHex = d.status.toString(16).toUpperCase();
+                        while (statusHex.length < 8) {
+                            statusHex = "0" + statusHex;
+                        }
+                        return "0x" + statusHex;
+                    }
+                }
+                , {
+                    field: 'alarmFlag', title: '报警标志', width: 120, templet: function (d) {
+                        //报警标志格式化十六进制(4字节)
+                        var alarmFlagHex = d.alarmFlag.toString(16).toUpperCase();
+                        while (alarmFlagHex.length < 8) {
+                            alarmFlagHex = "0" + alarmFlagHex;
+                        }
+                        return "0x" + alarmFlagHex;
+                    }
+                }
+                , {field: 'operation', title: '操作', minWidth: 100, toolbar: "#operation"}
+            ]]
+            , data: []
+            , even: true
+        });
+
+        //表格按钮点击事件
+        table.on('tool(trackData)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'extraData') {
+                if (!data.extraInfo) {
+                    return "";
+                }
+                var extraInfoObj = eval('(' + data.extraInfo + ')');
+                var extraInfoDesc = getExtraInfoDesc(extraInfoObj)
+                layer.open({
+                    type: 1,
+                    title: '附加数据',
+                    shadeClose: true,
+                    offset: '10%',
+                    area: ['80%', '80%'],
+                    content: extraInfoDesc
+                });
+            }
+        });
+
+        /**
+         * 根据条件查询
+         */
+        form.on('submit(query)', function (data) {
+            var timeObj = getQueryTime();
+            if (!timeObj) {
+                return false;
+            }
+            table.reload("trackData", {
+                method: 'get'
+                , where: {
+                    nameLike: data.field['nameLike']
+                    , startTime: timeObj.startTime
+                    , endTime: timeObj.endTime
+                }
+                , page: {
+                    curr: '0' // 重载后从第一页开始
+                }
+            });
+            return false;
+        });
+
+        /**
+         * 获取查询的时间段
+         */
+        function getQueryTime() {
+            var startTimeStr = $("#startTime").val();
+            var endTimeStr = $("#endTime").val();
+            var startTime = null;
+            var endTime = null;
+            if (startTimeStr) {
+                startTime = new Date(startTimeStr).getTime();
+            }
+            if (endTimeStr) {
+                endTime = new Date(endTimeStr).getTime();
+            }
+            if (startTime && endTime && startTime > endTime) {
+                layer.msg("开始时间不能大于结束时间", {icon: 5});
+                return null;
+            }
+            return {startTime: startTime, endTime: endTime};
+        }
+
+        /**
+         * 获取附加数据描述
+         * @param extraInfoObj
+         * @returns {string}
+         */
+        function getExtraInfoDesc(extraInfoObj) {
+            var desc = '<div style="padding:10px 50px;">';
+            for (const extraInfoId in extraInfoObj) {
+                var valueObj = extraInfoObj[extraInfoId];
+                var valueDescArr = [];
+                for (const vKey in valueObj) {
+                    valueDescArr.push(vKey + ":" + valueObj[vKey]);
+                }
+                desc += extraInfoId + " = " + valueDescArr.join(";") + "<br/>"
+            }
+            desc += '</div>';
+            return desc;
+        }
+
+    });
+</script>
