@@ -30,13 +30,13 @@ gnss:
 
 swagger:
   enabled: true
-  title: 北斗/GPS物联网监控平台
+  title: 北斗主动安全云平台
   description: GNSS Web
   version: 1.0.5.RELEASE
   contact:
     name: 星智云
     url: http://www.gps-pro.cn
-    wechat: 17158638841
+    email: 2645908325@qq.com
   docket:
     command:
       title: 指令操作
