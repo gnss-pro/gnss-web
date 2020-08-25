@@ -44,17 +44,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/global")
 public class GlobalController {
 
-    @Value("${spring.application.name}")
-    private String nodeName;
-
     @Autowired
     private RedisService redisService;
 
     @Autowired
     private CacheService cacheService;
-
-    @Autowired
-    private DownCommandRegister downCommandRegister;
 
     @ApiOperation("查询终端参数列表")
     @GetMapping(value = "/terminalParamInfo")
@@ -116,16 +110,6 @@ public class GlobalController {
     public ApiResultDTO<Map<String, String>> getAllServerInfo() {
         //其他服务器的信息
         Map<String, String> serverInfoMap = redisService.getAllServerInfo();
-        //已支持的下行指令列表
-        List<DownCommandInfo> supportedDownCommands = downCommandRegister.getSupportedDownCommand();
-        //构造Web服务器信息
-        WebServerConfig webServerConfig = new WebServerConfig();
-        webServerConfig.setNodeName(nodeName);
-        webServerConfig.setServerName("Web后台");
-        webServerConfig.setLanIp("127.0.0.1");
-        webServerConfig.setIsRunning(true);
-        webServerConfig.setSupportedDownCommands(supportedDownCommands);
-        serverInfoMap.put(nodeName, JSON.toJSONString(webServerConfig));
         return ApiResultDTO.success(serverInfoMap);
     }
 }

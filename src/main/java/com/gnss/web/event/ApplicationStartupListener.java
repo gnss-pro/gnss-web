@@ -4,10 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.gnss.core.constants.TerminalStatusEnum;
 import com.gnss.core.constants.VehiclePlateColorEnum;
 import com.gnss.core.constants.VehicleStatusEnum;
+import com.gnss.core.model.DownCommandInfo;
 import com.gnss.core.model.config.MediaServerConfig;
+import com.gnss.core.model.config.WebServerConfig;
 import com.gnss.core.proto.TerminalProto;
 import com.gnss.core.proto.TerminalStatusProto;
 import com.gnss.core.service.RedisService;
+import com.gnss.mqutil.event.DownCommandRegister;
 import com.gnss.web.common.constant.GnssConstants;
 import com.gnss.web.global.service.CacheService;
 import com.gnss.web.info.domain.Terminal;
@@ -34,6 +37,7 @@ import org.springframework.util.StopWatch;
 
 import java.net.SocketAddress;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +66,14 @@ public class ApplicationStartupListener implements CommandLineRunner, Applicatio
     @Getter
     @Setter
     private MediaServerConfig goMediaServer;
+
+    private WebServerConfig webServerConfig;
+
+    @Value("${spring.application.name}")
+    private String nodeName;
+
+    @Value("${spring.application.version}")
+    private String version;
 
     @Value("${spring.redis.host}")
     private String redisHost;
@@ -96,18 +108,41 @@ public class ApplicationStartupListener implements CommandLineRunner, Applicatio
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    @Autowired
+    private DownCommandRegister downCommandRegister;
+
     @Override
     public void run(String... args) throws Exception {
         //缓存go流媒体服务器配置
         goMediaServer.setNodeName(GnssConstants.GO_MEDIA_SERVER_NAME);
+        goMediaServer.setVersion("v0.0.5");
         goMediaServer.setIsRunning(true);
         cacheService.putServerInfo(GnssConstants.GO_MEDIA_SERVER_NAME, goMediaServer);
+
+        //已支持的下行指令列表
+        List<DownCommandInfo> supportedDownCommands = downCommandRegister.getSupportedDownCommand();
+        //构造Web服务器信息
+        WebServerConfig webServerConfig = new WebServerConfig();
+        webServerConfig.setNodeName(nodeName);
+        webServerConfig.setVersion(version);
+        webServerConfig.setServerName("Web服务器");
+        webServerConfig.setLanIp("127.0.0.1");
+        webServerConfig.setIsRunning(true);
+        webServerConfig.setSupportedDownCommands(supportedDownCommands);
+        webServerConfig.setStartupTime(LocalDateTime.now());
+        cacheService.putServerInfo(nodeName, webServerConfig);
+        this.webServerConfig = webServerConfig;
+
         //配置Redis连接时需要加载的数据
         initRedisClient();
     }
 
     @Override
     public void onApplicationEvent(ContextClosedEvent event) {
+        //更新Redis的服务器状态信息
+        webServerConfig.setIsRunning(false);
+        webServerConfig.setShutdownTime(LocalDateTime.now());
+        redisService.putServerInfo(nodeName, JSON.toJSONString(webServerConfig));
         log.error("*****程序关闭*****");
     }
 

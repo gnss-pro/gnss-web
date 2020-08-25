@@ -86,6 +86,7 @@
                         contentHtml += '<div class="layui-tab-item">';
                     }
                     contentHtml += '<b>节点名称：</b>' + serverInfoObj.nodeName + '<br/>';
+                    contentHtml += '<b>版本号：</b>' + serverInfoObj.version + '<br/>';
                     //Web服务器的公网IP为浏览器地址的IP
                     var wanIp = serverInfoObj.nodeName.endsWith("web-server") ? location.hostname : serverInfoObj.wanIp;
                     contentHtml += '<b>公网IP：</b>' + wanIp + '<br/>';

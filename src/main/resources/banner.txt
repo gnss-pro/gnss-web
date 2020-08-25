@@ -19,5 +19,5 @@ ${AnsiColor.AnsiBackground.BLACK}
                    `=---='
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
          佛祖保佑       永无BUG
-    GNSS-Web(v1.0.1) by www.gps-pro.cn
+GNSS-Web(v${spring.application.version}) by www.gps-pro.cn
 Spring-Boot${spring-boot.formatted-version}

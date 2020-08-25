@@ -1,6 +1,7 @@
 spring:
   application:
     name: web-server
+    version: @project.version@
   profiles:
     active: dev
 
