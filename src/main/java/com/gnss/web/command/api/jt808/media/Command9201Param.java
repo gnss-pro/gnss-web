@@ -62,13 +62,13 @@ public class Command9201Param implements IDownCommandMessage {
     @Range(min = 1, max = 127, message = "逻辑通道号范围为1-127")
     private int channelId;
 
-    @ApiModelProperty(value = "数据类型(0:音视频,1:视频,2:双向对讲,3:监听,4:中心广播,5:透传),默认0:音视频", required = true, position = 6)
-    @NotNull(message = "数据类型不能为空")
-    private AvItemTypeEnum avItemType = AvItemTypeEnum.AV;
+    @ApiModelProperty(value = "音视频类型(0:音视频,1:音频,2:视频,3:视频或音视频)", required = true, position = 6)
+    @NotNull(message = "音视频类型不能为空")
+    private AvItemTypeEnum avItemType;
 
     @ApiModelProperty(value = "码流类型(0:全部类型,1:主码流,2:子码流)", required = true, position = 7)
     @NotNull(message = "码流类型不能为空")
-    private StreamTypeEnum streamType = StreamTypeEnum.ALL;
+    private StreamTypeEnum streamType;
 
     @ApiModelProperty(value = "存储器类型(0:所有存储器,1:主存储器,2:灾备存储器)", required = true, position = 8)
     @NotNull(message = "存储器类型不能为空")

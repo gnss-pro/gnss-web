@@ -99,8 +99,8 @@ public class DsmConfig {
     private int p16 = 3;
 
     @ApiModelProperty(value = "疲劳驾驶报警拍照间隔时间(单位100ms),默认2", position = 17)
-    @Range(min = 30, max = 120, message = "疲劳驾驶报警拍照间隔时间范围为30-120")
-    private int p17 = 60;
+    @Range(min = 1, max = 5, message = "疲劳驾驶报警拍照间隔时间范围为1-5")
+    private int p17 = 2;
 
     @ApiModelProperty(value = "接打电话报警分级速度阈值(单位km/h),默认50", position = 18)
     @Range(min = 0, max = 220, message = "接打电话报警分级速度阈值范围为0-220")
@@ -147,7 +147,7 @@ public class DsmConfig {
     private int p28 = 3;
 
     @ApiModelProperty(value = "分神驾驶报警拍照间隔时间(单位100ms),默认2", position = 29)
-    @Range(min = 1, max = 5, message = "分神驾驶报警拍照间隔时间范围为0-60")
+    @Range(min = 1, max = 5, message = "分神驾驶报警拍照间隔时间范围为1-5")
     private int p29 = 2;
 
     @ApiModelProperty(value = "驾驶行为异常分级速度阈值(单位km/h),默认50", position = 30)

@@ -118,7 +118,6 @@ public class Command9206Param implements IDownCommandMessage {
         byte[] serverIpArr = serverIp.getBytes();
         byte[] ftpUserArr = username.getBytes();
         byte[] ftpPasswordArr = password.getBytes();
-        int ftpPort = fileServerConfig.getFtpPort();
         //发送指令到文件服务器创建录像上传路径
         FtpUploadCommand ftpUploadCommand = sendFtpUploadCommand(terminalInfo);
         filePath = ftpUploadCommand.getFilePath();
@@ -129,7 +128,7 @@ public class Command9206Param implements IDownCommandMessage {
         ByteBuf msgBody = Unpooled.buffer(serverIpArr.length + ftpUserArr.length + ftpPasswordArr.length + filePathArr.length + 31);
         msgBody.writeByte(serverIpArr.length)
                 .writeBytes(serverIpArr)
-                .writeShort(ftpPort)
+                .writeShort(serverPort)
                 .writeByte(ftpUserArr.length)
                 .writeBytes(ftpUserArr)
                 .writeByte(ftpPasswordArr.length)
@@ -189,6 +188,7 @@ public class Command9206Param implements IDownCommandMessage {
         recordFile.setStorageType(FileStorageEnum.STORAGE_SERVER);
         recordFile.setId(recordFileId);
         recordFile.setAvItemType(avItemType);
+        recordFile.setStreamType(streamType);
         recordFile.setChannelId(channelId);
         recordFile.setStartTime(startTime);
         recordFile.setEndTime(endTime);

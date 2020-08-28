@@ -41,11 +41,10 @@ public class Command9208Param implements IDownCommandMessage {
     @ApiModelProperty(value = "附件服务器UDP端口", hidden = true)
     private int serverUdpPort;
 
-    @ApiModelProperty(value = "报警标识号", required = true, position = 4)
-    @NotNull(message = "报警标识号不能为空")
+    @ApiModelProperty(value = "报警标识号", hidden = true)
     private byte[] alarmFlagArr;
 
-    @ApiModelProperty(value = "报警编号", required = true, position = 5)
+    @ApiModelProperty(value = "报警编号", required = true, position = 1)
     @NotBlank(message = "报警编号不能为空")
     private String alarmNum;
 

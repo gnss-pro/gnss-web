@@ -1,6 +1,7 @@
 package com.gnss.web.terminal.domain;
 
 import com.gnss.core.constants.jt1078.AvItemTypeEnum;
+import com.gnss.core.constants.jt1078.StreamTypeEnum;
 import com.gnss.web.common.domain.BaseEntity;
 import com.gnss.web.constants.FileStorageEnum;
 import com.gnss.web.info.domain.Terminal;
@@ -54,7 +55,14 @@ public class RecordFile extends BaseEntity {
     /**
      * 音视频资源类型
      */
+    @Enumerated
     private AvItemTypeEnum avItemType;
+
+    /**
+     * 码流类型
+     */
+    @Enumerated
+    private StreamTypeEnum streamType;
 
     /**
      * 通道ID
