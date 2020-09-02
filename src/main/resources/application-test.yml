@@ -4,8 +4,6 @@ server:
 gnss:
   #中间件地址(Redis,RabbitMQ所在服务器IP)
   middleware-ip: 106.53.28.63
-  #公网IP
-  public-ip: 106.53.28.63
   #go流媒体服务器配置
   goMediaServer:
     server-name: GO流媒体服务器
