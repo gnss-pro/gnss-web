@@ -29,7 +29,7 @@ import javax.validation.Valid;
 @Api(tags = "JT808主动安全指令操作")
 @RestController
 @RequestMapping("/api/v1/commands/jt808/safety")
-public class Jt808ActiveSafetyCommandController {
+public class ActiveSafetyCommandController {
 
     @Autowired
     private CommandOperationService commandOperationService;
