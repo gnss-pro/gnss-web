@@ -53,7 +53,7 @@ spring:
 
   rabbitmq:
     host: ${gnss.middleware-ip}
-    port: 5673
+    port: 5672
     username: guest
     password: guest
     publisher-returns: true
